@@ -5,24 +5,58 @@
   <parent>
     <groupId>com.zijincaifu</groupId>
     <artifactId>crm-parent</artifactId>
-    <version>${project.version}</version>
+    <version>1.0</version>
   </parent>
   <artifactId>crm-dao</artifactId>
   <name>crm-dao</name>
   <url>http://maven.apache.org</url>
   <dependencies>
   	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<scope>test</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.sxj</groupId>
-  		<artifactId>mybatis-pagination</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.sxj</groupId>
-  		<artifactId>mybatis-shard</artifactId>
-  	</dependency>
+			<groupId>com.sxj</groupId> 
+			<artifactId>sxj-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sxj</groupId>
+			<artifactId>mybatis-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sxj</groupId>
+			<artifactId>mybatis-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sxj</groupId>
+			<artifactId>mybatis-shard</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
   </dependencies>
 </project>

@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.zijincaifu</groupId>
     <artifactId>crm-parent</artifactId>
-    <version>${project.version}</version>
+    <version>1.0</version>
   </parent>
   <artifactId>crm-website</artifactId>
   <packaging>war</packaging>
