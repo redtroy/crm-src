@@ -48,7 +48,7 @@
 		<if test="query.loadId != null and query.loadId != ''">
 			<![CDATA[ AND UID =#{query.loadId}]]>
 		</if>
-		<!-- 资金财富特定员工录入的渠道所有人都可以看到 -->
+		<!-- 紫金财富特定员工录入的渠道所有人都可以看到 -->
 		<![CDATA[ OR UID='111']]>
 		<![CDATA[ ORDER BY CHANNELID DESC]]>
 	</select>
