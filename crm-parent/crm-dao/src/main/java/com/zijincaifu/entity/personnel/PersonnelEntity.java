@@ -4,19 +4,22 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import com.sxj.mybatis.orm.annotations.Column;
+import com.sxj.mybatis.orm.annotations.Entity;
 import com.sxj.mybatis.orm.annotations.GeneratedValue;
 import com.sxj.mybatis.orm.annotations.GenerationType;
 import com.sxj.mybatis.orm.annotations.Id;
 import com.sxj.mybatis.orm.annotations.Table;
 import com.sxj.mybatis.pagination.Pagable;
+import com.zijincaifu.dao.personnel.IPersonnelDao;
 
 /**
  * 员工信息
  * @author Administrator
  *
  */
+@Entity(mapper = IPersonnelDao.class)
 @Table(name="CRM_PERSONNEL")
-public class Personnel extends Pagable implements Serializable {
+public class PersonnelEntity extends Pagable implements Serializable {
 
 	/**
 	 * 

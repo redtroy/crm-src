@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import com.sxj.mybatis.orm.annotations.Column;
+import com.sxj.mybatis.orm.annotations.Entity;
 import com.sxj.mybatis.orm.annotations.GeneratedValue;
 import com.sxj.mybatis.orm.annotations.GenerationType;
 import com.sxj.mybatis.orm.annotations.Id;
 import com.sxj.mybatis.orm.annotations.Table;
 import com.sxj.mybatis.pagination.Pagable;
+import com.zijincaifu.dao.product.IProductDao;
 
 /**
  * 产品信息
@@ -16,7 +18,7 @@ import com.sxj.mybatis.pagination.Pagable;
  * @author Administrator
  *
  */
-
+@Entity(mapper = IProductDao.class)
 @Table(name = "CRM_PRODUCT")
 public class ProductEntity extends Pagable implements Serializable {
 
