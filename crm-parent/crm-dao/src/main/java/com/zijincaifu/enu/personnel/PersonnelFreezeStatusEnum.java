@@ -7,7 +7,7 @@ package com.zijincaifu.enu.personnel;
  */
 public enum PersonnelFreezeStatusEnum {
 
-	FREEZE("冻结",0),NOFREEZE("未冻结",1);
+	FREEZE("冻结",0),UNFREEZE("未冻结",1);
 	
 	 // 成员变量
     private Integer id;

@@ -4,17 +4,20 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import com.sxj.mybatis.orm.annotations.Column;
+import com.sxj.mybatis.orm.annotations.Entity;
 import com.sxj.mybatis.orm.annotations.GeneratedValue;
 import com.sxj.mybatis.orm.annotations.GenerationType;
 import com.sxj.mybatis.orm.annotations.Id;
 import com.sxj.mybatis.orm.annotations.Table;
 import com.sxj.mybatis.pagination.Pagable;
+import com.zijincaifu.dao.channel.IChannelDao;
 
 /**
  * 渠道信息
  * @author Administrator
  *
  */
+@Entity(mapper=IChannelDao.class)
 @Table (name="CRM_CHANNEL")
 public class ChannelEntity extends Pagable implements Serializable {
 
