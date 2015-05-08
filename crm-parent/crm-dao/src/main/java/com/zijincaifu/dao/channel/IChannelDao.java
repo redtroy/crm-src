@@ -6,6 +6,7 @@ import com.sxj.mybatis.orm.annotations.Delete;
 import com.sxj.mybatis.orm.annotations.Get;
 import com.sxj.mybatis.orm.annotations.Insert;
 import com.sxj.mybatis.orm.annotations.Update;
+import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.entity.channel.ChannelEntity;
 
 public interface IChannelDao {
@@ -33,15 +34,14 @@ public interface IChannelDao {
 	
 	/**
 	 * 获取渠道信息
-	 * @param id
+	 * @param channelId
 	 */
-	@Get
-	public ChannelEntity getChannel(String id);
+	public ChannelEntity getChannel(String channelId);
 	
 	/**
 	 * 查看渠道
 	 * @param query
 	 */
-	public List<ChannelEntity> queryChannel(ChannelEntity channel);
+	public List<ChannelEntity> queryChannel(QueryCondition<ChannelEntity> query);
 
 }

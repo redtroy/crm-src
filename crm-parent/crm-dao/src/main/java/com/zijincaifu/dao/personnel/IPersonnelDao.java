@@ -2,9 +2,9 @@ package com.zijincaifu.dao.personnel;
 
 import java.util.List;
 
-import com.sxj.mybatis.orm.annotations.Get;
 import com.sxj.mybatis.orm.annotations.Insert;
 import com.sxj.mybatis.orm.annotations.Update;
+import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.entity.personnel.PersonnelEntity;
 
 public interface IPersonnelDao {
@@ -24,33 +24,15 @@ public interface IPersonnelDao {
 		
 	/**
 	 * 获取员工信息
-	 * @param id
+	 * @param uid
 	 */
-	@Get
-	public PersonnelEntity getPersonnel(String id);
+	public PersonnelEntity getPersonnel(String uid);
 	
 	/**
 	 * 查看员工
 	 * @param query
 	 */
-	public List<PersonnelEntity> queryPersonnel(PersonnelEntity personnel);
+	public List<PersonnelEntity> queryPersonnel(QueryCondition<PersonnelEntity> query);
 	
-	/**
-	 * 冻结员工
-	 * @param id
-	 */
-	public void freezePersonnel(String id);
-	
-	/**
-	 * 解冻员工
-	 * @param id
-	 */
-	public void unFreezePersonnel(String id);
-	
-	/**
-	 * 初始化员工密码
-	 * @param id
-	 */
-	public void initPassword(String id);
 
 }
