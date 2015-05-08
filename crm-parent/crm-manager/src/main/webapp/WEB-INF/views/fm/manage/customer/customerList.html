@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>紫金财富金融服务平台</title>
+<meta name="keywords" content="紫金财富金融服务平台"/>
+<meta name="description" content="紫金财富金融服务平台"/>
+<link href="${b.staticPath}style/style.css" rel="stylesheet" type="text/css" />
+<script src="${b.staticPath}js/jquery.js" type="text/javascript"></script>
+<script src="${b.staticPath}js/datepicker.js"></script>
+<script src="${b.staticPath}js/jquery.paginate.js"></script>
+<script>
+jQuery(document).ready(function($) {	
+	$('.levinput').click(function(){
+		$('.maskdivgen').fadeIn(100);
+		$('.memLevel').slideDown(200);
+	})
+	$('.modal-header .close').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.memLevel').slideUp(200);
+	})
+	$('.popBtn').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.memLevel').slideUp(200);
+	})
+	$('.reminput').click(function(){
+		$('.maskdivgen').fadeIn(100);
+		$('.remList').slideDown(200);
+	})
+	$('.modal-header .close').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.remList').slideUp(200);
+	})
+	$('.popBtn').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.remList').slideUp(200);
+	})
+	$('.meminput').click(function(){
+		$('.maskdivgen').fadeIn(100);
+		$('.memberList').slideDown(200);
+	})
+	$('.modal-header .close').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.memberList').slideUp(200);
+	})
+	$('.popBtn').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.memberList').slideUp(200);
+	})
+})
+</script>
+</head>
+
+<body>
+<@b.header/>
+<div class="fence">
+  <div class="fence-wide pt10 pb10 ly-clearFix">
+    <@b.leftMenu/>
+    <div class="yard-1100 ly-left">
+      <div class="rightSide">
+        <div class="heading fontYH f20">客户管理</div>
+        <div class="mainBox">
+          <div class="searBox f12 mt10 mb10">
+            <p>客户ID
+              <input class="input" type="text" name="insurantName" value="" />
+              姓名
+              <input class="input" type="text" name="insurantName" value="" />
+              手机号
+              <input type="text" class="input" name="insurantName" value="" />
+              金融产品
+              <input type="text" class="input" name="insurantName" value="请输入产品ID" />
+              客户来源
+              <input type="text" class="input" name="insurantName" value="请输入产品ID" />
+              客户分级
+              <select name="select4" id="select4">
+                <option>新客户</option>
+                <option>准客户</option>
+                <option>大客户</option>
+                <option>VIP客户</option>
+              </select>
+            </p>
+            <p> 录入时间段
+              <input type="text" class="input input-time cal form-control" name="" value="" datepicker />
+              -
+              <input type="text" class="input input-time cal form-control" name="" value="" datepicker>
+              <span class="advanced" style="display:;"> 归属员工
+              <input type="text" class="input" name="insurantName" value="请输员工ID" />
+              UnionID
+              <input type="text" class="input" name="insurantName2" value="" />
+              </span> <span class="btnBox">
+              <button class="button button-search">查询</button>
+              </span> <span class="btnBox">
+              <button class="button button-purple f12" onclick="javascript:window.location.href='new-member.html'">新增客户</button>
+              </span> </p>
+          </div>
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList mb10">
+            <col width="5%" />
+            <col width="5%" />
+            <col width="10%" />
+            <col width="8%" />
+            <col width="8%" />
+            <col width="8%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="11%" />
+            <col width="15%" />
+            <tr>
+              <th>ID</th>
+              <th>姓名</th>
+              <th>手机号</th>
+              <th>归属员工</th>
+              <th>投资明细</th>
+              <th>客户来源</th>
+              <th>分级</th>
+              <th>跟踪记录</th>
+              <th>UnionID</th>
+              <th>录入时间</th>
+              <th>管理</th>
+            </tr>
+            <tr class="bColor-red" title="有报名未处理的客户记录">
+              <td><a href="#">C000005</a></td>
+              <td>杨先生</td>
+              <td>13357835399</td>
+              <td>陈绍伟</td>
+              <td><a href="#">查询明细</a></td>
+              <td title="AAA001是自动添加的渠道编号">AAA001</td>
+              <td><a href="#" class="levinput">新客户</a></td>
+              <td><a href="#">管理记录</a></td>
+              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
+              <td>2015-01-31</td>
+              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot memberBox meminput">分配</a></td>
+            </tr>
+            <tr id="C000005" style="display:;">
+              <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
+                <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
+                  <col width="6%" />
+                  <col width="5%" />
+                  <col width="12%" />
+                  <col width="20%" />
+                  <col width="17%" />
+                  <col width="10%" />
+                  <col width="30%" />
+                  <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>手机号</th>
+                    <th>地区</th>
+                    <th>身份证号</th>
+                    <th>生日</th>
+                    <th>地址</th>
+                  </tr>
+                  <tr>
+                    <td><input type="text" class="input" name="insurantName6" value="杨先生" /></td>
+                    <td><select name="select" id="select">
+					    <option>请选择</option>
+                        <option>男</option>
+                        <option>女</option>
+                      </select></td>
+                    <td><input type="text" class="input" name="insurantName4" value="13357835399" /></td>
+                    <td><select name="select1" id="select1">
+                        <option>请选择</option>
+                        <option>江苏</option>
+                        <option>北京</option>
+                        <option>江苏</option>
+                        <option>连云港</option>
+                      </select>
+                      &nbsp;
+                      <select name="select2" id="select2">
+                        <option>请选择</option>
+                        <option>南京</option>
+                        <option>无锡</option>
+                        <option>苏州</option>
+                        <option>连云港</option>
+                      </select></td>
+                    <td><input type="text" class="input" name="insurantName3" value="320102195612248605" /></td>
+                    <td>1956-12-24</td>
+                    <td><input type="text" class="input inputAdd" name="insurantName5" value="江苏省南京市南京高新技术开发区西墩子109号" /></td>
+                  </tr>
+                </table>
+                <div class="buttonBox mt15 mb10 tc"><a href="#" class="button button-green mr15">修改</a><a href="#" class="button button-gray btn-hide">收起</a> </div></td>
+            </tr>
+            <tr>
+              <td><a href="#">C000004</a></td>
+              <td>朱先生</td>
+              <td>18948975536</td>
+              <td>陈绍伟</td>
+              <td><a href="#">查询明细</a></td>
+              <td>AAA002</td>
+              <td><a href="#">新客户</a></td>
+              <td><a href="#">管理记录</a></td>
+              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
+              <td class="pr"><span class="iconNew"></span>2015-01-31</td>
+              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
+            </tr>
+            <tr id="C000005" style="display:;">
+              <td colspan="11"><div class="tabTit fontYH f14">产品投资明细</div>
+                <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
+                  <col width="20%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="15%" />
+                  <col width="15%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <tr>
+                    <th>产品名称</th>
+                    <th>推荐明细</th>
+                    <th>推广来源</th>
+                    <th>投资状态</th>
+                    <th>投资金额</th>
+                    <th>报名时间</th>
+                    <th>投资时间</th>
+                    <th>操作</th>
+                  </tr>
+                  <tr style="display:;">
+                    <td title="联想选择产品"><input type="text" class="input" name="insurantName322" value="" /></td>
+                    <td><a href="#" class="reminput">查看</a></td>
+                    <td>AAA001</td>
+                    <td><select name="select5" id="select5">
+                        <option>已报名</option>
+                        <option>已投资</option>
+                        <option>已放弃</option>
+                      </select></td>
+                    <td><input type="text" class="input" name="insurantName32" value="0.00" /></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td><a href="#" class="button button-purple">新增</a></td>
+                  </tr>
+                  <tr style="display:;">
+                    <td>安心大地产</td>
+                    <td><a href="#">查看</a></td>
+                    <td>AAA002</td>
+                    <td>已报名</td>
+                    <td>0.00</td>
+                    <td>2015-03-03</td>
+                    <td>-</td>
+                    <td><a href="#" class="button button-yellow">更新</a></td>
+                  </tr>
+                  <tr style="display:;">
+                    <td title="联想选择产品"><input type="text" class="input" name="insurantName323" value="安心大地产" /></td>
+                    <td title="点击后弹出层显示推荐来源维度明细：如果是员工直接获取的显示该员工ID；如果是一度人脉以上的显示“员工ID</BR>一度UnionID</BR>二度UnionID</BR>三度UnionID……”"><a href="#">查看</a></td>
+                    <td>AAA003</td>
+                    <td><select name="select5" id="select5">
+                        <option>已报名</option>
+                        <option selected="selected"	>已投资</option>
+                        <option>已放弃</option>
+                      </select></td>
+                    <td><input type="text" class="input" name="insurantName32" value="5000.00" /></td>
+                    <td>2015-03-03</td>
+                    <td>2015-04-03</td>
+                    <td><a href="#" class="button button-orange">确定</a></td>
+                  </tr>
+                </table>
+                <div class="buttonBox mt15 mb10 tc"><a href="#" class="button button-purple mr15" title="点击后投资明细表格最上方出现一行新增的空记录">新增</a><a href="#" class="button button-gray btn-hide">收起</a> </div></td>
+            </tr>
+            <tr>
+              <td><a href="#">C000003</a></td>
+              <td>余先生</td>
+              <td>13605157894</td>
+              <td>陈绍伟</td>
+              <td><a href="#">查询明细</a></td>
+              <td>AAA002</td>
+              <td><a href="#">新客户</a></td>
+              <td><a href="#">管理记录</a></td>
+              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
+              <td>2015-01-31</td>
+              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
+            </tr>
+            <tr id="C000005" style="display:;">
+              <td colspan="11"><div class="tabTit fontYH f14">客户跟踪记录</div>
+                <div class="list">
+                  <dl class="devList">
+                    <dt class="titDev"></dt>
+					<dd class="ly-clearFix"><span class="time">&nbsp;&nbsp;</span><span class="comInfo">
+                      <textarea cols="2" name="textarea" style="width:650px"></textarea>
+                      </span>&nbsp;&nbsp;<span class="btnBox">
+                      <button class="button button-purple">新增</button>
+                      </span></dd>
+                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进</span></dd>
+                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
+                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
+                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
+                  </dl>
+                </div>
+                <div class="buttonBox mt15 mb10 tc"><a href="#" class="button button-gray btn-hide">收起</a></div></td>
+            </tr>
+            <tr>
+              <td><a href="#">C000002</a></td>
+              <td>贺女士</td>
+              <td>13365871258</td>
+              <td>陈绍伟</td>
+              <td><a href="#">查询明细</a></td>
+              <td>AAA002</td>
+              <td><a href="#">新客户</a></td>
+              <td><a href="#">管理记录</a></td>
+              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
+              <td>2015-01-31</td>
+              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
+            </tr>
+            <tr>
+              <td><a href="#">C000001</a></td>
+              <td>杨先生</td>
+              <td> 13770924039</td>
+              <td>陈绍伟</td>
+              <td><a href="#">查询明细</a></td>
+              <td>AAA002</td>
+              <td><a href="#">新客户</a></td>
+              <td><a href="#">管理记录</a></td>
+              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
+              <td>2015-01-31</td>
+              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
+            </tr>
+          </table>
+		  <div class="ly-clearFix">
+          <div id="pager" class="jPaginate"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<@b.footer/>
+<div class="modal-wrap popDemo remList" style="display:none;">
+      <div class="modal-header"><span class="close">关闭</span></div>
+     <div class="modal-body memberBox" title="优先显示通过UnionID匹配到的员工编号，如果没有的情况下显示UnionID">
+       <div class="item fontYH color-blue">第一度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
+	   <div class="item fontYH color-blue">第二度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
+	   <div class="item fontYH color-blue">第三度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
+	   <div class="item fontYH color-blue">第四度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
+	   <div class="item fontYH color-blue">第五度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
+  </div>
+  </div>
+<div class="modal-wrap popDemo memLevel" style="display:none;">
+  <div class="modal-header"><span class="close">关闭</span></div>
+  <div class="modal-body memberBox">
+    <div class="item fontYH color-blue">客户分级 :
+      <select name="select4" id="select4" class="fontYH">
+                <option>新客户</option>
+                <option>准客户</option>
+                <option>大客户</option>
+                <option>VIP客户</option>
+              </select>
+    </div>
+    <button class="popBtn">确认</button>
+  </div>
+</div>
+<div class="modal-wrap popDemo memberList" style="display:none;">
+      <div class="modal-header"><span class="close">关闭</span></div>
+     <div class="modal-body memberBox">
+       <div class="item fontYH color-blue">
+         归属员工 :<input name="" type="text" class="input input-w220h30 ml5 fontYH" title="联想输入员工编号" value="请输入员工编号" /> </div>
+  <button class="popBtn">确认</button></div>
+  </div>
+<div class="maskdivgen" style="display:none"></div>
+<script type="text/javascript">
+		$(function() {
+			$("#pager").paginate({
+				count 		: 50,
+				start 		: 1,
+				display     : 10,
+				border					: true,
+				border_color			: '#CCC',
+				text_color  			: '#333',
+				background_color    	: '',	
+				border_hover_color		: '#ff4400',
+				text_hover_color  		: '',
+				background_hover_color	: '', 
+				images					: false,
+				mouse					: 'press'
+			});
+});
+		</script>
+</body>
+</html>

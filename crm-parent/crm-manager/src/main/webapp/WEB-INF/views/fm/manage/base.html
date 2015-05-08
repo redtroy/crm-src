@@ -1,5 +1,5 @@
-<#assign staticPath="http://static.menchuang.org.cn:88/supervisor-manager/" />
-<#assign imagePath="http://storage.menchuang.org.cn:88/" />
+<#assign staticPath="http://static.crm.org.cn:88/crm-manager/" />
+<#assign imagePath="http://storage.crm.org.cn:88/" />
 <#macro dialogBox>
 <script src="${staticPath}js/layer.min.js"></script>
 <script src="${staticPath}js/layer.ext.js"></script>
@@ -457,11 +457,12 @@ function classLoadUpload(text){
 </#macro>
 <#macro header>
 <meta name="renderer" content="webkit">
- <div id="header" class="fence-wide">
-    <h1 class="yard-1200"><a href="#" class="logo"></a><span class="fontYH">私享家绿色门窗平台管理系统</span>
-    <span class="logOut ly-right"><a href="${basePath}logout.htm">注销帐户并退出</a></span>
-    </h1>
-    <div class="border-header"></div>
+ <div id="header" class="fence">
+  <div class="logo">
+    <h1 class="fontYH fence-wide fb">
+      <p class="ly-right logOut">杜金鑫，您好！<a href="#">退出当前帐户</a></p>
+      紫金财富CRM管理平台</h1>
+  </div>
 </div>
 <#if Session.userinfo?exists>
 <script>
@@ -473,28 +474,20 @@ $(document).ready(function(){
 </#if>
 </#macro>
 <#macro leftMenu isLoad>
-<div id="leftList"></div>
-<script>
-var account="${Session.userinfo.accountNo}";
-var isLoad="${isLoad}";
-if(isLoad=="true"){
-	$("#leftList").load("${basePath}menu.htm?account="+account+"&"+ Math.random());
-}else{
-	$("#leftList").load("${basePath}menu.htm?account="+account);
-}
-</script>
+<div class="yard-200 ly-left leftMenu fontYH">
+      <ul>
+        <li><a href="member-center.html" class="bgMember on">客户管理</a></li>
+        <li><a href="productmrg.html" class="bgProduct">产品管理</a></li>
+        <li><a href="channels.html" class="bgChannel">渠道管理</a></li>
+        <li><a href="crmmrg.html" class="bgCrm">后台管理</a></li>
+      </ul>
+</div>
 </#macro>
 <#macro pager>
 <!--<div id="pager" class="jPaginate" totalPage="${query.totalPage}" currentPage="${query.currentPage}"></div>  -->
 <div id="pager" class="pagination ly-right" currentPage="${query.currentPage}" totalPage="${query.totalPage}"></div>
 </#macro>
-<#macro menuPath>
-<div class="local" id="menuPath">
-</div>
-<script>
-$("#menuPath").load("${basePath}menu_path.htm");
-</script>
-</#macro>
+
 <#macro footer>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -503,11 +496,8 @@ $(document).ready(function(){
 	$("#yearSapn").text(year);
 });
 </script>
-<div id="footer" class="fence-wide">
-  <div class="yard-1200">
-    <p>&copy; <span id="yearSapn"></span> 私享家绿色门窗平台&nbsp;版权所有&nbsp;<a href="http://www.miitbeian.gov.cn/" target="_blank">苏ICP备14040094号-1</a></p>
-  </div>
+<div id="footer" class="fence">
+  <div class="fence-wide">&copy; <span id="yearSapn">2015</span> 南京紫金财富企业管理有限公司&nbsp;版权所有<span class="ml10"><a href="http://www.miitbeian.gov.cn/" target="_blank">苏ICP备14047993号-1</a></span></div>
 </div>
-
 </#macro>
 
