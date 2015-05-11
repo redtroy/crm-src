@@ -29,7 +29,7 @@
 		</if>
 		<!-- 员工姓名 -->
 		<if test="query.name != null and query.name != ''">
-			<![CDATA[ AND NAME =#{query.name}]]>
+			<![CDATA[ AND NAME LIKE CONCAT('%',#{query.name},'%')]]>
 		</if>
 		<!-- 所属分公司 -->
 		<if test="query.company != null and query.company != ''">

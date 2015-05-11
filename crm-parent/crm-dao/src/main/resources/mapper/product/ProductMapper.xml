@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zijincaifu.dao.product.IProductDao">
+	<resultMap type="com.zijincaifu.entity.product.ProductEntity" id="ProductResultMap">
+		<id property="id" column="ID" jdbcType="VARCHAR"/>
+		<result property="productId" column="PRODUCTID" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="describe" column="DESCRIBE" jdbcType="VARCHAR"/>
+		<result property="productUrl" column="PRODUCTURL" jdbcType="VARCHAR"/>
+		<result property="addTime" column="ADDTIME" jdbcType="DATETIME"/>
+	</resultMap>
+	
+	<!-- 获取产品信息 -->
+	<select id="getProduct" resultMap="ProductResultMap" parameterType="String">
+		<![CDATA[ SELECT * FROM CRM_PRODUCT WHERE PRODUCTID=#{productId}]]>
+	</select>
+	
+	<!-- 查看产品 -->
+	<select id="queryProduct" resultMap="ProductResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
+		<![CDATA[SELECT  * FROM CRM_PRODUCT WHERE 1=1 ]]>
+		<!-- 产品编号 -->
+		<if test="query.productId != null and query.productId != ''">
+			<![CDATA[ AND PRODUCTID =#{query.productId}]]>
+		</if>
+		<!-- 产品名称 -->
+		<if test="query.name != null and query.name != ''">
+			<![CDATA[ AND NAME LIKE CONCAT('%',#{query.name},'%')]]>
+		</if>
+		<!--新增产品时间 -->
+		<if test="query.startTime != null and query.startTime != ''">
+			<![CDATA[ AND ADDTIME >=#{query.startTime}]]>
+		</if>
+		<!--新增产品时间 -->
+		<if test="query.endTime != null and query.endTime != ''">
+			<![CDATA[ AND ADDTIME <=#{query.endTime}]]>
+		</if>
+		<![CDATA[ ORDER BY PRODUCTID DESC]]>
+	</select>
+	
+</mapper>

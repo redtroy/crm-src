@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zijincaifu.dao.channel.IChannelDao">
+	<resultMap type="com.zijincaifu.entity.channel.ChannelEntity" id="ChannelResultMap">
+		<id property="id" column="ID" jdbcType="VARCHAR"/>
+		<result property="channelId" column="CHANNELID" jdbcType="VARCHAR"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="describe" column="DESCRIBE" jdbcType="VARCHAR"/>
+		<result property="startTime" column="STARTTIME" jdbcType="DATETIME"/>
+		<result property="uid" column="UID" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 获取渠道信息 -->
+	<select id="getChannel" resultMap="ChannelResultMap" parameterType="String">
+		<![CDATA[ SELECT * FROM CRM_CHANNEL WHERE CHANNELID=#{channelId}]]>
+	</select>
+	
+	<!-- 查看渠道 -->
+	<select id="queryChannel" resultMap="ChannelResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
+		<![CDATA[SELECT  * FROM CRM_CHANNEL WHERE 1=1 ]]>
+		<!-- 渠道编号 -->
+		<if test="query.channelId != null and query.channelId != ''">
+			<![CDATA[ AND CHANNELID =#{query.channelId}]]>
+		</if>
+		<!-- 渠道名称 -->
+		<if test="query.name != null and query.name != ''">
+			<![CDATA[ AND NAME LIKE CONCAT('%',#{query.name},'%')]]>
+		</if>
+		<!-- 渠道描述 -->
+		<if test="query.describe != null and query.describe != ''">
+			<![CDATA[ AND DESCRIBE LIKE CONCAT('%',#{query.describe},'%')]]>
+		</if>
+		<!--推广起始时间 -->
+		<if test="query.startTime != null and query.startTime != ''">
+			<![CDATA[ AND STARTTIME >=#{query.startTime}]]>
+		</if>
+		<!--推广起始时间 -->
+		<if test="query.endTime != null and query.endTime != ''">
+			<![CDATA[ AND STARTTIME <=#{query.endTime}]]>
+		</if>
+		<!-- 创建员工 -->
+		<if test="query.uid != null and query.uid != ''">
+			<![CDATA[ AND UID =#{query.uid}]]>
+		</if>
+		<!-- 登陆人ID,如果该员工是一般权限只能查看自己增加的渠道 -->
+		<if test="query.loadId != null and query.loadId != ''">
+			<![CDATA[ AND UID =#{query.loadId}]]>
+		</if>
+		<!-- 紫金财富特定员工录入的渠道所有人都可以看到 -->
+		<![CDATA[ OR UID='111']]>
+		<![CDATA[ ORDER BY CHANNELID DESC]]>
+	</select>
+</mapper>
