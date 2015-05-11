@@ -62,17 +62,17 @@ jQuery(document).ready(function($) {
         <div class="mainBox">
           <div class="searBox f12 mt10 mb10">
             <p>客户ID
-              <input class="input" type="text" name="insurantName" value="" />
+              <input class="input" type="text" name="name" value="" />
               姓名
-              <input class="input" type="text" name="insurantName" value="" />
+              <input class="input" type="text" name="phone" value="" />
               手机号
-              <input type="text" class="input" name="insurantName" value="" />
+              <input type="text" class="input" name="productId" value="" />
               金融产品
               <input type="text" class="input" name="insurantName" value="请输入产品ID" />
               客户来源
               <input type="text" class="input" name="insurantName" value="请输入产品ID" />
               客户分级
-              <select name="select4" id="select4">
+              <select name="level" id="select4">
                 <option>新客户</option>
                 <option>准客户</option>
                 <option>大客户</option>
@@ -118,200 +118,21 @@ jQuery(document).ready(function($) {
               <th>录入时间</th>
               <th>管理</th>
             </tr>
+            <#list list as model>
             <tr class="bColor-red" title="有报名未处理的客户记录">
-              <td><a href="#">C000005</a></td>
-              <td>杨先生</td>
-              <td>13357835399</td>
-              <td>陈绍伟</td>
+              <td><a href="#">${model.customerId}</a></td>
+              <td>${model.customerId}</td>
+              <td>${model.phone}</td>
+              <td>${model.name}</td>
               <td><a href="#">查询明细</a></td>
-              <td title="AAA001是自动添加的渠道编号">AAA001</td>
+              <td title="AAA001是自动添加的渠道编号">${model.channelId}</td>
               <td><a href="#" class="levinput">新客户</a></td>
               <td><a href="#">管理记录</a></td>
-              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
+              <td title="${model.unionId}" class="color-orange">查看</td>
               <td>2015-01-31</td>
-              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot memberBox meminput">分配</a></td>
+              <td class="edit"><a href="#" class="del">删除</a> <a href="#" class="allot memberBox meminput">分配</a></td>
             </tr>
-            <tr id="C000005" style="display:;">
-              <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
-                <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
-                  <col width="6%" />
-                  <col width="5%" />
-                  <col width="12%" />
-                  <col width="20%" />
-                  <col width="17%" />
-                  <col width="10%" />
-                  <col width="30%" />
-                  <tr>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>手机号</th>
-                    <th>地区</th>
-                    <th>身份证号</th>
-                    <th>生日</th>
-                    <th>地址</th>
-                  </tr>
-                  <tr>
-                    <td><input type="text" class="input" name="insurantName6" value="杨先生" /></td>
-                    <td><select name="select" id="select">
-					    <option>请选择</option>
-                        <option>男</option>
-                        <option>女</option>
-                      </select></td>
-                    <td><input type="text" class="input" name="insurantName4" value="13357835399" /></td>
-                    <td><select name="select1" id="select1">
-                        <option>请选择</option>
-                        <option>江苏</option>
-                        <option>北京</option>
-                        <option>江苏</option>
-                        <option>连云港</option>
-                      </select>
-                      &nbsp;
-                      <select name="select2" id="select2">
-                        <option>请选择</option>
-                        <option>南京</option>
-                        <option>无锡</option>
-                        <option>苏州</option>
-                        <option>连云港</option>
-                      </select></td>
-                    <td><input type="text" class="input" name="insurantName3" value="320102195612248605" /></td>
-                    <td>1956-12-24</td>
-                    <td><input type="text" class="input inputAdd" name="insurantName5" value="江苏省南京市南京高新技术开发区西墩子109号" /></td>
-                  </tr>
-                </table>
-                <div class="buttonBox mt15 mb10 tc"><a href="#" class="button button-green mr15">修改</a><a href="#" class="button button-gray btn-hide">收起</a> </div></td>
-            </tr>
-            <tr>
-              <td><a href="#">C000004</a></td>
-              <td>朱先生</td>
-              <td>18948975536</td>
-              <td>陈绍伟</td>
-              <td><a href="#">查询明细</a></td>
-              <td>AAA002</td>
-              <td><a href="#">新客户</a></td>
-              <td><a href="#">管理记录</a></td>
-              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
-              <td class="pr"><span class="iconNew"></span>2015-01-31</td>
-              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
-            </tr>
-            <tr id="C000005" style="display:;">
-              <td colspan="11"><div class="tabTit fontYH f14">产品投资明细</div>
-                <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
-                  <col width="20%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="15%" />
-                  <col width="15%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <col width="10%" />
-                  <tr>
-                    <th>产品名称</th>
-                    <th>推荐明细</th>
-                    <th>推广来源</th>
-                    <th>投资状态</th>
-                    <th>投资金额</th>
-                    <th>报名时间</th>
-                    <th>投资时间</th>
-                    <th>操作</th>
-                  </tr>
-                  <tr style="display:;">
-                    <td title="联想选择产品"><input type="text" class="input" name="insurantName322" value="" /></td>
-                    <td><a href="#" class="reminput">查看</a></td>
-                    <td>AAA001</td>
-                    <td><select name="select5" id="select5">
-                        <option>已报名</option>
-                        <option>已投资</option>
-                        <option>已放弃</option>
-                      </select></td>
-                    <td><input type="text" class="input" name="insurantName32" value="0.00" /></td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><a href="#" class="button button-purple">新增</a></td>
-                  </tr>
-                  <tr style="display:;">
-                    <td>安心大地产</td>
-                    <td><a href="#">查看</a></td>
-                    <td>AAA002</td>
-                    <td>已报名</td>
-                    <td>0.00</td>
-                    <td>2015-03-03</td>
-                    <td>-</td>
-                    <td><a href="#" class="button button-yellow">更新</a></td>
-                  </tr>
-                  <tr style="display:;">
-                    <td title="联想选择产品"><input type="text" class="input" name="insurantName323" value="安心大地产" /></td>
-                    <td title="点击后弹出层显示推荐来源维度明细：如果是员工直接获取的显示该员工ID；如果是一度人脉以上的显示“员工ID</BR>一度UnionID</BR>二度UnionID</BR>三度UnionID……”"><a href="#">查看</a></td>
-                    <td>AAA003</td>
-                    <td><select name="select5" id="select5">
-                        <option>已报名</option>
-                        <option selected="selected"	>已投资</option>
-                        <option>已放弃</option>
-                      </select></td>
-                    <td><input type="text" class="input" name="insurantName32" value="5000.00" /></td>
-                    <td>2015-03-03</td>
-                    <td>2015-04-03</td>
-                    <td><a href="#" class="button button-orange">确定</a></td>
-                  </tr>
-                </table>
-                <div class="buttonBox mt15 mb10 tc"><a href="#" class="button button-purple mr15" title="点击后投资明细表格最上方出现一行新增的空记录">新增</a><a href="#" class="button button-gray btn-hide">收起</a> </div></td>
-            </tr>
-            <tr>
-              <td><a href="#">C000003</a></td>
-              <td>余先生</td>
-              <td>13605157894</td>
-              <td>陈绍伟</td>
-              <td><a href="#">查询明细</a></td>
-              <td>AAA002</td>
-              <td><a href="#">新客户</a></td>
-              <td><a href="#">管理记录</a></td>
-              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
-              <td>2015-01-31</td>
-              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
-            </tr>
-            <tr id="C000005" style="display:;">
-              <td colspan="11"><div class="tabTit fontYH f14">客户跟踪记录</div>
-                <div class="list">
-                  <dl class="devList">
-                    <dt class="titDev"></dt>
-					<dd class="ly-clearFix"><span class="time">&nbsp;&nbsp;</span><span class="comInfo">
-                      <textarea cols="2" name="textarea" style="width:650px"></textarea>
-                      </span>&nbsp;&nbsp;<span class="btnBox">
-                      <button class="button button-purple">新增</button>
-                      </span></dd>
-                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注，销售人员跟进</span></dd>
-                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
-                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
-                    <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
-                  </dl>
-                </div>
-                <div class="buttonBox mt15 mb10 tc"><a href="#" class="button button-gray btn-hide">收起</a></div></td>
-            </tr>
-            <tr>
-              <td><a href="#">C000002</a></td>
-              <td>贺女士</td>
-              <td>13365871258</td>
-              <td>陈绍伟</td>
-              <td><a href="#">查询明细</a></td>
-              <td>AAA002</td>
-              <td><a href="#">新客户</a></td>
-              <td><a href="#">管理记录</a></td>
-              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
-              <td>2015-01-31</td>
-              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
-            </tr>
-            <tr>
-              <td><a href="#">C000001</a></td>
-              <td>杨先生</td>
-              <td> 13770924039</td>
-              <td>陈绍伟</td>
-              <td><a href="#">查询明细</a></td>
-              <td>AAA002</td>
-              <td><a href="#">新客户</a></td>
-              <td><a href="#">管理记录</a></td>
-              <td title="oO_eAjtxCKoRnicolAYtKcx3cu8c" class="color-orange">查看</td>
-              <td>2015-01-31</td>
-              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><a href="#" class="del">删除</a> <a href="#" class="allot">分配</a></td>
-            </tr>
+            </#list>
           </table>
 		  <div class="ly-clearFix">
           <div id="pager" class="jPaginate"></div>
