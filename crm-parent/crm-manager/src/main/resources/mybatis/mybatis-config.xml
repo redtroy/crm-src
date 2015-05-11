@@ -14,7 +14,7 @@
 		<setting name="cacheEnabled" value="true" />
 	</settings>
 	<typeHandlers>
-
+	<typeHandler handler="com.zijincaifu.crm.typehandler.PersonnelCompanyEnumTypeHandler" javaType="com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum"/>
 	</typeHandlers>
 	<plugins>
 		<plugin interceptor="com.sxj.mybatis.pagination.interceptor.PaginationInterceptor" />

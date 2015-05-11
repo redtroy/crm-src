@@ -12,6 +12,7 @@ import com.sxj.mybatis.orm.annotations.Sn;
 import com.sxj.mybatis.orm.annotations.Table;
 import com.sxj.mybatis.pagination.Pagable;
 import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
+import com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum;
 
 /**
  * 员工信息
@@ -19,6 +20,25 @@ import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
  *
  */
 @Entity(mapper = IPersonnelDao.class)
+@Table(name="CRM_PERSONNEL")
+public class PersonnelEntity extends Pagable implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6604367198110501481L;
+	
+	/**
+	 * 主键
+	 */
+	@Id(column="ID")
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
+	
+	/**
+	 * 员工编号
+	 */
+	@Column(name="UID")
 @Table(name = "CRM_PERSONNEL")
 public class PersonnelEntity extends Pagable implements Serializable
 {
@@ -115,6 +135,30 @@ public class PersonnelEntity extends Pagable implements Serializable
     }
     
     public String getPhone()
+@Table(name="CRM_PERSONNEL")
+public class PersonnelEntity extends Pagable implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6604367198110501481L;
+	
+	/**
+	 * 主键
+	 */
+	@Id(column="ID")
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
+	
+	/**
+	 * 员工编号
+	 */
+	@Column(name="UID")
+	 @Sn(pattern = "00000", step = 1, table = "T_SN", stubValue = "E", stub = "F_SN_NAME", sn = "F_SN_NUMBER")
+	private PersonnelCompanyEnum company;
+	
+
+	public PersonnelCompanyEnum getCompany()
     {
         return phone;
     }
@@ -126,52 +170,12 @@ public class PersonnelEntity extends Pagable implements Serializable
     
     public Integer getCompany()
     {
-        return company;
-    }
+
+	public void setCompany(Integer company) {
+		this.company = company;
+	}
     
     public void setCompany(Integer company)
-    {
-        this.company = company;
-    }
-    
-    public String getUnionId()
-    {
-        return unionId;
-    }
-    
-    public void setUnionId(String unionId)
-    {
-        this.unionId = unionId;
-    }
-    
-    public Date getAddTime()
-    {
-        return addTime;
-    }
-    
-    public void setAddTime(Date addTime)
-    {
-        this.addTime = addTime;
-    }
-    
-    public String getPassword()
-    {
-        return password;
-    }
-    
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-    
-    public Integer getFreezeStatus()
-    {
-        return freezeStatus;
-    }
-    
-    public void setFreezeStatus(Integer freezeStatus)
-    {
-        this.freezeStatus = freezeStatus;
-    }
-    
+
+    public void setCompany(PersonnelCompanyEnum company)
 }
