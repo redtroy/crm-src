@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sxj.util.exception.ServiceException;
@@ -14,13 +15,13 @@ import com.zijincaifu.model.customer.CustomerQuery;
 import com.zijincaifu.service.customer.ICustomerService;
 
 @Service
-@Transactional
 public class CustomerServiceImpl implements ICustomerService
 {
     @Autowired
     private ICustomerDao customerDao;
     
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public List<CustomerEntity> queryCustomer(CustomerQuery query)
             throws ServiceException
     {
