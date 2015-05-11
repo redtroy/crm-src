@@ -1,0 +1,51 @@
+<div class="heading fontYH f20">新增员工 </div>
+        <div class="mainBox newMem">
+        <form id="search_form" action="javascript:void(0);">
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
+            <col width="15%" />
+            <col width="85%" />
+            <tr>
+              <th>员工姓名</th>
+              <td><input type="text" name="insurantName6" class="input input-name"/></td>
+            </tr>
+			<tr>
+              <th>联系手机</th>
+              <td><input type="text" name="insurantName6" class="input input-phone"/></td>
+            </tr>
+			<tr>
+              <th>登录密码</th>
+              <td><input type="text" name="insurantName6" class="input input-addname"/></td>
+            </tr>
+			<tr>
+              <th>所属公司</th>
+              <td>
+                <select name="company" id="select4">
+              <option value="">-请选择-</option> 
+              	<#list company as company><#if company.id==query.company>
+				<option value="${company.getId()}" selected="selected">${company.getName()}</option>
+				<#else>
+				<option value="${company.getId()}">${company.getName()}</option>
+				</#if></#list>
+			  <!-- <option selected="selected">集团总部</option>
+              <option>南京公司</option>
+              <option>苏州公司</option>
+              <option>扬州公司</option>
+              <option>常州公司</option> -->
+              </select>
+              </td>
+            </tr>
+			<tr>
+              <th>操作权限</th>
+              <td><div class="adminDrop dropMenu sltinput"> <span>全部权限</span> <span class="icon"></span> </div></td>
+            </tr>  
+			<tr>
+              <th>UnionID</th>
+              <td><input type="text" name="insurantName6" class="input input-addname"/>
+              &nbsp;&nbsp;</td>
+			</tr>   
+            </tr>
+          </table>
+          </form>
+          <div class="buttonBox mb10 tc"><a href="crmmrg.html" class="button button-orange mr15">确定</a><a href="javascript:history.back(-1)" class="button button-gray">返回</a></div>
+        </div>
+      </div>

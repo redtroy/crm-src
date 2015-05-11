@@ -32,7 +32,7 @@
 			<![CDATA[  AND NAME LIKE CONCAT('%',#{condition.name},'%')]]>
 		</if>
 		<!-- 所属分公司 -->
-		<if test="condition.company != null and condition.company != ''">
+		<if test="condition.company != null ">
 			<![CDATA[  AND COMPANY =#{condition.company}]]>
 		</if>
 		<!-- 员工ID,一般权限员工将传递此参数,只搜索自己的信息 -->
