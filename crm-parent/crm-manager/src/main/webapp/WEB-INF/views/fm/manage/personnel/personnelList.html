@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>紫金财富金融服务平台</title>
+<meta name="keywords" content="紫金财富金融服务平台">
+<meta name="description" content="紫金财富金融服务平台">
+<link href="${b.staticPath}style/style.css" rel="stylesheet" type="text/css" />
+<script src="${b.staticPath}js/jquery.js" type="text/javascript"></script>
+<script src="${b.staticPath}js/datepicker.js"></script>
+<script src="${b.staticPath}js/jquery.paginate.js"></script>
+<script>
+function query(page){
+	var params=$("#search_form").serialize();
+	 if(page!=undefined){
+		   params=params+"&currentPage="+page;
+	   }
+	/* $.post("${basePath}personnel/personnelList.htm",params,function(data){
+		var res=$(data).find("#rightBar");
+		var pager=$(data).find("#rightBar").children("#pager");
+		$("#rightBar").empty();
+		$("#rightBar").append(res.html());
+		var totalPage=pager.attr("totalPage");
+		var currentPage=pager.attr("currentPage");
+		loadPage(currentPage,totalPage,query);
+	}); */
+}
+
+jQuery(document).ready(function($) {
+	$('.sltinput').click(function(){
+		$('.maskdivgen').fadeIn(100);
+		$('.dropList').slideDown(200);
+	})
+	$('.modal-header .close').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.dropList').slideUp(200);
+	})
+	$('.popBtn').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.dropList').slideUp(200);
+	})
+	$('.btn-password').click(function(){
+		$('.maskdivgen').fadeIn(100);
+		$('.passwordBox').slideDown(200);
+	})
+	$('.modal-header .close').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.passwordBox').slideUp(200);
+	})
+	$('.popBtn').click(function(){
+		$('.maskdivgen').fadeOut(100);
+		$('.passwordBox').slideUp(200);
+	})
+})
+</script>
+
+</head>
+
+<body>
+<@b.header />
+<div class="fence">
+  <div class="fence-wide pt10 pb10 ly-clearFix">
+    <@b.leftMenu/>
+    <div class="yard-1100 ly-left">
+      <div class="rightSide">
+        <div class="heading fontYH f20">后台管理</div>
+        <div class="mainBox">
+        <form id="search_form" action="javascript:void(0);">
+          <div class="searBox f12 mt10 mb10">
+		  员工ID
+              <input class="input" type="text" name="insurantName" value="" />
+			  员工姓名
+              <input class="input" type="text" name="insurantName" value="" />
+			  所属公司
+              <select name="select4" id="select4">
+			  <option selected="selected">集团总部</option>
+              <option>南京公司</option>
+              <option>苏州公司</option>
+              <option>扬州公司</option>
+              <option>常州公司</option>
+              </select>
+			  <span class="btnBox">
+              <button class="button button-search">查询</button>
+              </span> 
+			  <span class="btnBox">
+			  <button class="button button-purple f12" onclick="javascript:window.location.href='new-employ.html'">新增员工</button>
+			  </span> 
+			   
+          </div>
+          </form>
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList mb10">
+            <col width="5%" />
+            <col width="8%" />
+            <col width="10%" />
+			<col width="10%" />
+			<col width="25%" />
+            <col width="15%" />
+            <col width="27%" />
+            <tr>
+              <th>员工ID</th>
+              <th>员工姓名</th>
+			  <th>联系手机</th>
+              <th>所属分公司</th>
+			  <th>UnionID</th>
+              <th>加入时间</th>
+              <th>管理</th>
+            </tr>
+ 			<#list list as model>
+ 			<tr>
+              <td>${model.uid}</td>
+              <td>${model.name}</td>
+			  <td>${model.phone}</td>
+              <td>${model.company}</td>
+			  <td>${model.unionId}</td>
+              <td>${model.addTime}</td>
+              <td class="edit"><a href="#" class="button btn-examine">审核</a><a href="#" class="unfr">解冻</a> <a href="#" class="allot">修改</a><a href="javascript:;" class="reset btn-password">初始化密码</a></td>
+            </tr>
+            </#list>
+            <!-- <tr>
+              <td>E00001</td>
+              <td>陈绍伟</td>
+			  <td>18915909935</td>
+              <td>南京公司</td>
+			  <td>oO_eAjtxCKoRnicolAYtKcx3cu8c</td>
+              <td>2015-01-31 10:30:00 </td>
+              <td class="edit"><a href="#" class="button btn-examine">审核</a><a href="#" class="unfr">解冻</a> <a href="#" class="allot">修改</a><a href="javascript:;" class="reset btn-password">初始化密码</a></td>
+            </tr>
+            <tr>
+              <td>E00002</td>
+              <td>董玮</td>
+			  <td>18915909935</td>
+              <td> 苏州公司</td>
+			  <td>oO_eAjtxCKoRnicolAYtKcx3cu8c</td>
+              <td>2015-01-31 10:30:00 </td>
+              <td class="edit"><a href="#" class="button btn-examine">审核</a><a href="#" class="del">冻结</a> <a href="#" class="allot">修改</a><a href="#" class="reset">初始化密码</a></td>
+            </tr> -->
+          </table>
+		  <div class="ly-clearFix">
+        <div id="pager" class="jPaginate"></div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<@b.footer/>
+<div class="modal-wrap popDemo dropList" style="display:none;">
+      <div class="modal-header"><span class="close">关闭</span></div>
+     <div class="modal-body dropBox">
+     <div class="perBox"><span>已选择权限</span>
+     <ul>
+     <li><input  type="checkbox"  title="会员中心" value="593" checked="checked" />会员管理</li>
+     <li><input  type="checkbox"  title="会员中心" value="593" checked="checked" />会员管理子帐号管理</li>
+     </ul></div>
+     <div class="item">
+     <span><input  type="checkbox"  title="会员中心" value="593" checked="checked" />会员中心</span>
+     <ul>
+     <li><input  type="checkbox"  title="会员中心" value="593" checked="checked" />会员管理</li>
+     <li><input  type="checkbox"  title="会员中心" value="593" checked="checked" />会员管理子帐号管理</li>
+     </ul>
+     </div>
+     <div class="item">
+     <span><input  type="checkbox" value="593"  title="备案管理" />备案管理</span>
+     <ul>
+     <li><input  type="checkbox" value="593"  title="备案管理" />备案管理</li>
+     </ul>
+     </div>
+     <div class="item">
+     <span><input  type="checkbox" value="593"  title="合同管理" />合同管理</span>
+     <ul>
+     <li><input  type="checkbox" value="593"  title="合同管理" />合同管理</li>
+     </ul>
+     </div>
+     <div class="item">
+     <span><input  type="checkbox" value="593"  title="RFID跟踪管理" />RFID跟踪管理</span>
+     <ul>
+     <li><input  type="checkbox" value="593"  title="生成RFID标签" />生成RFID标签</li>
+     <li><input  type="checkbox" value="593"  title="供应商RFID管理" />供应商RFID管理</li>
+     <li><input  type="checkbox" value="593"  title="门窗厂RFID管理" />门窗厂RFID管理</li>
+     <li><input  type="checkbox" value="593"  title="RFID补损管理" />RFID补损管理</li>
+     <li><input  type="checkbox" value="593"  title="RFID订单管理" />RFID订单管理</li>
+     </ul>
+     </div>
+     <div class="item">
+     <span><input  type="checkbox" value="593"  title="会员行为跟踪管理" />会员行为跟踪管理</span>
+     <ul>
+     <li><input  type="checkbox" value="593"  title="会员行为跟踪管理" />会员行为跟踪管理</li>
+     </ul>
+     </div>
+     <div class="item">
+     <span><input  type="checkbox" value="593"  title="支付管理" />支付管理</span>
+     <ul>
+     <li><input  type="checkbox" value="593"  title="支付管理" />支付管理</li>
+     </ul>
+     </div>
+     <div class="item">
+     <span><input  type="checkbox" value="593"  title="管理员管理" />管理员管理</span>
+     <ul>
+     <li><input  type="checkbox" value="593"  title="管理员管理" />管理员管理</li>
+     </ul>
+     </div>
+     <button class="popBtn">确认</button>
+     </div>
+     </div>
+      <div class="modal-wrap popDemo passwordBox" style="display:none">
+     <div class="modal-header"><span title="关闭" class="close">关闭</span></div>
+     <div class="modal-body">
+     <div class="tipBox ly-clearFix">
+     <span class="icon32 icon-32-info"></span>
+     <p class="color-blue fontYH f18">初始密码为：5896123，谢谢!</p>
+     </div>
+     <button class="popBtn">确认</button>
+     </div>
+     </div>
+        <div class="maskdivgen" style="display:none"></div>
+<script type="text/javascript">
+		$(function() {
+			$("#pager").paginate({
+				count 		: 50,
+				start 		: 1,
+				display     : 10,
+				border					: true,
+				border_color			: '#CCC',
+				text_color  			: '#333',
+				background_color    	: '',	
+				border_hover_color		: '#ff4400',
+				text_hover_color  		: '',
+				background_hover_color	: '', 
+				images					: false,
+				mouse					: 'press'
+			});
+});
+		</script>
+</body>
+</html>
