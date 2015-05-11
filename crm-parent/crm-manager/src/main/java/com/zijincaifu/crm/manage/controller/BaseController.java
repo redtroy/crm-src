@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import com.sxj.util.exception.SystemException;
 import com.sxj.util.logger.SxjLogger;
-import com.zijincaifu.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 
 public class BaseController
 {

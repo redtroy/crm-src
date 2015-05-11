@@ -10,8 +10,8 @@ import com.sxj.util.exception.ServiceException;
 import com.sxj.util.persistent.QueryCondition;
 import com.sxj.util.persistent.ResultList;
 import com.sxj.util.persistent.ResultListImpl;
-import com.zijincaifu.dao.personnel.IPersonnelDao;
-import com.zijincaifu.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
+import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.model.personnel.PersonnelQuery;
 import com.zijincaifu.service.personnel.IPersonnelService;
 
@@ -24,16 +24,15 @@ public class PersonnelServiceImpl implements IPersonnelService
     
     
     @Override
-    public ResultList<PersonnelEntity> queryPersonnels(PersonnelQuery query)
+    public List<PersonnelEntity> queryPersonnels(PersonnelQuery query)
             throws ServiceException
     {
         try
         {
             QueryCondition<PersonnelEntity> condition = new QueryCondition<PersonnelEntity>();
-            ResultList<PersonnelEntity> res = new ResultListImpl<PersonnelEntity>();
             if (query == null)
             {
-                return res;
+                return null;
             }
             condition.addCondition("id", query.getId());
             condition.addCondition("uid", query.getUid());
@@ -42,8 +41,7 @@ public class PersonnelServiceImpl implements IPersonnelService
             condition.setPage(query);
             List<PersonnelEntity> list = personnelDao.queryPersonnel(condition);
             query.setPage(condition);
-            res.setResults(list);
-            return res;
+            return list;
         }
         catch (Exception e)
         {

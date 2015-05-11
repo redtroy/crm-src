@@ -8,8 +8,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sxj.util.exception.WebException;
+import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.manage.controller.BaseController;
-import com.zijincaifu.entity.customer.CustomerEntity;
 import com.zijincaifu.model.customer.CustomerQuery;
 import com.zijincaifu.service.customer.ICustomerService;
 

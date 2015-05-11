@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.persistent.QueryCondition;
-import com.zijincaifu.dao.customer.ICustomerDao;
-import com.zijincaifu.entity.customer.CustomerEntity;
+import com.zijincaifu.crm.dao.customer.ICustomerDao;
+import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.model.customer.CustomerQuery;
 import com.zijincaifu.service.customer.ICustomerService;
 

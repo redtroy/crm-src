@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zijincaifu.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 
 @Controller
 public class BasicController extends BaseController

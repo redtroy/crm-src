@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.zijincaifu.dao.channel.IChannelDao">
-	<resultMap type="com.zijincaifu.entity.channel.ChannelEntity" id="ChannelResultMap">
+<mapper namespace="com.zijincaifu.crm.dao.channel.IChannelDao">
+	<resultMap type="com.zijincaifu.crm.entity.channel.ChannelEntity" id="ChannelResultMap">
 		<id property="id" column="ID" jdbcType="VARCHAR"/>
 		<result property="channelId" column="CHANNELID" jdbcType="VARCHAR"/>
 		<result property="name" column="NAME" jdbcType="VARCHAR"/>
 		<result property="describe" column="DESCRIBE" jdbcType="VARCHAR"/>
-		<result property="startTime" column="STARTTIME" jdbcType="DATETIME"/>
+		<result property="startTime" column="STARTTIME" jdbcType="TIMESTAMP"/>
 		<result property="uid" column="UID" jdbcType="VARCHAR"/>
 	</resultMap>
 	

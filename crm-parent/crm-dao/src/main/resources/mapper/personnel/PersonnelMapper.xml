@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.zijincaifu.dao.personnel.IPersonnelDao">
-	<resultMap type="com.zijincaifu.entity.personnel.PersonnelEntity" id="PersonnelResultMap">
+<mapper namespace="com.zijincaifu.crm.dao.personnel.IPersonnelDao">
+	<resultMap type="com.zijincaifu.crm.entity.personnel.PersonnelEntity" id="PersonnelResultMap">
 		<id property="id" column="ID" jdbcType="VARCHAR"/>
 		<result property="uid" column="UID" jdbcType="VARCHAR"/>
 		<result property="name" column="NAME" jdbcType="VARCHAR"/>
 		<result property="phone" column="PHONE" jdbcType="VARCHAR"/>
-		<result property="company" column="COMPANY" jdbcType="INT"/>
+		<result property="company" column="COMPANY" jdbcType="INTEGER"/>
 		<result property="unionId" column="UNIONID" jdbcType="VARCHAR"/>
-		<result property="addTime" column="ADDTIME" jdbcType="DATETIME"/>
+		<result property="addTime" column="ADDTIME" jdbcType="TIMESTAMP"/>
 		<result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
-		<result property="freezeStatus" column="FREEZESTATUS" jdbcType="INT"/>
+		<result property="freezeStatus" column="FREEZESTATUS" jdbcType="INTEGER"/>
 	</resultMap>
 	
 	<!-- 获取员工信息 -->
@@ -24,20 +24,20 @@
 	<select id="queryPersonnel" resultMap="PersonnelResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
 		<![CDATA[SELECT  * FROM CRM_PERSONNEL WHERE 1=1 ]]>
 		<!-- 员工编号 -->
-		<if test="query.uid != null and query.uid != ''">
-			<![CDATA[ AND UID =#{query.uid}]]>
+		<if test="condition.uid != null and condition.uid != ''">
+			<![CDATA[  AND UID =#{condition.uid}]]>
 		</if>
 		<!-- 员工姓名 -->
-		<if test="query.name != null and query.name != ''">
-			<![CDATA[ AND NAME LIKE CONCAT('%',#{query.name},'%')]]>
+		<if test="condition.name != null and condition.name != ''">
+			<![CDATA[  AND NAME LIKE CONCAT('%',#{condition.name},'%')]]>
 		</if>
 		<!-- 所属分公司 -->
-		<if test="query.company != null and query.company != ''">
-			<![CDATA[ AND COMPANY =#{query.company}]]>
+		<if test="condition.company != null and condition.company != ''">
+			<![CDATA[  AND COMPANY =#{condition.company}]]>
 		</if>
 		<!-- 员工ID,一般权限员工将传递此参数,只搜索自己的信息 -->
-		<if test="query.id != null and query.id != ''">
-			<![CDATA[ AND ID =#{query.id}]]>
+		<if test="condition.id != null and condition.id != ''">
+			<![CDATA[  AND ID =#{condition.id}]]>
 		</if>
 	</select>
 
