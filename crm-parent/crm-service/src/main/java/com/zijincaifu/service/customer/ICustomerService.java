@@ -10,4 +10,6 @@ public interface ICustomerService
 {
     public List<CustomerEntity> queryCustomer(CustomerQuery query)
             throws ServiceException;
+    
+    public void addCustomer(CustomerEntity customer) throws ServiceException;
 }

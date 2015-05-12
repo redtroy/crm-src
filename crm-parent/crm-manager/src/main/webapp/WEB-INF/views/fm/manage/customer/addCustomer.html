@@ -1,0 +1,60 @@
+   <div class="yard-1100 ly-left">
+      <div class="rightSide">
+        <div class="heading fontYH f20">新增客户</div>
+        <div class="mainBox newMem">
+        <form action="javascript:void(0);" id="addForm">
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
+            <col width="15%" />
+            <col width="85%" />
+            <tr>
+              <th>姓名</th>
+              <td><input id="name" type="text" name="name" class="input input-name" value=""/><span class="color-red ml5">*</span></td>
+            </tr>
+			<tr>
+              <th>性别</th>
+              <td><select name="sex" id="sex" >
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                      </select>
+					  <span class="color-red ml5">*</span>
+			  </td>
+            </tr>
+            <tr>
+              <th>手机号</th>
+              <td><input id="phone" type="text" name="phone" class="input input-phone"/><span class="color-red ml5">*</span></td>
+            </tr>
+            <tr>
+              <th>身份证号</th>
+              <td><input id="cardNo" type="text" name="cardNo" class="input input-id"/></td>
+            </tr>
+            <tr>
+              <th>地区</th>
+              <td>
+              <select name="province" id="province_select" onchange="selectArea();">
+                  <option value="">请选择</option>
+                  <#list provinceList as province>
+                   <option value="${province.id}">${province.name}</option>
+                  </#list>
+               </select>&nbsp;
+			   <select id="city_select" name="city" id="select2" style="display: none;" onchange="selectCity();">
+	   				<option value="">请选择</option>
+                </select>
+                <input id="provinceName" type="hidden" name="provinceName" value=""/>
+                <input id="cityName" type="hidden" name="cityName" value=""/>
+                </td>
+              </tr>
+              <tr>
+              <th>地址</th>
+              <td><input type="text" name="address" class="input" value=""/></td>
+              </tr>  
+			   <tr>
+              <th>投资产品</th>
+              <td><input type="text" name="productId" class="input input-addname"/><span class="color-red ml5">*</span></td>
+              </tr>         
+          </table>
+          </form>
+          <div class="buttonBox mb10 tc"><a href="javascript:addCustomer();" class="button button-orange mr15">确定</a><a href="query();" class="button button-gray">返回</a></div>
+        </div>
+      </div>
+    </div>
+
