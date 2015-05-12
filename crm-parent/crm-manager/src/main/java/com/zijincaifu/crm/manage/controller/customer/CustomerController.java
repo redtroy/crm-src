@@ -1,4 +1,4 @@
-package com.zijincaifu.crm.manage.customer;
+package com.zijincaifu.crm.manage.controller.customer;
 
 import java.util.List;
 
@@ -21,6 +21,7 @@ public class CustomerController extends BaseController
     @Autowired
     private ICustomerService customerService;
     
+    @RequestMapping("/query")
     public String query(CustomerQuery query, ModelMap map) throws WebException
     {
         try
