@@ -1,7 +1,7 @@
 package com.zijincaifu.crm.entity.personnel;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import com.sxj.mybatis.orm.annotations.Column;
 import com.sxj.mybatis.orm.annotations.Entity;

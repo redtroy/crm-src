@@ -1,26 +1,57 @@
+<script type="text/javascript">
+function sub(){
+	
+	 $("#add_form").submit();
+ };
+ $("#add_form").Validform({
+		tiptype:3,
+		datatype:{
+			"phone":/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/
+		 },
+		callback:function(form){
+			addPersonnel();
+		}
+	});
+ 
+function addPersonnel(){
+	var params=$("#add_form").serialize();
+	 dialogBox(function(index){
+		 $.post("${basePath}personnel/addPersonnel.htm",params,function(data){
+			  layer.close(index);
+				if(data.isOK == true){
+					succInfo(function(){
+						query();
+					},"新增成功");
+				}else{
+					errorInfo(data.error);
+				}
+			});
+	 },"是否确认添加员工");
+	
+}
+</script>
 <div class="heading fontYH f20">新增员工 </div>
         <div class="mainBox newMem">
-        <form id="search_form" action="javascript:void(0);">
+        <form id="add_form" action="javascript:void(0);">
           <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
             <col width="15%" />
             <col width="85%" />
             <tr>
               <th>员工姓名</th>
-              <td><input type="text" name="insurantName6" class="input input-name"/></td>
+              <td><input type="text" name="name" class="input input-name" title="请填写员工姓名" datatype="s1-32"  nullmsg="请输入联系人名称"/></td>
             </tr>
 			<tr>
               <th>联系手机</th>
-              <td><input type="text" name="insurantName6" class="input input-phone"/></td>
+              <td><input type="text" name="phone" class="input input-phone" title="填写员工手机号码"  datatype="m" errormsg="请输入正确的手机号码格式" nullmsg="联系手机不能为空"/></td>
             </tr>
 			<tr>
               <th>登录密码</th>
-              <td><input type="text" name="insurantName6" class="input input-addname"/></td>
+              <td><input type="text" name="password" class="input input-addname" title="填写登录密码"  datatype="*6-32" errormsg="密码不能少于6位" nullmsg="密码不能为空"/></td>
             </tr>
 			<tr>
               <th>所属公司</th>
               <td>
-                <select name="company" id="select4">
-              <option value="">-请选择-</option> 
+               <select name="company" id="select4" >
               	<#list company as company><#if company.id==query.company>
 				<option value="${company.getId()}" selected="selected">${company.getName()}</option>
 				<#else>
@@ -40,12 +71,10 @@
             </tr>  
 			<tr>
               <th>UnionID</th>
-              <td><input type="text" name="insurantName6" class="input input-addname"/>
+              <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="s1-128"  nullmsg="UnionId不能为空"/>
               &nbsp;&nbsp;</td>
 			</tr>   
-            </tr>
           </table>
           </form>
-          <div class="buttonBox mb10 tc"><a href="crmmrg.html" class="button button-orange mr15">确定</a><a href="javascript:history.back(-1)" class="button button-gray">返回</a></div>
+          <div class="buttonBox mb10 tc"><span onclick="sub();"><a href="javascript:void(0);" class="button button-orange mr15">确定</a></span><a href="javascript:query();" class="button button-gray">返回</a></div>
         </div>
-      </div>

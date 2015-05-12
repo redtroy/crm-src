@@ -15,4 +15,6 @@ public interface IPersonnelService
     
     public List<PersonnelEntity> queryPersonnels(PersonnelQuery query)
             throws ServiceException;
+
+    public void addPersonnel(PersonnelEntity personnel);
 }

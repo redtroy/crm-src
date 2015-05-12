@@ -1,13 +1,19 @@
 package com.zijincaifu.crm.manage.controller.personnel;
 
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sxj.util.common.DateTimeUtils;
 import com.sxj.util.exception.WebException;
+import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
@@ -22,43 +28,65 @@ public class PersonnelController extends BaseController
     private IPersonnelService personneServicel;
     
     @RequestMapping("personnelList")
-    public String getPersonnelList(PersonnelQuery query, ModelMap map)  throws WebException{
+    public String getPersonnelList(PersonnelQuery query, ModelMap map)
+            throws WebException
+    {
         try
         {
-            if (query != null) {
+            if (query != null)
+            {
                 query.setPagable(true);
             }
             List<PersonnelEntity> list = personneServicel.queryPersonnels(query);
-            PersonnelCompanyEnum[] company=PersonnelCompanyEnum.values();
-//            List<FunctionEntity> functionList = functionService
-//                    .queryChildrenFunctions("0");
+            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
+            //            List<FunctionEntity> functionList = functionService
+            //                    .queryChildrenFunctions("0");
             map.put("list", list);
             map.put("company", company);
-//            map.put("functions", functionList);
+            //            map.put("functions", functionList);
             map.put("query", query);
             return "manage/personnel/personnelList";
         }
         catch (Exception e)
         {
-           throw new WebException("",e);
+            throw new WebException("", e);
         }
-     
-
+        
     }
     
-    @RequestMapping("personnelAdd")
-    public String addPersonnel(ModelMap map)  throws WebException{
+    @RequestMapping("loadAddPersonnel")
+    public String loadAddPersonnel(ModelMap map) throws WebException
+    {
         try
         {
-            PersonnelCompanyEnum[] company=PersonnelCompanyEnum.values();
+            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             map.put("company", company);
             return "manage/personnel/personnelAdd";
         }
         catch (Exception e)
         {
-           throw new WebException("",e);
+            throw new WebException("", e);
         }
-     
-
+    }
+    
+    @RequestMapping("addPersonnel")
+    public @ResponseBody Map<String, Object> addPersonnel(
+            PersonnelEntity personnel) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            personnel.setFreezeStatus(1);
+            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
+            personneServicel.addPersonnel(personnel);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
     }
 }

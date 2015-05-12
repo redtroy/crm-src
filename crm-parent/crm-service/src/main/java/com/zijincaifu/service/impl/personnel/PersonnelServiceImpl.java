@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sxj.util.exception.ServiceException;
+import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
 import com.sxj.util.persistent.ResultList;
 import com.sxj.util.persistent.ResultListImpl;
@@ -46,6 +47,22 @@ public class PersonnelServiceImpl implements IPersonnelService
         catch (Exception e)
         {
             throw new ServiceException("查询用戶信息错误", e);
+        }
+    }
+
+
+    @Override
+    @Transactional
+    public void addPersonnel(PersonnelEntity personnel) throws ServiceException
+    {
+        try
+        {
+            personnelDao.addPersonnel(personnel);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("新增用戶信息错误", e);
         }
     }
     
