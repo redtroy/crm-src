@@ -10,33 +10,76 @@
 <script src="${b.staticPath}js/datepicker.js"></script>
 <script src="${b.staticPath}js/jquery.paginate.js"></script>
 <@b.pageScript/>
+<@b.dialogBox/>
+<@b.validate/>
 <script>
 function query(page){
 	var params=$("#search_form").serialize();
-	//alert(params);
 	 if(page!=undefined){
 		   params=params+"&currentPage="+page;
 	   }
 	 $.post("${basePath}personnel/personnelList.htm",params,function(data){
-		var res=$(data).find("#res_table");
+		var res=$(data).find("#rightBar");
 		var pager=$(data).find("#pager");
-		$("#res_table").empty();
-		$("#res_table").append(res.html());
+		$("#rightBar").empty();
+		$("#rightBar").append(res.html());
 		var totalPage=pager.attr("totalPage");
 		var currentPage=pager.attr("currentPage");
 		loadPage(currentPage,totalPage,query);
 	});
-}
+};
 
-function addPersonnel(){
-	$.post("${basePath}personnel/personnelAdd.htm",null,function(data){
+function loadAddPersonnel(){
+	$.post("${basePath}personnel/loadAddPersonnel.htm",null,function(data){
 		$("#rightBar").empty();
 		$("#rightBar").append(data);
 		/* var totalPage=pager.attr("totalPage");
 		var currentPage=pager.attr("currentPage"); */
 		//loadPage();//currentPage,totalPage,query
 	}); 
-};
+}; 
+
+
+
+function check(){
+	   var name=$("#add_form").find("[name='name']").val();
+	   var phone=$("#add_form").find("[name='phone']").val();
+	   var password=$("#add_form").find("[name='password']").val();
+	   var company=$("#add_form").find("[name='company']").val();
+	   var unionId=$("#add_form").find("[name='unionId']").val();
+	   if (name==""){
+		   messageInfo("员工姓名不能为空");
+		   return true;
+	   }
+	   if (phone==""){
+		   messageInfo("联系手机不能为空");
+		   return true;
+	   }
+	   if (!phone.match(/^((13[0-9])|(17[0-9])|(147)|(15[^4,\D])|(18[0-9]))\d{8}$/)){
+		   messageInfo("手机号码格式错误！");
+		   return true;
+	   }
+	   if (password==""){
+		   messageInfo("登录密码不能为空");
+		   return true;
+	   }
+	   if (password.length<6){
+			  messageInfo("密码位数不能少于6位！");
+			   return true;
+		  }
+	   if (company==""){
+		   messageInfo("所属公司不能为空");
+		   return true;
+	   }
+	   if (unionId==""){
+		   messageInfo("unionId不能为空！");
+		   return true;
+	   }
+	   if (!telNum.match(/^\d{1,6}-\d{1,8}$/)){
+		   messageInfo("请检查固定号码格式是否正确！");
+		   return true;
+	   }
+}
 </script>
 
 </head>
@@ -50,7 +93,7 @@ function addPersonnel(){
       <div class="rightSide" id="rightBar">
         <div class="heading fontYH f20">后台管理</div>
         <div class="mainBox">
-        <form action="javascript:void(0);" id="search_form">
+        <form action="javascript:void(0);" id="search_form" class="needValid">
           <div class="searBox f12 mt10 mb10">
 		  员工ID
               <input class="input" type="text" name="uid" value="" />
@@ -71,10 +114,10 @@ function addPersonnel(){
               <option>常州公司</option> -->
               </select>
 			  <span class="btnBox">
-              <a onclick="query();"><button class="button button-search">查询</button></a>
+              <button class="button button-search" onclick="query();">查询</button>
               </span> 
 			  <span class="btnBox">
-			  <button class="button button-purple f12" onclick="addPersonnel();">新增员工</button>
+			  <button class="button button-purple f12" onclick="loadAddPersonnel();">新增员工</button>
 			  </span> 
 			   
           </div>
@@ -103,7 +146,7 @@ function addPersonnel(){
 			  <td>${model.phone}</td>
               <td>${model.company.getName()}</td>
 			  <td>${model.unionId}</td>
-              <td>${model.addTime}</td>
+              <td>${model.addTime?string("yyyy-MM-dd HH:mm:ss")}</td>
               <td class="edit">
               <#if model.freezeStatus==0>
 				<a href="#" class="unfr">解冻</a>
