@@ -65,5 +65,19 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("新增用戶信息错误", e);
         }
     }
+
+
+    @Override
+    public PersonnelEntity getPersonnel(String uid)
+    {
+        return personnelDao.getPersonnel(uid);
+    }
+
+
+    @Override
+    public void editPersonnel(PersonnelEntity personnel)
+    {
+        personnelDao.updatePersonnel(personnel);
+    }
     
 }

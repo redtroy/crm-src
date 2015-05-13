@@ -1,6 +1,5 @@
 package com.zijincaifu.crm.manage.controller.personnel;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sxj.util.common.DateTimeUtils;
+import com.sxj.util.common.NumberUtils;
+import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
@@ -25,7 +26,7 @@ import com.zijincaifu.service.personnel.IPersonnelService;
 public class PersonnelController extends BaseController
 {
     @Autowired
-    private IPersonnelService personneServicel;
+    private IPersonnelService personneService;
     
     @RequestMapping("personnelList")
     public String getPersonnelList(PersonnelQuery query, ModelMap map)
@@ -37,7 +38,7 @@ public class PersonnelController extends BaseController
             {
                 query.setPagable(true);
             }
-            List<PersonnelEntity> list = personneServicel.queryPersonnels(query);
+            List<PersonnelEntity> list = personneService.queryPersonnels(query);
             PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             //            List<FunctionEntity> functionList = functionService
             //                    .queryChildrenFunctions("0");
@@ -49,6 +50,8 @@ public class PersonnelController extends BaseController
         }
         catch (Exception e)
         {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("error", e.getMessage());
             throw new WebException("", e);
         }
         
@@ -65,6 +68,8 @@ public class PersonnelController extends BaseController
         }
         catch (Exception e)
         {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("error", e.getMessage());
             throw new WebException("", e);
         }
     }
@@ -78,7 +83,7 @@ public class PersonnelController extends BaseController
         {
             personnel.setFreezeStatus(1);
             personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
-            personneServicel.addPersonnel(personnel);
+            personneService.addPersonnel(personnel);
             map.put("isOK", true);
         }
         catch (Exception e)
@@ -88,5 +93,88 @@ public class PersonnelController extends BaseController
             map.put("error", e.getMessage());
         }
         return map;
+    }
+    
+    @RequestMapping("loadEditPersonnel")
+    public String loadEditPersonnel(String uid,ModelMap map) throws WebException
+    {
+        try
+        {
+            PersonnelEntity personnel=personneService.getPersonnel(uid);
+            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
+            map.put("company", company);
+            map.put("personnel", personnel);
+            return "manage/personnel/personnelEdit";
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("error", e.getMessage());
+            throw new WebException("", e);
+        }
+    }
+    
+    @RequestMapping("editPersonnel")
+    public @ResponseBody Map<String, Object> editPersonnel(
+            PersonnelEntity personnel) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+//            personnel.setFreezeStatus(1);
+//            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
+            personneService.editPersonnel(personnel);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
+    }
+    
+    @RequestMapping("freezePersonnel")
+    public @ResponseBody Map<String, Object> freezePersonnel(String uid,Integer freezeStatus) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            PersonnelEntity personnel=personneService.getPersonnel(uid);
+            personnel.setFreezeStatus(freezeStatus);
+            personneService.editPersonnel(personnel);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;        
+    }
+    
+    @RequestMapping("initPassword")
+    public @ResponseBody Map<String, Object> initPassword(String uid) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            PersonnelEntity personnel=personneService.getPersonnel(uid);
+            int rondom = NumberUtils.getRandomIntInMax(999999);
+            String password = StringUtils.getLengthStr(rondom + "", 6, '0');
+            personnel.setPassword(password);
+            personneService.editPersonnel(personnel);
+            map.put("isOK", true);
+            map.put("password", password);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;        
     }
 }
