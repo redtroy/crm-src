@@ -18,7 +18,8 @@
 		<result property="sex" column="SEX" jdbcType="INTEGER" />
 		<result property="province" column="PROVINCE" jdbcType="VARCHAR" />
 		<result property="city" column="CITY" jdbcType="VARCHAR" />
-		<result property="provinceName" column="PROVINCE_NAME" jdbcType="VARCHAR" />
+		<result property="provinceName" column="PROVINCE_NAME"
+			jdbcType="VARCHAR" />
 		<result property="cityName" column="CITY_NAME" jdbcType="VARCHAR" />
 		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTH_DAY" jdbcType="DATE" />
@@ -34,11 +35,36 @@
 	<!-- 查看渠道 -->
 	<select id="queryCustomerList" resultMap="CustomerResultMap"
 		parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT * FROM CRM_CUSTOMER WHERE 1=1 ]]>
+		<![CDATA[SELECT c.* FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID WHERE 1=1 ]]>
 		<!-- 渠道编号 -->
-		<if test="query.channelId != null and query.channelId != ''">
-			<![CDATA[ AND CHANNEL_ID =#{condition.channelId}]]>
+		<if test="condition.customerId != null and condition.customerId != ''">
+			<![CDATA[ AND c.CUSTOMER_ID =#{condition.customerId}]]>
 		</if>
-		<![CDATA[ ORDER BY CUSTOMER_ID DESC]]>
+		<if test="condition.name != null and condition.name != ''">
+			<![CDATA[ AND c.NAME =#{condition.name }]]>
+		</if>
+		<if test="condition.phone!= null and condition.phone!= ''">
+			<![CDATA[ AND c.PHONE =#{condition.phone}]]>
+		</if>
+		<if test="condition.productId!= null and condition.productId != ''">
+			<![CDATA[ AND p.PRODUCTID =#{condition.productId}]]>
+		</if>
+		<if test="condition.channelId != null and condition.channelId != ''">
+			<![CDATA[ AND c.CHANNEL_ID =#{condition.channelId}]]>
+		</if>
+		<if test="condition.level != null">
+			<![CDATA[ AND c.LEVEL =#{condition.level}]]>
+		</if>
+		<if test="condition.unionId!= null and condition.unionId != ''">
+			<![CDATA[ AND c.UNION_ID =#{condition.unionId}]]>
+		</if>
+		<if test="condition.employeId != null and condition.employeId != ''">
+			<![CDATA[ AND c.EMPLOYE_ID =#{condition.employeId }]]>
+		</if>
+		<if
+			test="condition.startDate != null and condition.endDate != null and condition.startDate != '' and condition.endDate != ''">
+			<![CDATA[AND c.CREATE_TIME >=#{condition.startDate} AND c.CREATE_TIME <= #{condition.endDate}]]>
+		</if>
+		<![CDATA[ ORDER BY c.CUSTOMER_ID DESC]]>
 	</select>
 </mapper>

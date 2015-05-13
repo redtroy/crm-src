@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sxj.util.exception.ServiceException;
+import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.dao.customer.ICustomerDao;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
@@ -29,13 +30,34 @@ public class CustomerServiceImpl implements ICustomerService
         {
             QueryCondition<CustomerEntity> condition = new QueryCondition<CustomerEntity>();
             condition.setPage(query);
+            condition.addAllCondition(query);
             List<CustomerEntity> list = customerDao.queryCustomerList(condition);
             query.setPage(condition);
             return list;
         }
         catch (Exception e)
         {
-            throw new ServiceException();
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("查询客户列表错误", e);
         }
+    }
+    
+    @Override
+    @Transactional
+    public void addCustomer(CustomerEntity customer) throws ServiceException
+    {
+        try
+        {
+            if (customer != null)
+            {
+                customerDao.addCustomer(customer);
+            }
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("新增客户信息错误", e);
+        }
+        
     }
 }
