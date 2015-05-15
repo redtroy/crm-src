@@ -6,6 +6,7 @@ import com.sxj.mybatis.orm.annotations.Insert;
 import com.sxj.mybatis.orm.annotations.Update;
 import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
+import com.zijincaifu.crm.model.customer.InvestItemModel;
 
 public interface IInvestItemDao
 {
@@ -17,7 +18,7 @@ public interface IInvestItemDao
     
     public void deleteItems(String customerId);
     
-    public List<InvestItemEntity> queryItemList(
+    public List<InvestItemModel> queryItemList(
             QueryCondition<InvestItemEntity> query);
     
 }

@@ -41,6 +41,10 @@ public class CustomerController extends BaseController
         try
         {
             query.setPagable(true);
+            List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
+            List<AreaEntity> cityList = areaService.getChildrenAreas("32");
+            map.put("provinceList", provinceList);
+            map.put("cityList", cityList);
             List<CustomerEntity> list = customerService.queryCustomer(query);
             CustomerLevelEnum[] levels = CustomerLevelEnum.values();
             map.put("list", list);
@@ -100,21 +104,50 @@ public class CustomerController extends BaseController
             PersonnelEntity login = getLoginInfo(session);
             if (login == null)
             {
-                throw new WebException("登陆超时，请重新登陆");
+                //throw new WebException("登陆超时，请重新登陆");
             }
             if (customer == null)
             {
                 throw new WebException("客户信息不能为空");
             }
-            customer.setEmployeId(login.getUid());
+            //customer.setEmployeId(login.getUid());
             customer.setChannelId("AAA001");
             customer.setCreateTime(new Date());
+            customer.setLevel(CustomerLevelEnum.NEW);
             customerService.addCustomer(customer);
             map.put("isOK", true);
         }
         catch (Exception e)
         {
             SxjLogger.error("新增客户信息错误", e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
+    }
+    
+    @RequestMapping("/modify")
+    public @ResponseBody Map<String, Object> modify(CustomerEntity customer,
+            HttpSession session) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            PersonnelEntity login = getLoginInfo(session);
+            if (login == null)
+            {
+                //throw new WebException("登陆超时，请重新登陆");
+            }
+            if (customer == null)
+            {
+                throw new WebException("客户信息不能为空");
+            }
+            customerService.modifyCustomer(customer);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error("修改客户信息错误", e, this.getClass());
             map.put("isOK", false);
             map.put("error", e.getMessage());
         }
