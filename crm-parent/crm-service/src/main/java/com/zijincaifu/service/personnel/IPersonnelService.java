@@ -17,4 +17,8 @@ public interface IPersonnelService
             throws ServiceException;
 
     public void addPersonnel(PersonnelEntity personnel);
+
+    public PersonnelEntity getPersonnel(String uid);
+
+    public void editPersonnel(PersonnelEntity personnel);
 }

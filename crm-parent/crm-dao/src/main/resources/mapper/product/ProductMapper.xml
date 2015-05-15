@@ -6,7 +6,7 @@
 		<id property="id" column="ID" jdbcType="VARCHAR"/>
 		<result property="productId" column="PRODUCTID" jdbcType="VARCHAR"/>
 		<result property="name" column="NAME" jdbcType="VARCHAR"/>
-		<result property="describe" column="DESCRIBE" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
 		<result property="productUrl" column="PRODUCTURL" jdbcType="VARCHAR"/>
 		<result property="addTime" column="ADDTIME" jdbcType="TIMESTAMP"/>
 	</resultMap>
@@ -20,20 +20,20 @@
 	<select id="queryProduct" resultMap="ProductResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
 		<![CDATA[SELECT  * FROM CRM_PRODUCT WHERE 1=1 ]]>
 		<!-- 产品编号 -->
-		<if test="query.productId != null and query.productId != ''">
-			<![CDATA[ AND PRODUCTID =#{query.productId}]]>
+		<if test="condition.productId != null and condition.productId != ''">
+			<![CDATA[ AND PRODUCTID =#{condition.productId}]]>
 		</if>
 		<!-- 产品名称 -->
-		<if test="query.name != null and query.name != ''">
-			<![CDATA[ AND NAME LIKE CONCAT('%',#{query.name},'%')]]>
+		<if test="condition.name != null and condition.name != ''">
+			<![CDATA[ AND NAME LIKE CONCAT('%',#{condition.name},'%')]]>
 		</if>
 		<!--新增产品时间 -->
-		<if test="query.startTime != null and query.startTime != ''">
-			<![CDATA[ AND ADDTIME >=#{query.startTime}]]>
+		<if test="condition.startTime != null and condition.startTime != ''">
+			<![CDATA[ AND ADDTIME >=#{condition.startTime}]]>
 		</if>
 		<!--新增产品时间 -->
-		<if test="query.endTime != null and query.endTime != ''">
-			<![CDATA[ AND ADDTIME <=#{query.endTime}]]>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			<![CDATA[ AND ADDTIME <=#{condition.endTime}]]>
 		</if>
 		<![CDATA[ ORDER BY PRODUCTID DESC]]>
 	</select>
