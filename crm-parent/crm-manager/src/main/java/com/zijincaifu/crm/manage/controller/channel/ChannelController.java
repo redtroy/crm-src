@@ -10,7 +10,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sxj.util.common.DateTimeUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.channel.ChannelEntity;
@@ -84,6 +83,61 @@ public class ChannelController extends BaseController
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
             map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
+    }
+    
+    @RequestMapping("loadEditChannel")
+    public String loadEditChannel(String channelId,ModelMap map) throws WebException
+    {
+        try
+        {
+            ChannelModel channel=channelService.getChannel(channelId);
+            map.put("channel", channel);
+            return "manage/channel/channelEdit";
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("error", e.getMessage());
+            throw new WebException("", e);
+        }
+    }
+    
+    @RequestMapping("editChannel")
+    public @ResponseBody Map<String, Object> editChannel(
+            ChannelEntity channel) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            channelService.editChannel(channel);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
+    }
+    
+    @RequestMapping("deleteChannel")
+    public @ResponseBody Map<String, Object> deleteChannel(String channelId) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            ChannelModel cm=channelService.getChannel(channelId);
+            channelService.deleteProduct(cm.getId());
+            map.put("isOK", "delete");
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", "error");
             map.put("error", e.getMessage());
         }
         return map;

@@ -15,7 +15,7 @@
 	
 	<!-- 获取渠道信息 -->
 	<select id="getChannel" resultMap="ChannelResultMap" parameterType="String">
-		<![CDATA[ SELECT * FROM CRM_CHANNEL WHERE CHANNELID=#{channelId}]]>
+		<![CDATA[ SELECT C.*,P.NAME P_NAME FROM CRM_CHANNEL C LEFT JOIN CRM_PERSONNEL P ON(C.UID=P.UID) WHERE C.CHANNELID=#{channelId}]]>
 	</select>
 	
 	<!-- 查看渠道 -->

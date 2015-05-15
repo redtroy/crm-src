@@ -20,7 +20,6 @@ function sub(){
  
 function addChannel(){
 	var params=$("#add_form").serialize();
-	alert(params);
 	 dialogBox(function(index){
 		 $.post("${basePath}channel/addChannel.htm",params,function(data){
 			  layer.close(index);

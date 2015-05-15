@@ -57,7 +57,8 @@ public class ChannelServiceImpl implements IChannelService
         try
         {
             Long lastkey = keyService.getKey(1);
-            String rfidNo = CustomDecimal.getDecimalString(3,new BigDecimal(lastkey));
+            String rfidNo = CustomDecimal.getDecimalString(3,1000,new BigDecimal(lastkey));
+            channel.setChannelId(rfidNo);
             channelDao.addChannel(channel);
         }
         catch (Exception e)
@@ -65,6 +66,24 @@ public class ChannelServiceImpl implements IChannelService
             SxjLogger.error(e.getMessage(), e, this.getClass());
             throw new ServiceException("新增渠道信息错误", e);
         }
+    }
+
+    @Override
+    public ChannelModel getChannel(String channelId)
+    {
+        return channelDao.getChannel(channelId);
+    }
+
+    @Override
+    public void editChannel(ChannelEntity channel)
+    {
+        channelDao.updateChannel(channel);
+    }
+
+    @Override
+    public void deleteProduct(String id)
+    {
+        channelDao.deleteChannel(id);
     }
     
 }
