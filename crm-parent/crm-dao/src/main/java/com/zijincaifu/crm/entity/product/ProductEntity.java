@@ -1,13 +1,14 @@
 package com.zijincaifu.crm.entity.product;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import com.sxj.mybatis.orm.annotations.Column;
 import com.sxj.mybatis.orm.annotations.Entity;
 import com.sxj.mybatis.orm.annotations.GeneratedValue;
 import com.sxj.mybatis.orm.annotations.GenerationType;
 import com.sxj.mybatis.orm.annotations.Id;
+import com.sxj.mybatis.orm.annotations.Sn;
 import com.sxj.mybatis.orm.annotations.Table;
 import com.sxj.mybatis.pagination.Pagable;
 import com.zijincaifu.crm.dao.product.IProductDao;
@@ -38,6 +39,7 @@ public class ProductEntity extends Pagable implements Serializable {
 	 * 产品编号
 	 */
 	@Column(name="PRODUCTID")
+	@Sn(pattern = "00000", step = 1, table = "T_SN", stub = "F_SN_NAME", sn = "F_SN_NUMBER", stubValue = "P")
 	private String productId;
 	
 	/**
@@ -49,8 +51,8 @@ public class ProductEntity extends Pagable implements Serializable {
 	/**
 	 * 产品描述
 	 */
-	@Column(name="DESCRIBE")
-	private String describe;
+	@Column(name="REMARK")
+	private String remark;
 	
 	/**
 	 * 产品链接
@@ -89,12 +91,12 @@ public class ProductEntity extends Pagable implements Serializable {
 		this.name = name;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setRemark(String describe) {
+		this.remark = describe;
 	}
 
 	public String getProductUrl() {

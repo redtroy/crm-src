@@ -15,5 +15,13 @@ public interface IProductService
      */
     
     public List<ProductEntity> queryProducts(ProductQuery query);
+
+    public void addProduct(ProductEntity product);
+
+    public ProductEntity getProduct(String productId);
+
+    public void editProduct(ProductEntity product);
+
+    public void deleteProduct(ProductEntity product);
     
 }

@@ -1,0 +1,54 @@
+<script type="text/javascript">
+function sub(){
+	
+	 $("#add_form").submit();
+ };
+ $("#add_form").Validform({
+		tiptype:3,
+		datatype:{
+			"phone":/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/
+		 },
+		callback:function(form){
+			addProduct();
+		}
+	});
+ 
+function addProduct(){
+	var params=$("#add_form").serialize();
+	 dialogBox(function(index){
+		 $.post("${basePath}product/addProduct.htm",params,function(data){
+			  layer.close(index);
+				if(data.isOK == true){
+					succInfo(function(){
+						query();
+					},"新增成功");
+				}else{
+					errorInfo(data.error);
+				}
+			});
+	 },"是否确认添加产品");
+	
+}
+</script>
+<div class="heading fontYH f20">新增金融产品 </div>
+        <div class="mainBox newMem">
+        <form id="add_form" action="javascript:void(0);">
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
+            <col width="15%" />
+            <col width="85%" />
+            <tr>
+              <th>产品名称</th>
+              <td><input type="text" name="name" class="input input-addname" title="请填写产品名称" datatype="s1-64"  nullmsg="请输入产品名称"/></td>
+            </tr>  
+			<tr>
+              <th>产品描述</th>
+              <td><textarea cols="2" name="remark" style="width:800px" title="请填写产品描述" datatype="*1-512"  nullmsg="请输入产品描述"></textarea></td>
+            </tr>
+			<tr>
+              <th>产品链接</th>
+              <td><input type="text" name="productUrl" class="input" title="请填写产品链接" datatype="*1-128"  nullmsg="请输入产品链接"/></td>
+            </tr>   
+          </table>
+          </form>
+          <div class="buttonBox mb10 tc"><span onclick="sub();"><a href="javascript:void(0);" class="button button-orange mr15">确定</a></span><a href="javascript:history.back(-1)" class="button button-gray">返回</a></div>
+        </div>

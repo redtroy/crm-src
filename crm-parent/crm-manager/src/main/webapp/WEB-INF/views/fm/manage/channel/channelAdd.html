@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="${b.staticPath}js/datepicker.css">
+<script src="${b.staticPath}js/datepicker.js"></script>
+<script src="${b.staticPath}js/datepicker.zh-CN.js"></script>
+<script type="text/javascript">
+$(function(){
+    $("#time1").datepicker();
+});
+function sub(){
+	 $("#add_form").submit();
+ };
+ $("#add_form").Validform({
+		tiptype:3,
+		datatype:{
+			"phone":/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/
+		 },
+		callback:function(form){
+			addChannel();
+		}
+	});
+ 
+function addChannel(){
+	var params=$("#add_form").serialize();
+	alert(params);
+	 dialogBox(function(index){
+		 $.post("${basePath}channel/addChannel.htm",params,function(data){
+			  layer.close(index);
+				if(data.isOK == true){
+					succInfo(function(){
+						query();
+					},"新增成功");
+				}else{
+					errorInfo(data.error);
+				}
+			});
+	 },"是否确认添加渠道");
+	
+}
+</script>
+
+<div class="heading fontYH f20">新增推广渠道 </div>
+        <div class="mainBox newMem">
+        <form id="add_form" action="javascript:void(0);">
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
+            <col width="15%" />
+            <col width="85%" />
+            <input type="hidden" name="uid"  value="E00004"/>
+            <tr>
+              <th>渠道名称</th>
+              <td><input type="text" name="name" class="input input-addname" title="请填写渠道名称" datatype="s1-64"  nullmsg="请输入渠道名称"/></td>
+            </tr>  
+			<tr>
+              <th>渠道描述</th>
+              <td><textarea cols="2" name="remark" style="width:800px" title="请填写渠道描述" datatype="*1-512"  nullmsg="请输入渠道描述"></textarea></td>
+            </tr> 
+			<tr>
+              <th>推广起始时间</th>
+              <td><input type="text" class="input input-time cal form-control" name="startTime" value="" datepicker style="width:120px" id="time1" readonly="true"  title="请选择推广时间" datatype="*1-32"  nullmsg="请选择推广时间"/></td>
+            </tr>   
+          </table>
+          </form>
+          <div class="buttonBox mb10 tc"><span onclick="sub();"><a href="javascript:void(0);" class="button button-orange mr15">确定</a></span><a href="javascript:history.back(-1)" class="button button-gray">返回</a></div>
+ </div>

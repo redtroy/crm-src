@@ -3,11 +3,11 @@ package com.zijincaifu.crm.dao.channel;
 import java.util.List;
 
 import com.sxj.mybatis.orm.annotations.Delete;
-import com.sxj.mybatis.orm.annotations.Get;
 import com.sxj.mybatis.orm.annotations.Insert;
 import com.sxj.mybatis.orm.annotations.Update;
 import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.entity.channel.ChannelEntity;
+import com.zijincaifu.crm.model.channel.ChannelModel;
 
 public interface IChannelDao {
 	
@@ -42,6 +42,6 @@ public interface IChannelDao {
 	 * 查看渠道
 	 * @param query
 	 */
-	public List<ChannelEntity> queryChannel(QueryCondition<ChannelEntity> query);
+	public List<ChannelModel> queryChannel(QueryCondition<ChannelEntity> query);
 
 }

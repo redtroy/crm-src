@@ -1,7 +1,7 @@
 package com.zijincaifu.crm.entity.channel;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import com.sxj.mybatis.orm.annotations.Column;
 import com.sxj.mybatis.orm.annotations.Entity;
@@ -48,8 +48,8 @@ public class ChannelEntity extends Pagable implements Serializable {
 	/**
 	 * 渠道描述
 	 */
-	@Column(name="DESCRIBE")
-	private String describe;
+	@Column(name="REMARK")
+	private String remark;
 	
 	/**
 	 * 推广起始时间
@@ -88,12 +88,12 @@ public class ChannelEntity extends Pagable implements Serializable {
 		this.name = name;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public Date getStartTime() {
@@ -104,11 +104,11 @@ public class ChannelEntity extends Pagable implements Serializable {
 		this.startTime = startTime;
 	}
 
-	public String getUID() {
+	public String getUid() {
 		return uid;
 	}
 
-	public void setUID(String uid) {
+	public void setUid(String uid) {
 		this.uid = uid;
 	}
 	

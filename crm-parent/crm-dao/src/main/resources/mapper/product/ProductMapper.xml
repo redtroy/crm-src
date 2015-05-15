@@ -6,7 +6,7 @@
 		<id property="id" column="ID" jdbcType="VARCHAR"/>
 		<result property="productId" column="PRODUCTID" jdbcType="VARCHAR"/>
 		<result property="name" column="NAME" jdbcType="VARCHAR"/>
-		<result property="describe" column="DESCRIBE" jdbcType="VARCHAR"/>
+		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
 		<result property="productUrl" column="PRODUCTURL" jdbcType="VARCHAR"/>
 		<result property="addTime" column="ADDTIME" jdbcType="TIMESTAMP"/>
 	</resultMap>
