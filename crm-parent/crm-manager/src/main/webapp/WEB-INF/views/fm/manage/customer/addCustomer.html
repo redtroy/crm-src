@@ -1,3 +1,53 @@
+ <script>
+ $(function(){
+	 $("#addForm").Validform({
+			tiptype:3,
+			datatype:{
+				"phone":/^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}?$/
+			 },
+			callback:function(form){
+				addCustomer();
+			}
+		});
+ });
+ 
+ function sub(){
+	 $("#addForm").submit();
+  }
+ function addCustomer(){
+		var params=$("#addForm").serialize();
+		 dialogBox(function(index){
+			 $.post("${basePath}customer/add.htm",params,function(data){
+				    layer.close(index);
+					if(data.isOK==true){
+						succInfo(function(){
+							 query();
+						 },"添加成功");
+					}
+					else{
+						errorInfo(data.error);
+					}
+			});
+		   },"是否确认添加客户");
+	}
+  
+  function selectArea(){
+		var province=$("#province_select").val();
+		 $("#provinceName").val($("#province_select option:selected").text());
+		 $.get("${basePath}customer/queryArea.htm?parentId="+province,function(data){
+			 if(data.isOK==true){
+				$.each(data.areaList, function(i, n){
+					$("#city_select").append("<option value='"+n.id+"'>"+n.name+"</option>");
+				});
+				$("#city_select").show();
+			 }
+			});
+	}
+	function selectCity(){
+		var cityname=$("#city_select").text();
+		 $("#cityName").val($("#city_select option:selected").text());
+	}
+ </script>
    <div class="yard-1100 ly-left">
       <div class="rightSide">
         <div class="heading fontYH f20">新增客户</div>
@@ -8,7 +58,7 @@
             <col width="85%" />
             <tr>
               <th>姓名</th>
-              <td><input id="name" type="text" name="name" class="input input-name" value=""/><span class="color-red ml5">*</span></td>
+              <td><input id="name" type="text" name="name" class="input input-name" value="" datatype="s2-20" errormsg="客户姓名至少2个字符,最多20个字符！" nullmsg="请输入客户姓名" /><span class="color-red ml5">*</span></td>
             </tr>
 			<tr>
               <th>性别</th>
@@ -21,11 +71,11 @@
             </tr>
             <tr>
               <th>手机号</th>
-              <td><input id="phone" type="text" name="phone" class="input input-phone"/><span class="color-red ml5">*</span></td>
+              <td><input id="phone" type="text" name="phone" class="input input-phone" datatype="phone" errormsg="手机号码格式不正确" nullmsg="请输入手机号码" /><span class="color-red ml5">*</span></td>
             </tr>
             <tr>
               <th>身份证号</th>
-              <td><input id="cardNo" type="text" name="cardNo" class="input input-id"/></td>
+              <td><input id="cardNo" type="text" name="cardNo" class="input input-id" datatype="idcard" errormsg="身份证号码格式不正确" ignore="ignore"/></td>
             </tr>
             <tr>
               <th>地区</th>
@@ -53,7 +103,7 @@
               </tr>         
           </table>
           </form>
-          <div class="buttonBox mb10 tc"><a href="javascript:addCustomer();" class="button button-orange mr15">确定</a><a href="query();" class="button button-gray">返回</a></div>
+          <div class="buttonBox mb10 tc"><a href="javascript:sub();" class="button button-orange mr15">确定</a><a href="javascript:query();" class="button button-gray">返回</a></div>
         </div>
       </div>
     </div>

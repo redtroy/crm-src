@@ -1,0 +1,183 @@
+              <td colspan="11"><div class="tabTit fontYH f14">产品投资明细</div>
+                <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
+                  <colgroup><col width="20%">
+                  <col width="10%">
+                  <col width="10%">
+                  <col width="15%">
+                  <col width="15%">
+                  <col width="10%">
+                  <col width="10%">
+                  <col width="10%">
+                  </colgroup><tbody><tr>
+                    <th>产品名称</th>
+                    <th>推荐明细</th>
+                    <th>推广来源</th>
+                    <th>投资状态</th>
+                    <th>投资金额</th>
+                    <th>报名时间</th>
+                    <th>投资时间</th>
+                    <th>操作</th>
+                  </tr>
+                  <#assign itemIndex=0/>
+                   <tr id="addItem" style="display:none;" class="addItem_class">
+                   <input type="hidden" name="customerId" value="${customerId}"/>
+                   <input type="hidden" name="channelId" value="${channelId}"/>
+                    <td><input type="text" class="input" name="productId" value="" datatype="s5-6" errormsg="产品非法" nullmsg="请选择产品" ></td>
+                    <td><a href="#" class="reminput">查看</a></td>
+                    <td>${channelId}</td>
+                    <td><select name="state" id="select5">
+                         <#list states as state>
+                     		<option value="${state.getId()}">${state.getName()}</option>
+                    </#list>
+                      </select></td>
+                    <td><input type="text" class="input" name="amount" value="" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额"></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td><a href="javascript:addItem();" class="button button-purple">确定</a></td>
+                  </tr>
+                  <#list list as model>
+                  <tr id="info_${model.id}" style="display:;">
+                    <td>${model.name}</td>
+                    <td><a href="#" class="reminput">查看</a></td>
+                    <td>${model.channelId}</td>
+                    <td>${model.state.getName()}</td>
+                    <td>${model.amount?string(',###.00')}</td>
+                    <td>
+                    	<#if model.registTime??>
+                     	${model.registTime?string("yyyy-MM-dd")}
+                    	<#else>
+                    	-
+                    	</#if>
+                    </td>
+                    <td>
+                    	<#if model.investTime??>
+                     	${model.investTime?string("yyyy-MM-dd")}
+                    	<#else>
+                    	-
+                    	</#if>
+                    </td>
+                     <td><a href="javascript:toModifyItem('${model.id}');" class="button button-yellow">更新</a></td>
+                  </tr>
+                  <tr id="modify_${model.id}" style="display:none;" class="modifyItem_class">
+                    <input type="hidden" name="id" value="${model.id}"/>
+                    <td><input type="text"  class="input" name="productId" value="${model.productId}" datatype="s5-6" errormsg="产品非法" nullmsg="请选择产品" ></td>
+                    <td><a href="#">查看</a></td>
+                    <td>${model.channelId}</td>
+                    <td>
+                    <select name="state" id="select5">
+                    <#list states as state>
+                    <#if state.getId()==model.state.getId()>
+                        <option value="${state.getId()}" selected="selected">${state.getName()}</option>
+                     <#else>
+                     	<option value="${state.getId()}">${state.getName()}</option>
+                     </#if>
+                    </#list>
+                      </select>
+                      </td>
+                    <td>
+                    <#if model.amount??>
+                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额" >
+                    	<#else>
+                    	<input type="text" class="input" name="amount" value="">
+                    </#if>
+                    </td>
+                    <td>
+                    <#if model.registTime??>
+                     	${model.registTime?string("yyyy-MM-dd")}
+                    	<#else>
+                    	-
+                    	</#if>
+                    </td>
+                    <td>
+                    	<#if model.investTime??>
+                     	${model.investTime?string("yyyy-MM-dd")}
+                    	<#else>
+                    	-
+                    	</#if>
+                    </td>
+                    <td><a href="javascript:modifyItem('${model.id}',${itemIndex})" class="button button-orange">确定</a></td>
+                  </tr>
+                  <#assign itemIndex=itemIndex+1/>
+                  </#list>
+                </tbody></table>
+                <div class="buttonBox mt15 mb10 tc"><a href="javascript:toAddItem();" class="button button-purple mr15">新增</a><a href="#" class="button button-gray btn-hide">收起</a> </div>
+                </td>
+ <script>
+var demo;
+var addDdemo;
+function toModifyItem(id){
+	$("#info_"+id).hide();
+	$("#modify_"+id).show();
+}
+
+function toAddItem(){
+	$("#addItem").show();
+}
+
+function addItem(){
+	 var thisForm=addDdemo;
+	 var ad=thisForm.check();
+	 if(ad){
+		 dialogBox(function(index){
+			 var params=$("#addItem").find("input,select").serialize();
+			 $.post("${basePath}customer/invest/add.htm",params,function(data){
+				    layer.close(index);
+					if(data.isOK==true){
+						succInfo(function(){
+							$("#addItem").hide();
+							$("#addItem").find("input,select").val("");
+						 },"添加成功");
+					}
+					else{
+						errorInfo(data.error);
+					}
+			});
+			 $.Hidemsg();
+		   },"是否确认添加投资明细");
+	 }
+}
+function modifyItem(id,formIndex){
+	 var thisForm=demo.eq(formIndex);
+	 var ad=thisForm.check();
+	 if(ad){
+		 dialogBox(function(index){
+			 var params=$("#modify_"+id).find("input,select").serialize();
+			 $.post("${basePath}customer/invest/modify.htm",params,function(data){
+				    layer.close(index);
+					if(data.isOK==true){
+						succInfo(function(){
+							$("#info_"+id).show();
+							$("#modify_"+id).hide();
+						 },"修改成功");
+					}
+					else{
+						errorInfo(data.error);
+					}
+			});
+			 $.Hidemsg();
+		   },"是否确认修改投资明细");
+	 }
+}
+
+$(function(){
+	addDdemo=$(".addItem_class").Validform({
+		   ajaxPost:true,
+			tiptype:3,
+			datatype:{
+				"amount":/^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/
+			 },
+			callback:function(data){
+			}
+		});
+	 demo=$(".modifyItem_class").Validform({
+		   ajaxPost:true,
+			tiptype:3,
+			datatype:{
+				"amount":/^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/
+			 },
+			callback:function(data){
+				
+			}
+		});
+});
+</script>     

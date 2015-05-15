@@ -22,6 +22,10 @@
 			handler="com.zijincaifu.crm.typehandler.CustomerLevelEnumTypeHandler"
 			javaType="com.zijincaifu.crm.enu.customer.CustomerLevelEnum" />
 
+		<typeHandler
+			handler="com.zijincaifu.crm.typehandler.InvestItemStateEnumTypeHandler"
+			javaType="com.zijincaifu.crm.enu.customer.InvestItemStateEnum" />
+
 	</typeHandlers>
 	<plugins>
 		<plugin interceptor="com.sxj.mybatis.pagination.interceptor.PaginationInterceptor" />

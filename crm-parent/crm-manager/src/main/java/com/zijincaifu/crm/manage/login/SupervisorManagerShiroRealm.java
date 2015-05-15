@@ -35,7 +35,7 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
     //	@Autowired
     //	private ISystemAccountService accountService;
     //
-    //	@Autowired
+    //	@Autowired 
     //	private IRoleService roleService;
     
     public static final String HASH_ALGORITHM = "MD5";

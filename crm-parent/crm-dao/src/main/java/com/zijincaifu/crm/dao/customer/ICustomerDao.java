@@ -19,7 +19,7 @@ public interface ICustomerDao
     @Delete
     public void deleteCustomer(String id);
     
-    public void getCustomer(String customerId);
+    public CustomerEntity getCustomer(String customerId);
     
     public List<CustomerEntity> queryCustomerList(
             QueryCondition<CustomerEntity> query);

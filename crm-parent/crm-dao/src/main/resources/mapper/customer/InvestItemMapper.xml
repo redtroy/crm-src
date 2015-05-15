@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zijincaifu.crm.dao.customer.IInvestItemDao">
+	<resultMap type="com.zijincaifu.crm.model.customer.InvestItemModel"
+		id="InvestItemResultMap">
+		<id property="id" column="ID" jdbcType="VARCHAR" />
+		<result property="customerId" column="CUSTOMER_ID" jdbcType="VARCHAR" />
+		<result property="channelId" column="CHANNEL_ID" jdbcType="VARCHAR" />
+		<result property="state" column="STATE" jdbcType="INTEGER" />
+		<result property="productId" column="PRODUCT_ID" jdbcType="VARCHAR" />
+		<result property="amount" column="AMOUNT" jdbcType="DOUBLE" />
+		<result property="registTime" column="REGIST_TIME" jdbcType="TIMESTAMP" />
+		<result property="investTime" column="INVEST_TIME" jdbcType="TIMESTAMP" />
+		<result property="name" column="PRODUCT_NAME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<delete id="deleteItems" parameterType="String">
+	
+	</delete>
+
+	<!-- 查看 -->
+	<select id="queryItemList" resultMap="InvestItemResultMap"
+		parameterType="com.sxj.util.persistent.QueryCondition">
+		<![CDATA[SELECT i.*,p.`NAME` as PRODUCT_NAME FROM CRM_INVEST_ITEM i INNER JOIN  CRM_PRODUCT p on i.PRODUCT_ID=p.PRODUCTID WHERE 1=1 ]]>
+		<!-- 客户 -->
+		<if test="condition.customerId != null and condition.customerId != ''">
+			<![CDATA[ AND i.CUSTOMER_ID =#{condition.customerId}]]>
+		</if>
+	</select>
+</mapper>

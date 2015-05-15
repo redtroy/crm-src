@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import com.sxj.util.exception.SystemException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
 import com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum;
 
 public class BaseController
@@ -34,12 +35,12 @@ public class BaseController
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(
                 dateFormat, false));
-                binder.registerCustomEditor(PersonnelCompanyEnum.class,
-                        new EnumPropertyEditorSupport<PersonnelCompanyEnum>(
-                                PersonnelCompanyEnum.class));
-        //        binder.registerCustomEditor(RecordTypeEnum.class,
-        //                new EnumPropertyEditorSupport<RecordTypeEnum>(
-        //                        RecordTypeEnum.class));
+        binder.registerCustomEditor(PersonnelCompanyEnum.class,
+                new EnumPropertyEditorSupport<PersonnelCompanyEnum>(
+                        PersonnelCompanyEnum.class));
+        binder.registerCustomEditor(InvestItemStateEnum.class,
+                new EnumPropertyEditorSupport<InvestItemStateEnum>(
+                        InvestItemStateEnum.class));
         //        binder.registerCustomEditor(ContractTypeEnum.class,
         //                new EnumPropertyEditorSupport<ContractTypeEnum>(
         //                        ContractTypeEnum.class));
