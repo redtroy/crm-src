@@ -2,6 +2,7 @@ package com.zijincaifu.crm.dao.customer;
 
 import java.util.List;
 
+import com.sxj.mybatis.orm.annotations.Get;
 import com.sxj.mybatis.orm.annotations.Insert;
 import com.sxj.mybatis.orm.annotations.Update;
 import com.sxj.util.persistent.QueryCondition;
@@ -17,6 +18,9 @@ public interface IInvestItemDao
     public void updateItem(InvestItemEntity item);
     
     public void deleteItems(String customerId);
+    
+    @Get
+    public InvestItemEntity getItem(String id);
     
     public List<InvestItemModel> queryItemList(
             QueryCondition<InvestItemEntity> query);

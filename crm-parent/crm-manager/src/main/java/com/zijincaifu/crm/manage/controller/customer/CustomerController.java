@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
@@ -94,9 +97,10 @@ public class CustomerController extends BaseController
         return map;
     }
     
-    @RequestMapping("/add")
-    public @ResponseBody Map<String, Object> add(CustomerEntity customer,
-            HttpSession session) throws WebException
+    @RequestMapping(method = RequestMethod.POST, value = "/add")
+    public @ResponseBody Map<String, Object> add(
+            @RequestParam(value = "productId") String productId,
+            CustomerEntity customer, HttpSession session) throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
@@ -110,12 +114,18 @@ public class CustomerController extends BaseController
             {
                 throw new WebException("客户信息不能为空");
             }
+            if (StringUtils.isEmpty(productId))
+            {
+                throw new WebException("产品不能为空");
+            }
+            //TODO 设置员工
             //customer.setEmployeId(login.getUid());
             customer.setChannelId("AAA001");
             customer.setCreateTime(new Date());
             customer.setLevel(CustomerLevelEnum.NEW);
-            customerService.addCustomer(customer);
+            boolean isAdd = customerService.addCustomer(customer, productId);
             map.put("isOK", true);
+            map.put("isAdd", isAdd);
         }
         catch (Exception e)
         {
@@ -126,7 +136,7 @@ public class CustomerController extends BaseController
         return map;
     }
     
-    @RequestMapping("/modify")
+    @RequestMapping(method = RequestMethod.POST, value = "/modify")
     public @ResponseBody Map<String, Object> modify(CustomerEntity customer,
             HttpSession session) throws WebException
     {

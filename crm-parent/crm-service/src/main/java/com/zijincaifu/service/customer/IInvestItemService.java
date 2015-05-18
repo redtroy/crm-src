@@ -16,4 +16,6 @@ public interface IInvestItemService
     
     public void add(InvestItemEntity item) throws ServiceException;
     
+    public InvestItemModel getItemModel(String id) throws ServiceException;
+    
 }

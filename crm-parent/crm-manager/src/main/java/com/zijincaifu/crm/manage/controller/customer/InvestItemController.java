@@ -100,6 +100,7 @@ public class InvestItemController extends BaseController
             }
             itemService.add(item);
             map.put("isOK", true);
+            map.put("id", item.getId());
         }
         catch (Exception e)
         {
@@ -108,5 +109,25 @@ public class InvestItemController extends BaseController
             map.put("error", e.getMessage());
         }
         return map;
+    }
+    
+    @RequestMapping("/getItem")
+    public String getItemModel(String id, String itemIndex, ModelMap map)
+            throws WebException
+    {
+        try
+        {
+            InvestItemModel model = itemService.getItemModel(id);
+            InvestItemStateEnum[] states = InvestItemStateEnum.values();
+            map.put("model", model);
+            map.put("itemIndex", itemIndex);
+            map.put("states", states);
+            return "manage/customer/invest";
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error("查询客户投资信息错误", e, this.getClass());
+            throw new WebException("查询客户投资信息错误", e);
+        }
     }
 }

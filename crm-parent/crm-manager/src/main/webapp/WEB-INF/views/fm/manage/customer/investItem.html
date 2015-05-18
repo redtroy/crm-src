@@ -20,87 +20,109 @@
                   </tr>
                   <#assign itemIndex=0/>
                    <tr id="addItem" style="display:none;" class="addItem_class">
-                   <input type="hidden" name="customerId" value="${customerId}"/>
-                   <input type="hidden" name="channelId" value="${channelId}"/>
-                    <td><input type="text" class="input" name="productId" value="" datatype="s5-6" errormsg="产品非法" nullmsg="请选择产品" ></td>
-                    <td><a href="#" class="reminput">查看</a></td>
-                    <td>${channelId}</td>
-                    <td><select name="state" id="select5">
-                         <#list states as state>
-                     		<option value="${state.getId()}">${state.getName()}</option>
-                    </#list>
-                      </select></td>
-                    <td><input type="text" class="input" name="amount" value="" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额"></td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><a href="javascript:addItem();" class="button button-purple">确定</a></td>
+	                   <input type="hidden" name="customerId" value="${customerId}"/>
+	                   <input type="hidden" name="channelId" value="${channelId}"/>
+	                    <td>
+	                    <input type="text" class="input product_select" name="productName" value="" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
+	                    <input type="hidden" name="productId" value=""/>
+	                    </td>
+	                    <td><a href="#" class="reminput">查看</a></td>
+	                    <td>${channelId}</td>
+	                    <td><select name="state" id="stateSelect">
+	                         <#list states as state>
+	                     		<option value="${state.getId()}">${state.getName()}</option>
+	                    </#list>
+	                      </select></td>
+	                    <td><input type="text" class="input" name="amount" value="" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额"></td>
+	                    <td>-</td>
+	                    <td>-</td>
+	                    <td><a href="javascript:addItem();" class="button button-purple">确定</a></td>
                   </tr>
                   <#list list as model>
                   <tr id="info_${model.id}" style="display:;">
-                    <td>${model.name}</td>
-                    <td><a href="#" class="reminput">查看</a></td>
-                    <td>${model.channelId}</td>
-                    <td>${model.state.getName()}</td>
-                    <td>${model.amount?string(',###.00')}</td>
-                    <td>
-                    	<#if model.registTime??>
-                     	${model.registTime?string("yyyy-MM-dd")}
-                    	<#else>
-                    	-
-                    	</#if>
-                    </td>
-                    <td>
-                    	<#if model.investTime??>
-                     	${model.investTime?string("yyyy-MM-dd")}
-                    	<#else>
-                    	-
-                    	</#if>
-                    </td>
-                     <td><a href="javascript:toModifyItem('${model.id}');" class="button button-yellow">更新</a></td>
+	                    <td>${model.name}</td>
+	                    <td><a href="#" class="reminput">查看</a></td>
+	                    <td>${model.channelId}</td>
+	                    <td>${model.state.getName()}</td>
+	                    <td>
+	                     <#if model.amount??>
+	                    	${model.amount?string(',###.00')}
+	                    <#else>
+	                    	-
+	                     </#if>
+	                    </td>
+	                    <td>
+	                    	<#if model.registTime??>
+	                     	${model.registTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                    <td>
+	                    	<#if model.investTime??>
+	                     	${model.investTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                     <td><a href="javascript:toModifyItem('${model.id}');" class="button button-yellow">更新</a></td>
                   </tr>
                   <tr id="modify_${model.id}" style="display:none;" class="modifyItem_class">
-                    <input type="hidden" name="id" value="${model.id}"/>
-                    <td><input type="text"  class="input" name="productId" value="${model.productId}" datatype="s5-6" errormsg="产品非法" nullmsg="请选择产品" ></td>
-                    <td><a href="#">查看</a></td>
-                    <td>${model.channelId}</td>
-                    <td>
-                    <select name="state" id="select5">
-                    <#list states as state>
-                    <#if state.getId()==model.state.getId()>
-                        <option value="${state.getId()}" selected="selected">${state.getName()}</option>
-                     <#else>
-                     	<option value="${state.getId()}">${state.getName()}</option>
-                     </#if>
-                    </#list>
-                      </select>
-                      </td>
-                    <td>
-                    <#if model.amount??>
-                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额" >
-                    	<#else>
-                    	<input type="text" class="input" name="amount" value="">
-                    </#if>
-                    </td>
-                    <td>
-                    <#if model.registTime??>
-                     	${model.registTime?string("yyyy-MM-dd")}
-                    	<#else>
-                    	-
-                    	</#if>
-                    </td>
-                    <td>
-                    	<#if model.investTime??>
-                     	${model.investTime?string("yyyy-MM-dd")}
-                    	<#else>
-                    	-
-                    	</#if>
-                    </td>
-                    <td><a href="javascript:modifyItem('${model.id}',${itemIndex})" class="button button-orange">确定</a></td>
+	                    <input type="hidden" name="id" value="${model.id}"/>
+	                    <td>
+	                    <input type="text"  class="input product_select" name="productName" value="${model.name}" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
+	                    <input type="hidden" name="productId" value="${model.productId}"/>
+	                    </td>
+	                    <td><a href="#">查看</a></td>
+	                    <td>${model.channelId}</td>
+	                    <td>
+	                    <select name="state" id="stateSelect">
+	                    <#list states as state>
+	                    <#if state.getId()==model.state.getId()>
+	                        <option value="${state.getId()}" selected="selected">${state.getName()}</option>
+	                     <#else>
+	                     	<option value="${state.getId()}">${state.getName()}</option>
+	                     </#if>
+	                    </#list>
+	                      </select>
+	                      </td>
+	                    <td>
+	                    <#if model.amount??>
+	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额" >
+	                    	<#else>
+	                    	<input type="text" class="input" name="amount" value="">
+	                    </#if>
+	                    </td>
+	                    <td>
+	                    <#if model.registTime??>
+	                     	${model.registTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                    <td>
+	                    	<#if model.investTime??>
+	                     	${model.investTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                    <td><a href="javascript:modifyItem('${model.id}',${itemIndex})" class="button button-orange">确定</a></td>
                   </tr>
                   <#assign itemIndex=itemIndex+1/>
                   </#list>
+                <tr id="hidden_tr" style="display:none;">
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+            </tr>
                 </tbody></table>
-                <div class="buttonBox mt15 mb10 tc"><a href="javascript:toAddItem();" class="button button-purple mr15">新增</a><a href="#" class="button button-gray btn-hide">收起</a> </div>
+                <div class="buttonBox mt15 mb10 tc"><a id="add_href" href="javascript:toAddItem();" class="button button-purple mr15">新增</a><a href="javascript:queryInvest('${customerId}','${channelId}');" class="button button-gray btn-hide">收起</a> </div>
                 </td>
  <script>
 var demo;
@@ -112,6 +134,7 @@ function toModifyItem(id){
 
 function toAddItem(){
 	$("#addItem").show();
+	$("#add_href").hide();
 }
 
 function addItem(){
@@ -124,8 +147,17 @@ function addItem(){
 				    layer.close(index);
 					if(data.isOK==true){
 						succInfo(function(){
-							$("#addItem").hide();
-							$("#addItem").find("input,select").val("");
+							$.get("${basePath}customer/invest/getItem.htm?id="+data.id,function(innerData){
+								$("#addItem").after(innerData);
+								$("#addItem").hide();
+								$("#add_href").show();
+								$("#addItem").find("select").val("");
+								$("#addItem").find("input[name='productName']").val("");
+								$("#addItem").find("input[name='productId']").val("");
+								$("#addItem").find("input[name='amount']").val("");
+								loadValidform();
+							});
+							
 						 },"添加成功");
 					}
 					else{
@@ -146,8 +178,14 @@ function modifyItem(id,formIndex){
 				    layer.close(index);
 					if(data.isOK==true){
 						succInfo(function(){
-							$("#info_"+id).show();
-							$("#modify_"+id).hide();
+							$.get("${basePath}customer/invest/getItem.htm?id="+id+"&itemIndex="+formIndex,function(innerData){
+								var oldInfo=$("#info_"+id);
+								var oldModify=$("#modify_"+id);
+								$("#modify_"+id).after(innerData);
+								oldInfo.remove();
+								oldModify.remove();
+								loadValidform();
+							});
 						 },"修改成功");
 					}
 					else{
@@ -159,7 +197,7 @@ function modifyItem(id,formIndex){
 	 }
 }
 
-$(function(){
+function loadValidform(){
 	addDdemo=$(".addItem_class").Validform({
 		   ajaxPost:true,
 			tiptype:3,
@@ -179,5 +217,28 @@ $(function(){
 				
 			}
 		});
+	 var complete=$(".product_select").bigAutocomplete({
+			url : "${basePath}product/autoProduct.htm",
+			callback : function(data) {
+				if(data){
+					$(currentInputText).next().val(data.result);
+				}
+			},
+			beforeShow : function(data) {
+				var name = $(currentInputText).val();
+				var match = false;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].title == name) {
+						$(currentInputText).next().val(data[i].result);
+					}
+				}
+			}
+		});
+	 
+	 
+}
+
+$(function(){
+	loadValidform();
 });
 </script>     

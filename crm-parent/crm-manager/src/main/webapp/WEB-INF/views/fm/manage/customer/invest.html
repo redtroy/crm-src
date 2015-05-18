@@ -1,0 +1,70 @@
+ <tr id="info_${model.id}" style="display:;">
+	                    <td>${model.name}</td>
+	                    <td><a href="#" class="reminput">查看</a></td>
+	                    <td>${model.channelId}</td>
+	                    <td>${model.state.getName()}</td>
+	                    <td>
+	                     <#if model.amount??>
+	                    	${model.amount?string(',###.00')}
+	                    <#else>
+	                    	-
+	                     </#if>
+	                    </td>
+	                    <td>
+	                    	<#if model.registTime??>
+	                     	${model.registTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                    <td>
+	                    	<#if model.investTime??>
+	                     	${model.investTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                     <td><a href="javascript:toModifyItem('${model.id}');" class="button button-yellow">更新</a></td>
+                  </tr>
+                  <tr id="modify_${model.id}" style="display:none;" class="modifyItem_class">
+	                    <input type="hidden" name="id" value="${model.id}"/>
+	                    <td>
+	                    <input type="text"  class="input product_select" name="productName" value="${model.name}" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
+	                    <input type="hidden" name="productId" value="${model.productId}"/>
+	                    </td>
+	                    <td><a href="#">查看</a></td>
+	                    <td>${model.channelId}</td>
+	                    <td>
+	                    <select name="state" id="stateSelect">
+	                    <#list states as state>
+	                    <#if state.getId()==model.state.getId()>
+	                        <option value="${state.getId()}" selected="selected">${state.getName()}</option>
+	                     <#else>
+	                     	<option value="${state.getId()}">${state.getName()}</option>
+	                     </#if>
+	                    </#list>
+	                      </select>
+	                      </td>
+	                    <td>
+	                    <#if model.amount??>
+	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额" >
+	                    	<#else>
+	                    	<input type="text" class="input" name="amount" value="">
+	                    </#if>
+	                    </td>
+	                    <td>
+	                    <#if model.registTime??>
+	                     	${model.registTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                    <td>
+	                    	<#if model.investTime??>
+	                     	${model.investTime?string("yyyy-MM-dd")}
+	                    	<#else>
+	                    	-
+	                    	</#if>
+	                    </td>
+	                    <td><a href="javascript:modifyItem('${model.id}','${itemIndex}');" class="button button-orange">确定</a></td>
+  </tr>

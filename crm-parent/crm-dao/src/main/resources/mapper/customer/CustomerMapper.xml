@@ -35,7 +35,7 @@
 	<!-- 查看渠道 -->
 	<select id="queryCustomerList" resultMap="CustomerResultMap"
 		parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT c.* FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID WHERE 1=1 ]]>
+		<![CDATA[SELECT DISTINCT c.* FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID WHERE 1=1 ]]>
 		<!-- 渠道编号 -->
 		<if test="condition.customerId != null and condition.customerId != ''">
 			<![CDATA[ AND c.CUSTOMER_ID =#{condition.customerId}]]>
@@ -47,7 +47,7 @@
 			<![CDATA[ AND c.PHONE =#{condition.phone}]]>
 		</if>
 		<if test="condition.productId!= null and condition.productId != ''">
-			<![CDATA[ AND p.PRODUCTID =#{condition.productId}]]>
+			<![CDATA[ AND p.PRODUCT_ID =#{condition.productId}]]>
 		</if>
 		<if test="condition.channelId != null and condition.channelId != ''">
 			<![CDATA[ AND c.CHANNEL_ID =#{condition.channelId}]]>

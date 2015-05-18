@@ -11,7 +11,8 @@ public interface ICustomerService
     public List<CustomerEntity> queryCustomer(CustomerQuery query)
             throws ServiceException;
     
-    public void addCustomer(CustomerEntity customer) throws ServiceException;
+    public boolean addCustomer(CustomerEntity customer, String productId)
+            throws ServiceException;
     
     public void modifyCustomer(CustomerEntity customer) throws ServiceException;
 }

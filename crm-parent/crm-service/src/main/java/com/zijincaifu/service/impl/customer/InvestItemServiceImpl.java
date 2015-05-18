@@ -92,4 +92,30 @@ public class InvestItemServiceImpl implements IInvestItemService
         
     }
     
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public InvestItemModel getItemModel(String id) throws ServiceException
+    {
+        try
+        {
+            QueryCondition<InvestItemEntity> query = new QueryCondition<>();
+            query.addCondition("id", id);
+            List<InvestItemModel> list = itemDao.queryItemList(query);
+            if (list != null && list.size() > 0)
+            {
+                return list.get(0);
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("获取客户投资信息错误", e);
+        }
+    }
+    
 }

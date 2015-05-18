@@ -1,8 +1,14 @@
 package com.zijincaifu.crm.manage.controller.product;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sxj.util.common.DateTimeUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
-import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.entity.product.ProductEntity;
-import com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.model.product.ProductQuery;
 import com.zijincaifu.service.product.IProductService;
@@ -38,12 +42,12 @@ public class ProductController extends BaseController
                 query.setPagable(true);
             }
             List<ProductEntity> list = productService.queryProducts(query);
-//            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
+            //            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             //            List<FunctionEntity> functionList = functionService
             //                    .queryChildrenFunctions("0");
             map.put("list", list);
-//            map.put("company", company);
-//            map.put("functions", functionList);
+            //            map.put("company", company);
+            //            map.put("functions", functionList);
             map.put("query", query);
             return "manage/product/productList";
         }
@@ -72,8 +76,8 @@ public class ProductController extends BaseController
     }
     
     @RequestMapping("addProduct")
-    public @ResponseBody Map<String, Object> addProduct(
-            ProductEntity product) throws WebException
+    public @ResponseBody Map<String, Object> addProduct(ProductEntity product)
+            throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
@@ -92,11 +96,12 @@ public class ProductController extends BaseController
     }
     
     @RequestMapping("loadEditProduct")
-    public String loadEditProduct(String productId,ModelMap map) throws WebException
+    public String loadEditProduct(String productId, ModelMap map)
+            throws WebException
     {
         try
         {
-            ProductEntity product=productService.getProduct(productId);
+            ProductEntity product = productService.getProduct(productId);
             map.put("product", product);
             return "manage/product/productEdit";
         }
@@ -109,14 +114,14 @@ public class ProductController extends BaseController
     }
     
     @RequestMapping("editProduct")
-    public @ResponseBody Map<String, Object> editProduct(
-            ProductEntity product) throws WebException
+    public @ResponseBody Map<String, Object> editProduct(ProductEntity product)
+            throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-//            personnel.setFreezeStatus(1);
-//            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
+            //            personnel.setFreezeStatus(1);
+            //            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
             productService.editProduct(product);
             map.put("isOK", true);
         }
@@ -130,12 +135,13 @@ public class ProductController extends BaseController
     }
     
     @RequestMapping("deleteProduct")
-    public @ResponseBody Map<String, Object> deleteProduct(String productId) throws WebException
+    public @ResponseBody Map<String, Object> deleteProduct(String productId)
+            throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            ProductEntity product=productService.getProduct(productId);
+            ProductEntity product = productService.getProduct(productId);
             productService.deleteProduct(product);
             map.put("isOK", "delete");
         }
@@ -146,5 +152,42 @@ public class ProductController extends BaseController
             map.put("error", e.getMessage());
         }
         return map;
+    }
+    
+    /**
+     * 自动感应产品
+     * 
+     * @param request
+     * @param response
+     * @param keyword
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("autoProduct")
+    public @ResponseBody Map<String, String> autoComple(
+            HttpServletRequest request, HttpServletResponse response,
+            String keyword) throws IOException
+    {
+        ProductQuery query = new ProductQuery();
+        if (keyword != "" && keyword != null)
+        {
+            query.setName(keyword);
+        }
+        List<ProductEntity> list = productService.queryProducts(query);
+        List<String> strlist = new ArrayList<String>();
+        String sb = "";
+        for (ProductEntity product : list)
+        {
+            sb = "{\"title\":\"" + product.getName() + "\",\"result\":\""
+                    + product.getProductId() + "\"}";
+            strlist.add(sb);
+        }
+        String json = "{\"data\":" + strlist.toString() + "}";
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
+        out.close();
+        return null;
     }
 }

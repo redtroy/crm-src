@@ -13,7 +13,7 @@
 		<result property="amount" column="AMOUNT" jdbcType="DOUBLE" />
 		<result property="registTime" column="REGIST_TIME" jdbcType="TIMESTAMP" />
 		<result property="investTime" column="INVEST_TIME" jdbcType="TIMESTAMP" />
-		<result property="name" column="PRODUCT_NAME" jdbcType="TIMESTAMP" />
+		<result property="name" column="PRODUCT_NAME" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<delete id="deleteItems" parameterType="String">
@@ -27,6 +27,9 @@
 		<!-- 客户 -->
 		<if test="condition.customerId != null and condition.customerId != ''">
 			<![CDATA[ AND i.CUSTOMER_ID =#{condition.customerId}]]>
+		</if>
+		<if test="condition.id != null and condition.id != ''">
+			<![CDATA[ AND i.ID =#{condition.id}]]>
 		</if>
 	</select>
 </mapper>

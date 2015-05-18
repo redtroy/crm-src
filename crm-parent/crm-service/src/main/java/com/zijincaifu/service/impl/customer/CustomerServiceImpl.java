@@ -15,6 +15,7 @@ import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.dao.customer.ICustomerDao;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
+import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
 import com.zijincaifu.model.customer.CustomerQuery;
 import com.zijincaifu.service.customer.ICustomerService;
 import com.zijincaifu.service.customer.IInvestItemService;
@@ -51,28 +52,54 @@ public class CustomerServiceImpl implements ICustomerService
     
     @Override
     @Transactional
-    public void addCustomer(CustomerEntity customer) throws ServiceException
+    public boolean addCustomer(CustomerEntity customer, String productId)
+            throws ServiceException
     {
         try
         {
-            if (customer != null)
+            if (customer == null)
             {
-                // 获取出生年月日   
-                if (customer.getCardNo() != null)
-                {
-                    String birthday = customer.getCardNo().substring(6, 14);
-                    Date birthdate = null;
-                    birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
-                    customer.setBirthday(birthdate);
-                }
-                customerDao.addCustomer(customer);
-                InvestItemEntity item = new InvestItemEntity();
-                //item.setProductId(customer);
-                item.setChannelId(customer.getChannelId());
-                item.setAmount(0d);
-                item.setRegistTime(new Date());
-                itemService.add(item);
+                throw new ServiceException("客户信息为空");
             }
+            else
+            {
+                CustomerQuery query = new CustomerQuery();
+                query.setPhone(customer.getPhone());
+                List<CustomerEntity> list = queryCustomer(query);
+                if (list != null && list.size() > 0)
+                {
+                    InvestItemEntity item = new InvestItemEntity();
+                    item.setCustomerId(list.get(0).getCustomerId());
+                    item.setProductId(productId);
+                    item.setChannelId(list.get(0).getChannelId());
+                    item.setState(InvestItemStateEnum.REGIST);
+                    itemService.add(item);
+                    // TODO 增加推荐明细
+                    return false;
+                }
+                else
+                {
+                    // 获取出生年月日   
+                    if (customer.getCardNo() != null)
+                    {
+                        String birthday = customer.getCardNo().substring(6, 14);
+                        Date birthdate = null;
+                        birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
+                        customer.setBirthday(birthdate);
+                    }
+                    customerDao.addCustomer(customer);
+                    
+                    InvestItemEntity item = new InvestItemEntity();
+                    item.setCustomerId(customer.getCustomerId());
+                    item.setProductId(productId);
+                    item.setChannelId(customer.getChannelId());
+                    item.setState(InvestItemStateEnum.REGIST);
+                    itemService.add(item);
+                    // TODO 增加推荐明细
+                    return true;
+                }
+            }
+            
         }
         catch (Exception e)
         {

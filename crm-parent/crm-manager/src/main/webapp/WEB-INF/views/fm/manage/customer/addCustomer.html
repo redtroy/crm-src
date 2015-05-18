@@ -3,10 +3,28 @@
 	 $("#addForm").Validform({
 			tiptype:3,
 			datatype:{
-				"phone":/^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}?$/
+				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
 			 },
 			callback:function(form){
 				addCustomer();
+			}
+		});
+	 
+	 $("#productName_com").bigAutocomplete({
+			url : "${basePath}product/autoProduct.htm",
+			callback : function(data) {
+				if(data){
+					$("#productId_hidden").val(data.result);
+				}
+			},
+			beforeShow : function(data) {
+				var name = $("#productName_com").val();
+				var match = false;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].title == name) {
+						$("#productId_hidden").val(data[i].result);
+					}
+				}
 			}
 		});
  });
@@ -20,9 +38,16 @@
 			 $.post("${basePath}customer/add.htm",params,function(data){
 				    layer.close(index);
 					if(data.isOK==true){
-						succInfo(function(){
-							 query();
-						 },"添加成功");
+						if(data.isAdd==false){
+							succInfo(function(){
+								 query();
+							 },"该客户已经存在，系统将会为该客户增加一条新的投资明细");
+						}else{
+							succInfo(function(){
+								 query();
+							 },"客户添加成功");
+						}
+						
 					}
 					else{
 						errorInfo(data.error);
@@ -99,7 +124,8 @@
               </tr>  
 			   <tr>
               <th>投资产品</th>
-              <td><input type="text" name="productId" class="input input-addname"/><span class="color-red ml5">*</span></td>
+              <input type="hidden" id="productId_hidden" name="productId" value=""/>
+              <td><input id="productName_com" type="text" name="productName" datatype="s2-20" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off" class="input input-addname"/><span class="color-red ml5">*</span></td>
               </tr>         
           </table>
           </form>
