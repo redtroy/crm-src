@@ -15,4 +15,8 @@ public interface ICustomerService
             throws ServiceException;
     
     public void modifyCustomer(CustomerEntity customer) throws ServiceException;
+
+    public CustomerEntity getCustomer(String customerId);
+
+    public void updateCustomer(CustomerEntity customer);
 }

@@ -135,4 +135,24 @@ public class CustomerServiceImpl implements ICustomerService
         }
         
     }
+
+    @Override
+    public CustomerEntity getCustomer(String customerId)
+    {
+        return customerDao.getCustomer(customerId);
+    }
+
+    @Override
+    public void updateCustomer(CustomerEntity customer)
+    {
+        try
+        {
+            customerDao.updateCustomer(customer);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("修改等级错误", e);
+        }
+    }
 }
