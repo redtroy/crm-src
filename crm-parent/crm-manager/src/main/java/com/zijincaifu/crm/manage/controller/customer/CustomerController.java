@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -162,5 +163,25 @@ public class CustomerController extends BaseController
             map.put("error", e.getMessage());
         }
         return map;
+    }
+    
+    @RequestMapping("changeLevel")
+    public @ResponseBody Map<String, Object> changeLevel(String customerId,@RequestParam(value="level")   CustomerLevelEnum level) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            CustomerEntity customer=customerService.getCustomer(customerId);
+            customer.setLevel(level);
+            customerService.updateCustomer(customer);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;        
     }
 }
