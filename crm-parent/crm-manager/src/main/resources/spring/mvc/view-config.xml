@@ -36,9 +36,8 @@
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="location" value="classpath:config/freemarker.properties" />
 	</bean>
-
 	<bean id="freeMarkerConfigurer"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		class="com.zijincaifu.crm.manage.view.ShiroTagFreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/views/fm/" />
 		<property name="defaultEncoding" value="UTF-8" />
 		<property name="freemarkerSettings" ref="freemarkerConfiguration" />

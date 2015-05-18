@@ -5,29 +5,48 @@
 <title>金融系统平台</title>
 <meta name="keywords" content="金融系统平台"/>
 <meta name="description" content="金融系统平台"/>
-<link href="style/style.css" rel="stylesheet" type="text/css" />
-<link href="style/msg.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery.js" type="text/javascript"></script>
+<link href="${b.staticPath}style/style.css" rel="stylesheet" type="text/css" />
+<link href="${b.staticPath}style/msg.css" rel="stylesheet" type="text/css" />
+<script src="${b.staticPath}js/jquery.js" type="text/javascript"></script>
+<@b.validate/>
+<script>
+$(function(){
+	 $("#loginForm").Validform({
+			tiptype:3,
+			callback:function(form){
+				//addCustomer();
+			}
+		});
+});
+function sub(){
+	 $("#loginForm").submit();
+ }
+</script>
 </head>
 
 <body>
 <@b.header/>
 <div id="login" class="fence">
   <div class="fence-wide">
+  <form id="loginForm" action="${basePath}login.htm" method="post">
   <div class="loginBox">
       <div class="title fontYH f20">用户登录<span class="f14 ml10">USER LOGIN</span></div>
         <div class="regCont f14">
         <div class="item">
           <label class="f16">员工编号</label>
-          <input class="input" type="text" autocomplete="off" placeholder="" title="" id="" name="" value="" />
+          <input class="input" type="text" autocomplete="off" placeholder="" title="" id="" name="account" value="" datatype="s6-6" errormsg="请输入6位员工编号" nullmsg="员工编号不能为空"/>
+          <#if message??>
+          <span class="Validform_checktip Validform_wrong">${message}</span>
+          </#if>
         </div>
         <div class="item">
           <label class="f16">登录密码</label>
-          <input class="input" type="password" autocomplete="off" placeholder="" title="" />
+          <input class="input" type="password" autocomplete="off" placeholder="" title="" name="password" datatype="s6-20" errormsg="请输入6-20位密码" nullmsg="密码不能为空"/>
           <p></p>
         </div>
-      <a href="#html/welcome.html" class="button btn-login">立即登录</a> </div>
+      <a href="javascript:sub();" class="button btn-login">立即登录</a> </div>
 </div>
+</form>
   </div>
 </div>
 <@b.footer/>

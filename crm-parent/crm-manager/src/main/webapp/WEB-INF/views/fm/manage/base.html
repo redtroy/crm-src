@@ -502,18 +502,12 @@ function classLoadUpload(text){
  <div id="header" class="fence">
   <div class="logo">
     <h1 class="fontYH fence-wide fb">
-      <p class="ly-right logOut">杜金鑫，您好！<a href="#">退出当前帐户</a></p>
+    <@shiro.user>  
+      <p class="ly-right logOut"><@shiro.principal property="name" />，您好！<a href="${basePath}logout.htm">退出当前帐户</a></p>
+     </@shiro.user> 
       紫金财富CRM管理平台</h1>
   </div>
 </div>
-<#if Session.userinfo?exists>
-<script>
-$(document).ready(function(){
-	var currentUrl=window.location.href;
-	$.get("${basePath}enter.htm?url="+currentUrl);
-});
-</script>
-</#if>
 </#macro>
 <#macro leftMenu isLoad>
 <div class="yard-200 ly-left leftMenu fontYH">

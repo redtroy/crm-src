@@ -29,6 +29,50 @@ function addPersonnel(){
 	 },"是否确认添加员工");
 	
 }
+function addRole(){
+	dialogBoxOutId("#addrole_div");
+}
+
+function closeDiv(){
+	   layer.closeAll();
+}
+$(":checkbox").change( function () {
+	   var thisId=$(this).attr("id");
+	   var parentId=$(this).attr("parentId");
+	   var isCheck=$(this).attr("checked");
+	   var children=$("#children_ul_"+thisId).children().children(":checkbox");
+	   var parent=$("#"+parentId);
+	   if(isCheck=="checked"){
+		   parent.attr("checked","checked");
+	   }
+	   else{
+		   var children2=$("#children_ul_"+parentId).children().children(":checked");
+		   if(children2.size()<=0){
+			   parent.attr("checked",false);
+		   }
+	   }
+	   children.each(function(i){
+		   var thisParentId=$(this).attr("parentId");
+		   if(thisParentId==thisId){
+			   if(isCheck=="checked"){
+				   $(this).attr("checked","checked");
+			   }
+			   else{
+				   $(this).attr("checked",false);
+			   }
+		   }
+		});
+	   
+	});
+
+function confim(){
+	   var values = new Array();
+	   $("input:checked").each(function(i){
+		   values[i]=$(this).val()
+	   });
+	   $("input[name='functionIds']").val(values);
+	   closeDiv();
+}
 </script>
 <div class="heading fontYH f20">新增员工 </div>
         <div class="mainBox newMem">
@@ -57,17 +101,15 @@ function addPersonnel(){
 				<#else>
 				<option value="${company.getId()}">${company.getName()}</option>
 				</#if></#list>
-			  <!-- <option selected="selected">集团总部</option>
-              <option>南京公司</option>
-              <option>苏州公司</option>
-              <option>扬州公司</option>
-              <option>常州公司</option> -->
               </select>
               </td>
             </tr>
 			<tr>
               <th>操作权限</th>
-              <td><div class="adminDrop dropMenu sltinput"> <span>全部权限</span> <span class="icon"></span> </div></td>
+              <td>
+              <div class="adminDrop dropMenu sltinput" onclick="addRole();"> <span>全部权限</span> <span class="icon"></span> </div>
+              <input id="functionIds_hidden" type="hidden" name="functionIds" value="none" />
+              </td>
             </tr>  
 			<tr>
               <th>UnionID</th>
@@ -78,3 +120,29 @@ function addPersonnel(){
           </form>
           <div class="buttonBox mb10 tc"><span onclick="sub();"><a href="javascript:void(0);" class="button button-orange mr15">确定</a></span><a href="javascript:query();" class="button button-gray">返回</a></div>
         </div>
+	<div id="addrole_div" class="modal-wrap popDemo dropList" style="display: none;dwidth:590px;margin-left:-188px;margin-top:-4px;">
+		     <div class="modal-header"><span class="close" onclick="closeDiv();">关闭</span></div>
+		     <div class="modal-body dropBox">
+		     <#list allFunction as function>
+		     	<div class="item">
+			     <span>
+			      <#if function.function.id==1>
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}" checked="checked" disabled="disabled">${function.function.title}
+			     	<#else>
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}">${function.function.title}
+			       </#if>
+			     </span>
+			     <ul id="children_ul_${function.function.id}">
+			      <#list function.children as children>
+			       <#if children.id==3>
+			     	<li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}" checked="checked" disabled="disabled">${children.title}</li>
+			       <#else>
+			       <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}">${children.title}</li>
+			        </#if>
+			      </#list>
+			     </ul>
+		     	</div>
+		     </#list>
+		     <button class="popBtn" onclick="confim();">确认</button>
+		     </div>
+     </div>
