@@ -25,6 +25,8 @@ function query(page){
 		var totalPage=pager.attr("totalPage");
 		var currentPage=pager.attr("currentPage");
 		loadPage(currentPage,totalPage,query);
+		$("#time1").datepicker();
+		$("#time2").datepicker();
 	});
 };
 

@@ -25,15 +25,39 @@ function query(page){
 		var totalPage=pager.attr("totalPage");
 		var currentPage=pager.attr("currentPage");
 		loadPage(currentPage,totalPage,query);
+		$("#time1").datepicker();
+		$("#time2").datepicker();
 	});
 };
 
-function loadAddProduct(){
+function loadAddChannel(){
 	$.post("${basePath}channel/loadAddChannel.htm",null,function(data){
 		$("#rightBar").empty();
 		$("#rightBar").append(data);
 	}); 
 }; 
+
+function loadEditChannel(channelId){
+	$.get("${basePath}channel/loadEditChannel.htm?channelId="+channelId,function(data){
+		$("#rightBar").empty();
+		$("#rightBar").append(data);
+	}); 
+};
+
+function deleteChannel(channelId){
+	dialogBox(function(index){
+		 $.post("${basePath}channel/deleteChannel.htm?channelId="+channelId,function(data){
+			  layer.close(index);
+				if(data.isOK == "delete"){
+					succInfo(function(){
+						query();
+					},"删除成功");
+				}else{
+					errorInfo(data.error);
+				}
+			});
+	 },"是否确认删除产品");
+};
 </script>
 </head>
 <@b.pageScript/>
@@ -61,7 +85,7 @@ function loadAddProduct(){
               -
               <input type="text" class="input input-time cal form-control" name="endTime" value="${query.endTime}" datepicker  id="time2" />
 			  </p>
-			  <span class="advanced" style="display:;"> 创建员工
+			  <span class="advanced" style="display:;"> 创建员工编号
               <input type="text" class="input" name="uid" value="${query.uid}" />
 			  </span>
 			  <div class="ly-right mr20">
@@ -69,7 +93,7 @@ function loadAddProduct(){
               <button class="button button-search" title="员工只能看到自己的的推广渠道" onclick="query();">查询</button>
               </span> 
 			  <span class="btnBox">
-			  <button class="button button-green f12" onclick="loadAddProduct();">新增渠道</button>
+			  <button class="button button-green f12" onclick="loadAddChannel();">新增渠道</button>
 			  </span> 
 			  <span class="btnBox">
 			  <button class="button button-red f12" onclick="javascript:window.location.href='creatqr.html'">生成二维码</button>
@@ -99,7 +123,7 @@ function loadAddProduct(){
 			  <td>${model.personnelName}</td>
               <td>${model.remark}</td>
               <td>${model.startTime?string("yyyy-MM-dd")}</td>
-              <td class="edit"><a href="#" class="del">删除</a> <a href="#" class="allot">修改</a></td>
+              <td class="edit"><span onclick="deleteChannel('${model.channelId}')"><a href="javascript:void(0);" class="del">删除</a></span><span onclick="loadEditChannel('${model.channelId}');"><a href="javascript:void(0)" class="allot">修改</a></span></td>
             </tr>
             </#list>
             <!-- <tr>

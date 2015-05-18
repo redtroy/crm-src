@@ -36,7 +36,7 @@ public interface IChannelDao {
 	 * 获取渠道信息
 	 * @param channelId
 	 */
-	public ChannelEntity getChannel(String channelId);
+	public ChannelModel getChannel(String channelId);
 	
 	/**
 	 * 查看渠道

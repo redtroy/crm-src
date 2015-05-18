@@ -6,27 +6,27 @@ $(function(){
     $("#time1").datepicker();
 });
 function sub(){
-	 $("#add_form").submit();
+	 $("#edit_form").submit();
  };
- $("#add_form").Validform({
+ $("#edit_form").Validform({
 		tiptype:3,
 		datatype:{
 			"phone":/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/
 		 },
 		callback:function(form){
-			addChannel();
+			editChannel();
 		}
 	});
  
-function addChannel(){
-	var params=$("#add_form").serialize();
+function editChannel(){
+	var params=$("#edit_form").serialize();
 	 dialogBox(function(index){
-		 $.post("${basePath}channel/addChannel.htm",params,function(data){
+		 $.post("${basePath}channel/editChannel.htm",params,function(data){
 			  layer.close(index);
 				if(data.isOK == true){
 					succInfo(function(){
 						query();
-					},"新增成功");
+					},"修改成功");
 				}else{
 					errorInfo(data.error);
 				}
@@ -38,22 +38,24 @@ function addChannel(){
 
 <div class="heading fontYH f20">新增推广渠道 </div>
         <div class="mainBox newMem">
-        <form id="add_form" action="javascript:void(0);">
+        <form id="edit_form" action="javascript:void(0);">
           <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
             <col width="15%" />
             <col width="85%" />
-            <input type="hidden" name="uid"  value="E00004"/>
+            <input type="hidden" name="id"  value="${channel.id}"/>
+            <input type="hidden" name="channelId"  value="${channel.channelId}"/>
+            <input type="hidden" name="uid"  value="${channel.uid}"/>
             <tr>
               <th>渠道名称</th>
-              <td><input type="text" name="name" class="input input-addname" title="请填写渠道名称" datatype="s1-64"  nullmsg="请输入渠道名称"/></td>
+              <td><input type="text" name="name" class="input input-addname" value="${channel.name}" title="请填写渠道名称" datatype="s1-64"  nullmsg="请输入渠道名称"/></td>
             </tr>  
 			<tr>
               <th>渠道描述</th>
-              <td><textarea cols="2" name="remark" style="width:800px" title="请填写渠道描述" datatype="*1-512"  nullmsg="请输入渠道描述"></textarea></td>
+              <td><textarea cols="2" name="remark" style="width:800px" title="请填写渠道描述" datatype="*1-512"  nullmsg="请输入渠道描述">${channel.remark}</textarea></td>
             </tr> 
 			<tr>
               <th>推广起始时间</th>
-              <td><input type="text" class="input input-time cal form-control" name="startTime" value="" datepicker style="width:120px" id="time1" readonly="true"  title="请选择推广时间" datatype="*1-32"  nullmsg="请选择推广时间"/></td>
+              <td><input type="text" class="input input-time cal form-control" name="startTime" value="${channel.startTime?string("yyyy-MM-dd")}" datepicker style="width:120px" id="time1" readonly="true"  title="请选择推广时间" datatype="*1-32"  nullmsg="请选择推广时间"/></td>
             </tr>   
           </table>
           </form>
