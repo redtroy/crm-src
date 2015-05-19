@@ -1,14 +1,18 @@
 package com.zijincaifu.crm.manage.controller.customer;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +25,14 @@ import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.entity.system.AreaEntity;
 import com.zijincaifu.crm.enu.customer.CustomerLevelEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.model.customer.CustomerQuery;
+import com.zijincaifu.model.personnel.PersonnelQuery;
 import com.zijincaifu.service.customer.ICustomerService;
+import com.zijincaifu.service.personnel.IPersonnelService;
 import com.zijincaifu.service.system.IAreaService;
 
 @Controller
@@ -38,6 +45,9 @@ public class CustomerController extends BaseController
     
     @Autowired
     private IAreaService areaService;
+    
+    @Autowired
+    private IPersonnelService personnelService;;
     
     @RequestMapping("/query")
     public String query(CustomerQuery query, ModelMap map) throws WebException
@@ -184,4 +194,72 @@ public class CustomerController extends BaseController
         }
         return map;        
     }
+    
+    /**
+     * 自动感应产品
+     * 
+     * @param request
+     * @param response
+     * @param keyword
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("autoPersonnel")
+    public @ResponseBody Map<String, String> autoPersonnel(
+            HttpServletRequest request, HttpServletResponse response,
+            String keyword) throws IOException
+    {
+        PersonnelQuery query = new PersonnelQuery();
+        if (keyword != "" && keyword != null)
+        {
+            query.setUid(keyword);
+        }
+        List<PersonnelEntity> list = personnelService.autoPersonnel(query);
+        List<String> strlist = new ArrayList<String>();
+        String sb = "";
+        for (PersonnelEntity personnel : list)
+        {
+            sb = "{\"title\":\"" + personnel.getUid()+" -- "+personnel.getName() + "\",\"result\":\""
+                    + personnel.getUid() + "\"}";
+            strlist.add(sb);
+        }
+        String json = "{\"data\":" + strlist.toString() + "}";
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
+        out.close();
+        return null;
+    }
+    
+    @RequestMapping("changePersonnel")
+    public @ResponseBody Map<String, Object> changePersonnel(String customerId,String personnelId) throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            PersonnelQuery query = new PersonnelQuery();
+            if (personnelId != "" && personnelId != null)
+            {
+                query.setUid(personnelId);
+            }
+            List<PersonnelEntity> list = personnelService.queryPersonnels(query);
+            if(list.size()==0){
+                map.put("result", "0");
+            }else{
+                CustomerEntity customer=customerService.getCustomer(customerId);
+                customer.setEmployeId(personnelId);
+                customerService.updateCustomer(customer);
+                map.put("result", "1");
+            }
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("result", "error");
+            map.put("error", e.getMessage());
+        }
+        return map;        
+    }
+    
 }

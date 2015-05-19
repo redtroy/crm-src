@@ -96,6 +96,9 @@ function subModify(formIndex){
 	 
  }
 $(function(){
+	$("#bigAutocompleteContent").ready(function(){
+		$("#bigAutocompleteContent").css("z-index",999999999);
+	});
 	demo=$(".modify_class").Validform({
 		ajaxPost:true,
 		tiptype:3,
@@ -113,9 +116,25 @@ $(function(){
 		}
 	});
 	
-	
+	$("#personnelId").bigAutocomplete({
+		url : "${basePath}customer/autoPersonnel.htm",
+		callback : function(data) {
+			if(data){
+				$("#personnelId").val(data.result);
+			}
+		},
+		beforeShow : function(data) {
+			var name = $("#personnelId").val();
+			var match = false;
+			for (var i = 0; i < data.length; i++) {
+				$("#personnelId").val(data[i].result);
+				/* if (data[i].title == name) {
+					$("#personnelId").val(data[i].result);
+				} */
+			}
+		}
+	});
 });
-
 function queryInvest(customerId,channelId){
 	var state=$("#investItem_"+customerId).attr("state");
 	   if(state=="0"){
@@ -132,11 +151,27 @@ function queryInvest(customerId,channelId){
 	}
 };
 
+function trackRecord(customerId){
+	var state=$("#trackRecord_"+customerId).attr("state");
+	if(state=="0"){
+		 $.get("${basePath}customer/trackRecord.htm?customerId="+customerId,function(data){
+			    $("#trackRecord_"+customerId).empty();
+				$("#trackRecord_"+customerId).append(data);
+				$("#trackRecord_"+customerId).show();
+				$("#trackRecord_"+customerId).attr("state","1");
+		});
+	}else{
+		$("#trackRecord_"+customerId).empty();
+		$("#trackRecord_"+customerId).attr("state","0");
+		$("#trackRecord_"+customerId).hide();
+	}
+};
+
 function changeLevel(customerId,level){
 	pageIndex=dialogBoxOutId(changeLevelDiv);
 	$("#changeLevelDiv").attr("customerId",customerId);
 	var count = $("#level option").length;  
-    for ( var i = 0; i < count; i++) {  
+    for ( var i = 0; i < count; i++) {
         if ($("#level ").get(0).options[i].value == level) {  
             $("#level ").get(0).options[i].selected = true;  
             break;  
@@ -163,18 +198,34 @@ function subLevel(){
 	var customerId=$("#changeLevelDiv").attr("customerId","");
 };
 
-function changeEmploye(){
+function changeEmploye(customerId){
+	$("#personnelId").val("请输入员工编号");
 	pageIndex=dialogBoxOutId(changeEmployeDiv);
-	$("#changeLevelDiv").attr("customerId",customerId);
-	var count = $("#level option").length;  
-    for ( var i = 0; i < count; i++) {  
-        if ($("#level ").get(0).options[i].value == level) {  
-            $("#level ").get(0).options[i].selected = true;  
-            break;  
-        }  
-    } 
+	$("#changeEmployeDiv").attr("customerId",customerId);
 };
 
+function cleanInput(){
+	if($("#personnelId").val()=='请输入员工编号'){
+		$("#personnelId").val("");
+	}	
+};
+
+function disEmploye(){
+	var personnelId=$("#disPersonnel_form").find("input[name='personnelId']").val();
+	var customerId=$("#changeEmployeDiv").attr("customerId");
+	$.post("${basePath}customer/changePersonnel.htm?customerId="+customerId+"&personnelId="+personnelId,function(data){
+		if(data.result == "1"){
+			succInfo(function(){
+				query();
+			},"分配成功");
+		}else if(data.result == "0"){
+			errorInfo("该员工编号不存在");
+		}else{
+			errorInfo(data.error);
+		}
+	});
+	var customerId=$("#changeLevelDiv").attr("customerId","");
+};
 </script>
 </head>
 
@@ -261,10 +312,10 @@ function changeEmploye(){
               <td><a href="javascript:queryInvest('${model.customerId}','${model.channelId}')">查询明细</a></td>
               <td>${model.channelId}</td>
               <td><span onclick="changeLevel('${model.customerId}',${model.level.getId()});"><a href="javascript:void(0)" class="levinput">${model.level.getName()}</a></span></td>
-              <td><a href="#">管理记录</a></td>
+              <td><span onclick="trackRecord('${model.customerId}')"><a href="javascript:void(0);">管理记录</a></span></td>
               <td title="${model.unionId}" class="color-orange">查看</td>
               <td>${model.createTime?string("yyyy-MM-dd")}</td>
-              <td class="edit"><a href="#" class="del">删除</a> <span onclick="changeEmploye('${model.customerId}')"><a href="#" class="allot memberBox meminput">分配</a></span></td>
+              <td class="edit"><a href="#" class="del">删除</a> <span onclick="changeEmploye('${model.customerId}')"><a href="javascript:void(0)" class="allot memberBox meminput">分配</a></span></td>
             </tr>
             <tr class="div_state" id="info_${model.customerId}" style="display: none;" state="0">
               <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
@@ -346,6 +397,8 @@ function changeEmploye(){
               </tr>
              <tr id="investItem_${model.customerId}" style="display:none;" state="0">
              </tr>
+             <tr id="trackRecord_${model.customerId}" style="display:none;" state="0">
+             </tr>
              <#assign index=index+1/>
             </#list>
           </table>
@@ -390,11 +443,13 @@ function changeEmploye(){
 </div>
 <div id="changeEmployeDiv" style="display:none;" customerId="">
 <div class="modal-wrap popDemo memberList" >
-      <div class="modal-header"><span class="close">关闭</span></div>
+  <form action="javascript:void(0);" id="disPersonnel_form" >
+      <div class="modal-header"><span class="close" onclick="closeDiv()">关闭</span></div>
      <div class="modal-body memberBox">
        <div class="item fontYH color-blue">
-         归属员工 :<input name="" type="text" class="input input-w220h30 ml5 fontYH" title="联想输入员工编号" value="请输入员工编号" /> </div>
-  <button class="popBtn">确认</button></div>
+         归属员工 :<input name="personnelId" id="personnelId" type="text" class="input input-w220h30 ml5 fontYH" title="联想输入员工编号" value="请输入员工编号" onmousedown="javascript:cleanInput()" autocomplete="off" /> </div>
+  <button class="popBtn" onclick="disEmploye()">确认</button></div>
+ </form>
   </div>
 </div>
 </body>

@@ -79,5 +79,28 @@ public class PersonnelServiceImpl implements IPersonnelService
     {
         personnelDao.updatePersonnel(personnel);
     }
+
+
+    @Override
+    public List<PersonnelEntity> autoPersonnel(PersonnelQuery query)
+    {
+        try
+        {
+            QueryCondition<PersonnelEntity> condition = new QueryCondition<PersonnelEntity>();
+            if (query == null)
+            {
+                return null;
+            }
+            condition.addCondition("uid", query.getUid());
+            condition.setPage(query);
+            List<PersonnelEntity> list = personnelDao.autoPersonnel(condition);
+            query.setPage(condition);
+            return list;
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException("查询用戶信息错误", e);
+        }
+    }
     
 }

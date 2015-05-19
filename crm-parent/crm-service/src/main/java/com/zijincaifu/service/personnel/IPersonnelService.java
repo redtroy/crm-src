@@ -21,4 +21,6 @@ public interface IPersonnelService
     public PersonnelEntity getPersonnel(String uid);
 
     public void editPersonnel(PersonnelEntity personnel);
+
+    public List<PersonnelEntity> autoPersonnel(PersonnelQuery query);
 }
