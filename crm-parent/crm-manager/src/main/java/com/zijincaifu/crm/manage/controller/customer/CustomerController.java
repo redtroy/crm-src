@@ -25,7 +25,6 @@ import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
-import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.entity.system.AreaEntity;
 import com.zijincaifu.crm.enu.customer.CustomerLevelEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
@@ -116,10 +115,10 @@ public class CustomerController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            PersonnelEntity login = getLoginInfo(session);
+            PersonnelEntity login = getLoginInfo();
             if (login == null)
             {
-                //throw new WebException("登陆超时，请重新登陆");
+                throw new WebException("登陆超时，请重新登陆");
             }
             if (customer == null)
             {
@@ -154,10 +153,10 @@ public class CustomerController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            PersonnelEntity login = getLoginInfo(session);
+            PersonnelEntity login = getLoginInfo();
             if (login == null)
             {
-                //throw new WebException("登陆超时，请重新登陆");
+                throw new WebException("登陆超时，请重新登陆");
             }
             if (customer == null)
             {
@@ -176,12 +175,14 @@ public class CustomerController extends BaseController
     }
     
     @RequestMapping("changeLevel")
-    public @ResponseBody Map<String, Object> changeLevel(String customerId,@RequestParam(value="level")   CustomerLevelEnum level) throws WebException
+    public @ResponseBody Map<String, Object> changeLevel(String customerId,
+            @RequestParam(value = "level") CustomerLevelEnum level)
+            throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            CustomerEntity customer=customerService.getCustomer(customerId);
+            CustomerEntity customer = customerService.getCustomer(customerId);
             customer.setLevel(level);
             customerService.updateCustomer(customer);
             map.put("isOK", true);
@@ -192,7 +193,7 @@ public class CustomerController extends BaseController
             map.put("isOK", false);
             map.put("error", e.getMessage());
         }
-        return map;        
+        return map;
     }
     
     /**
@@ -219,7 +220,8 @@ public class CustomerController extends BaseController
         String sb = "";
         for (PersonnelEntity personnel : list)
         {
-            sb = "{\"title\":\"" + personnel.getUid()+" -- "+personnel.getName() + "\",\"result\":\""
+            sb = "{\"title\":\"" + personnel.getUid() + " -- "
+                    + personnel.getName() + "\",\"result\":\""
                     + personnel.getUid() + "\"}";
             strlist.add(sb);
         }
@@ -233,7 +235,8 @@ public class CustomerController extends BaseController
     }
     
     @RequestMapping("changePersonnel")
-    public @ResponseBody Map<String, Object> changePersonnel(String customerId,String personnelId) throws WebException
+    public @ResponseBody Map<String, Object> changePersonnel(String customerId,
+            String personnelId) throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
@@ -244,10 +247,13 @@ public class CustomerController extends BaseController
                 query.setUid(personnelId);
             }
             List<PersonnelEntity> list = personnelService.queryPersonnels(query);
-            if(list.size()==0){
+            if (list.size() == 0)
+            {
                 map.put("result", "0");
-            }else{
-                CustomerEntity customer=customerService.getCustomer(customerId);
+            }
+            else
+            {
+                CustomerEntity customer = customerService.getCustomer(customerId);
                 customer.setEmployeId(personnelId);
                 customerService.updateCustomer(customer);
                 map.put("result", "1");
@@ -259,7 +265,7 @@ public class CustomerController extends BaseController
             map.put("result", "error");
             map.put("error", e.getMessage());
         }
-        return map;        
+        return map;
     }
     
 }

@@ -21,7 +21,12 @@ public interface IPersonnelService
     
     public PersonnelEntity getPersonnel(String uid) throws ServiceException;
     
-    public void editPersonnel(PersonnelEntity personnel);
-
-    public List<PersonnelEntity> autoPersonnel(PersonnelQuery query);
+    public void editPersonnel(PersonnelEntity personnel, String[] functionIds)
+            throws ServiceException;
+    
+    public void editPersonnel(PersonnelEntity personnel)
+            throws ServiceException;
+    
+    public List<PersonnelEntity> autoPersonnel(PersonnelQuery query)
+            throws ServiceException;
 }

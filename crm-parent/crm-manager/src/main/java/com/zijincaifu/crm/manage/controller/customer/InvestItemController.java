@@ -61,10 +61,10 @@ public class InvestItemController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            PersonnelEntity login = getLoginInfo(session);
+            PersonnelEntity login = getLoginInfo();
             if (login == null)
             {
-                //throw new WebException("登陆超时，请重新登陆");
+                throw new WebException("登陆超时，请重新登陆");
             }
             if (item == null)
             {
@@ -89,10 +89,10 @@ public class InvestItemController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            PersonnelEntity login = getLoginInfo(session);
+            PersonnelEntity login = getLoginInfo();
             if (login == null)
             {
-                //throw new WebException("登陆超时，请重新登陆");
+                throw new WebException("登陆超时，请重新登陆");
             }
             if (item == null)
             {
