@@ -33,6 +33,9 @@ public interface IPersonnelDao {
 	 * @param query
 	 */
 	public List<PersonnelEntity> queryPersonnel(QueryCondition<PersonnelEntity> query);
+
+    public List<PersonnelEntity> autoPersonnel(
+            QueryCondition<PersonnelEntity> condition);
 	
 
 }
