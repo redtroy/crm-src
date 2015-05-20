@@ -94,8 +94,15 @@ function initPassword(uid){
       <div class="rightSide" id="rightBar">
         <div class="heading fontYH f20">后台管理</div>
         <div class="mainBox">
+        <div class="searBox mt10 mb10 clearFix">
+        <@shiro.hasRole name="10">  
+				  <div class="btnBox ly-right mr15">
+				  <button class="button button-purple f12" onclick="loadAddPersonnel();">新增员工</button>
+				  </div> 
+			   </@shiro.hasRole>  
+         <@shiro.hasRole name="9"> 
         <form action="javascript:void(0);" id="search_form" class="needValid">
-          <div class="searBox f12 mt10 mb10">
+          <div class=" f12 ly-left">
 		  员工ID
               <input class="input" type="text" name="uid" value="${query.uid}" />
 			  员工姓名
@@ -116,13 +123,14 @@ function initPassword(uid){
               </select>
 			  <span class="btnBox">
               <button class="button button-search" onclick="query();">查询</button>
-              </span> 
-			  <span class="btnBox">
-			  <button class="button button-purple f12" onclick="loadAddPersonnel();">新增员工</button>
-			  </span> 
-			   
+              </span>
+              
           </div>
-          </form>    
+          </form>
+          </@shiro.hasRole>  
+          
+          </div>
+            
           <table border="0" cellspacing="0" cellpadding="0" class="tabList mb10"  id="res_table">
             <col width="5%" />
             <col width="8%" />
@@ -148,34 +156,22 @@ function initPassword(uid){
               <td>${model.company.getName()}</td>
 			  <td>${model.unionId}</td>
               <td>${model.addTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-              <td class="edit">
-              <#if model.freezeStatus==0>
-				<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
-				<#else>
-				<span onclick="freeze('${model.uid}',0)"><a href="javascript:void(0);" class="del">冻结</a></span>
-				</#if>
-				<span onclick="loadEditPersonnel('${model.uid}')"><a href="javascript:void(0);" class="allot">修改</a></span>
-				<span onclick="initPassword('${model.uid}')"><a href="javascript:void(0);" class="reset btn-password">初始化密码</a></span></td>
+               <@shiro.hasRole name="10"> 
+	              <td class="edit">
+	              <#if model.freezeStatus==0>
+					<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
+					<#else>
+					<span onclick="freeze('${model.uid}',0)"><a href="javascript:void(0);" class="del">冻结</a></span>
+					</#if>
+					<span onclick="loadEditPersonnel('${model.uid}')"><a href="javascript:void(0);" class="allot">修改</a></span>
+					<span onclick="initPassword('${model.uid}')"><a href="javascript:void(0);" class="reset btn-password">初始化密码</a></span>
+				 </td>
+			</@shiro.hasRole>
+			<@shiro.lacksRole name="10">
+			 <td class="edit">-</td>
+			</@shiro.lacksRole>
             </tr>
             </#list>
-            <!-- <tr>
-              <td>E00001</td>
-              <td>陈绍伟</td>
-			  <td>18915909935</td>
-              <td>南京公司</td>
-			  <td>oO_eAjtxCKoRnicolAYtKcx3cu8c</td>
-              <td>2015-01-31 10:30:00 </td>
-              <td class="edit"><a href="#" class="button btn-examine">审核</a><a href="#" class="unfr">解冻</a> <a href="#" class="allot">修改</a><a href="javascript:;" class="reset btn-password">初始化密码</a></td>
-            </tr>
-            <tr>
-              <td>E00002</td>
-              <td>董玮</td>
-			  <td>18915909935</td>
-              <td> 苏州公司</td>
-			  <td>oO_eAjtxCKoRnicolAYtKcx3cu8c</td>
-              <td>2015-01-31 10:30:00 </td>
-              <td class="edit"><a href="#" class="button btn-examine">审核</a><a href="#" class="del">冻结</a> <a href="#" class="allot">修改</a><a href="#" class="reset">初始化密码</a></td>
-            </tr> -->
           </table>
           <@b.pager/>
 		  <div class="ly-clearFix">        

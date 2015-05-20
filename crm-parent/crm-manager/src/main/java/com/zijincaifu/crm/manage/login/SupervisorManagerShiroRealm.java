@@ -3,8 +3,8 @@ package com.zijincaifu.crm.manage.login;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +17,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.authz.permission.PermissionResolver;
 import org.apache.shiro.authz.permission.RolePermissionResolver;
 import org.apache.shiro.cache.Cache;
@@ -27,9 +28,12 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sxj.spring.modules.util.Reflections;
+import com.sxj.util.common.StringUtils;
 import com.sxj.util.logger.SxjLogger;
+import com.zijincaifu.crm.entity.personnel.FunctionRoleEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.service.personnel.IPersonnelService;
+import com.zijincaifu.service.personnel.IRoleService;
 
 public class SupervisorManagerShiroRealm extends AuthorizingRealm
 {
@@ -38,9 +42,8 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
     @Autowired
     private IPersonnelService accountService;
     
-    //
-    //	@Autowired 
-    //	private IRoleService roleService;
+    @Autowired
+    private IRoleService roleService;
     
     public static final String HASH_ALGORITHM = "MD5";
     
@@ -66,37 +69,35 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
             SecurityUtils.getSubject().logout();
             return null;
         }
-        //        
-        //        SystemAccountEntity current = (SystemAccountEntity) principals.getPrimaryPrincipal();
-        //        String username = current.getAccount();
-        //        
-        //        if (username != null)
-        //        {
-        //            List<FunctionEntity> functionList = roleService.getAllRoleFunction(current.getId());
-        //            List<String> permissions = new ArrayList<String>();
-        //            if (functionList != null && functionList.size() > 0)
-        //            {
-        //                for (FunctionEntity functionEntity : functionList)
-        //                {
-        //                    if (functionEntity == null)
-        //                    {
-        //                        continue;
-        //                    }
-        //                    if (StringUtils.isEmpty(functionEntity.getUrl()))
-        //                    {
-        //                        continue;
-        //                    }
-        //                    permissions.add(functionEntity.getUrl());
-        //                }
-        //            }
-        //            if (permissions.size() > 0)
-        //            {
-        //                SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        //                info.addStringPermissions(permissions);
-        //                info.addRole(current.getAccountNo());
-        //                return info;
-        //            }
-        //        }
+        PersonnelEntity current = (PersonnelEntity) principals.getPrimaryPrincipal();
+        String username = current.getUid();
+        if (username != null)
+        {
+            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+            List<FunctionRoleEntity> roleList = roleService.getRoleList(username);
+            //List<String> permissions = new ArrayList<String>();
+            if (roleList != null && roleList.size() > 0)
+            {
+                for (FunctionRoleEntity role : roleList)
+                {
+                    if (role == null)
+                    {
+                        continue;
+                    }
+                    if (StringUtils.isEmpty(role.getId()))
+                    {
+                        continue;
+                    }
+                    if (StringUtils.isEmpty(role.getFunctionId()))
+                    {
+                        continue;
+                    }
+                    info.addRole(role.getFunctionId());
+                    //info.addStringPermission(role.getId() + "___");
+                }
+            }
+            return info;
+        }
         
         return null;
     }
@@ -108,7 +109,6 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         // 通过表单接收的用户名
         String username = token.getUsername();
-        //
         if (username != null && !"".equals(username))
         {
             PersonnelEntity account = accountService.getPersonnel(username);
@@ -301,34 +301,34 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
             // =============================此处检查权限是否变动==============================//
             if (permissions.isEmpty())
             {
-                if (info.getRoles() != null && info.getRoles().size() > 0)
-                {
-                    Iterator<String> iterator = info.getRoles().iterator();
-                    String accountNo = iterator.next();
-                    //                    SystemAccountEntity current = accountService.getAccountByAccountNo(accountNo);
-                    //                    if (current != null)
-                    //                    {
-                    //                        List<FunctionEntity> functionList = roleService.getAllRoleFunction(current.getId());
-                    //                        if (functionList != null && functionList.size() > 0)
-                    //                        {
-                    //                            for (FunctionEntity functionEntity : functionList)
-                    //                            {
-                    //                                if (functionEntity == null)
-                    //                                {
-                    //                                    continue;
-                    //                                }
-                    //                                if (StringUtils.isEmpty(functionEntity.getUrl()))
-                    //                                {
-                    //                                    continue;
-                    //                                }
-                    //                                Permission p = new WildcardPermission(
-                    //                                        functionEntity.getUrl());
-                    //                                permissions.add(p);
-                    //                            }
-                    //                        }
-                    //                    }
-                    
-                }
+                //                if (info.getRoles() != null && info.getRoles().size() > 0)
+                //                {
+                //                    Iterator<String> iterator = info.getRoles().iterator();
+                //                    String accountNo = iterator.next();
+                //                    SystemAccountEntity current = accountService.getAccountByAccountNo(accountNo);
+                //                    if (current != null)
+                //                    {
+                //                        List<FunctionEntity> functionList = roleService.getAllRoleFunction(current.getId());
+                //                        if (functionList != null && functionList.size() > 0)
+                //                        {
+                //                            for (FunctionEntity functionEntity : functionList)
+                //                            {
+                //                                if (functionEntity == null)
+                //                                {
+                //                                    continue;
+                //                                }
+                //                                if (StringUtils.isEmpty(functionEntity.getUrl()))
+                //                                {
+                //                                    continue;
+                //                                }
+                //                                Permission p = new WildcardPermission(
+                //                                        functionEntity.getUrl());
+                //                                permissions.add(p);
+                //                            }
+                //                        }
+                //                    }
+                //                    
+                //                }
             }
             
             // =============================end==========================================//

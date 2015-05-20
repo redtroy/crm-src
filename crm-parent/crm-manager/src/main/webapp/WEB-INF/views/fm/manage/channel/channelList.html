@@ -85,9 +85,11 @@ function deleteChannel(channelId){
               -
               <input type="text" class="input input-time cal form-control" name="endTime" value="${query.endTime}" datepicker  id="time2" />
 			  </p>
+			   <@shiro.hasRole name="8"> 
 			  <span class="advanced" style="display:;"> 创建员工编号
               <input type="text" class="input" name="uid" value="${query.uid}" />
 			  </span>
+			  </@shiro.hasRole>
 			  <div class="ly-right mr20">
 			  <span class="btnBox">
               <button class="button button-search" title="员工只能看到自己的的推广渠道" onclick="query();">查询</button>

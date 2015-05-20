@@ -16,9 +16,14 @@ public interface IPersonnelService
     public List<PersonnelEntity> queryPersonnels(PersonnelQuery query)
             throws ServiceException;
     
-    public void addPersonnel(PersonnelEntity personnel, String[] functionIds);
+    public void addPersonnel(PersonnelEntity personnel, String[] functionIds)
+            throws ServiceException;
     
-    public PersonnelEntity getPersonnel(String uid);
+    public PersonnelEntity getPersonnel(String uid) throws ServiceException;
     
-    public void editPersonnel(PersonnelEntity personnel);
+    public void editPersonnel(PersonnelEntity personnel, String[] functionIds)
+            throws ServiceException;
+    
+    public void editPersonnel(PersonnelEntity personnel)
+            throws ServiceException;
 }

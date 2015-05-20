@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
@@ -18,7 +20,6 @@ import com.zijincaifu.model.personnel.PersonnelQuery;
 import com.zijincaifu.service.personnel.IPersonnelService;
 
 @Service
-@Transactional
 public class PersonnelServiceImpl implements IPersonnelService
 {
     @Autowired
@@ -28,6 +29,7 @@ public class PersonnelServiceImpl implements IPersonnelService
     private IFunctionRoleDao roleDao;
     
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public List<PersonnelEntity> queryPersonnels(PersonnelQuery query)
             throws ServiceException
     {
@@ -86,20 +88,72 @@ public class PersonnelServiceImpl implements IPersonnelService
         catch (Exception e)
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
-            throw new ServiceException("新增用戶信息错误", e);
+            throw new ServiceException("新增员工信息错误", e);
         }
     }
     
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public PersonnelEntity getPersonnel(String uid)
     {
         return personnelDao.getPersonnel(uid);
     }
     
     @Override
-    public void editPersonnel(PersonnelEntity personnel)
+    @Transactional
+    public void editPersonnel(PersonnelEntity personnel, String[] functionIds)
     {
-        personnelDao.updatePersonnel(personnel);
+        try
+        {
+            if (functionIds != null && functionIds.length > 0)
+            {
+                List<FunctionRoleEntity> roles = new ArrayList<FunctionRoleEntity>();
+                for (int i = 0; i < functionIds.length; i++)
+                {
+                    if (functionIds[i] != null
+                            && !"none".equals(functionIds[i]))
+                    {
+                        FunctionRoleEntity role = new FunctionRoleEntity();
+                        role.setEmployeeId(personnel.getUid());
+                        role.setFunctionId(functionIds[i]);
+                        roles.add(role);
+                    }
+                }
+                if (!CollectionUtils.isEmpty(roles))
+                {
+                    roleDao.deleteRoles(personnel.getUid());
+                    roleDao.addRoles(roles);
+                }
+            }
+            else
+            {
+                roleDao.deleteRoles(personnel.getUid());
+            }
+            personnelDao.updatePersonnel(personnel);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("修改员工信息错误", e);
+        }
+        
+    }
+    
+    @Override
+    @Transactional
+    public void editPersonnel(PersonnelEntity personnel)
+            throws ServiceException
+    {
+        try
+        {
+            personnelDao.updatePersonnel(personnel);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("修改员工信息错误", e);
+        }
+        
     }
     
 }

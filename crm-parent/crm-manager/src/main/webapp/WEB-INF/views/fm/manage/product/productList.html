@@ -85,9 +85,11 @@ function deleteProduct(productId){
 			  <span class="btnBox">
               <button class="button button-search" onclick="query();">查询</button>
               </span> 
+               <@shiro.hasRole name="6"> 
 			  <span class="btnBox">
 			  <button class="button button-green f12" onclick="loadAddProduct();">新增产品</button>
 			  </span> 
+			  </@shiro.hasRole>
           </div>
           </form>
           <table border="0" cellspacing="0" cellpadding="0" class="tabList mb10">
@@ -112,17 +114,15 @@ function deleteProduct(productId){
               <td>${model.remark}</td>
 			  <td title="${model.productUrl}" class="color-orange">查看</td>
               <td>${model.addTime?string("yyyy-MM-dd")}</td>
-              <td class="edit"><!--<a href="#" class="button btn-examine">审核</a>--><span onclick="deleteProduct('${model.productId}')"><a href="javascript:void(0);" class="del">删除</a></span> <span onclick="loadEditProduct('${model.productId}')"><a href="javascript:void(0);" class="allot">修改</a></span></td>
-            </tr>
+              <td class="edit">
+              <@shiro.hasRole name="7"> 
+              <span onclick="deleteProduct('${model.productId}')"><a href="javascript:void(0);" class="del">删除</a></span> <span onclick="loadEditProduct('${model.productId}')"><a href="javascript:void(0);" class="allot">修改</a></span></td>
+              </@shiro.hasRole>
+              <@shiro.lacksRole name="7">
+              -
+              </@shiro.lacksRole>
+              </tr>
             </#list>
-            <!-- <tr>
-              <td>P0001</td>
-              <td>栖霞大道18号</td>
-              <td> 栖霞大道理财鲜项目</td>
-			  <td title="http://www.menchuang.org.cn" class="color-orange">查看</td>
-              <td>2015-01-31</td>
-              <td class="edit"><a href="#" class="button btn-examine">审核</a><a href="#" class="del">删除</a> <a href="#" class="allot">修改</a></td>
-            </tr> -->
           </table>
           <@b.pager/>
         <div class="ly-clearFix">

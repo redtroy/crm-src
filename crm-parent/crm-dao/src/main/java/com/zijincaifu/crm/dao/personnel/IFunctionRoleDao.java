@@ -3,7 +3,6 @@ package com.zijincaifu.crm.dao.personnel;
 import java.util.List;
 
 import com.sxj.mybatis.orm.annotations.BatchInsert;
-import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.entity.personnel.FunctionEntity;
 import com.zijincaifu.crm.entity.personnel.FunctionRoleEntity;
 
@@ -30,15 +29,13 @@ public interface IFunctionRoleDao
      * @return
      * @throws SQLException2
      */
-    public List<FunctionEntity> getRoleFunction(
-            QueryCondition<FunctionRoleEntity> query);
+    public List<FunctionEntity> getAllRoleFunction(String persionId);
     
     /**
-     * 获取授权操作列表
-     * 
+     * 获取权限列表
+     * @param persionId
      * @return
-     * @throws SQLException2
      */
-    public List<FunctionEntity> getAllRoleFunction(String persionId);
+    public List<FunctionRoleEntity> getRoleList(String persionId);
     
 }

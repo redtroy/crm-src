@@ -29,6 +29,50 @@ function addPersonnel(){
 	 },"是否确认修改员工");
 	
 }
+
+function addRole(){
+	dialogBoxOutId("#editrole_div");
+}
+
+function closeDiv(){
+	   layer.closeAll();
+}
+$(":checkbox").change( function () {
+	   var thisId=$(this).attr("id");
+	   var parentId=$(this).attr("parentId");
+	   var isCheck=$(this).attr("checked");
+	   var children=$("#children_ul_"+thisId).children().children(":checkbox");
+	   var parent=$("#"+parentId);
+	   if(isCheck=="checked"){
+		   parent.attr("checked","checked");
+	   }
+	   else{
+		   var children2=$("#children_ul_"+parentId).children().children(":checked");
+		   if(children2.size()<=0){
+			   parent.attr("checked",false);
+		   }
+	   }
+	   children.each(function(i){
+		   var thisParentId=$(this).attr("parentId");
+		   if(thisParentId==thisId){
+			   if(isCheck=="checked"){
+				   $(this).attr("checked","checked");
+			   }
+			   else{
+				   $(this).attr("checked",false);
+			   }
+		   }
+		});
+	   
+	});
+function confim(){
+	   var values = new Array();
+	   $("input:checked").each(function(i){
+		   values[i]=$(this).val()
+	   });
+	   $("input[name='functionIds']").val(values);
+	   closeDiv();
+}
 </script>
 <div class="heading fontYH f20">新增员工 </div>
         <div class="mainBox newMem">
@@ -69,7 +113,10 @@ function addPersonnel(){
             </tr>
 			<tr>
               <th>操作权限</th>
-              <td><div class="adminDrop dropMenu sltinput"> <span>全部权限</span> <span class="icon"></span> </div></td>
+              <td>
+              <div class="adminDrop dropMenu sltinput" onclick="addRole();"> <span>全部权限</span> <span class="icon"></span> </div>
+              <input id="functionIds_hidden" type="hidden" name="functionIds" value="none" />
+              </td>
             </tr>  
 			<tr>
               <th>UnionID</th>
@@ -80,3 +127,51 @@ function addPersonnel(){
           </form>
           <div class="buttonBox mb10 tc"><span onclick="sub();"><a href="javascript:void(0);" class="button button-orange mr15">确定</a></span><a href="javascript:query();" class="button button-gray">返回</a></div>
         </div>
+        
+        
+       <div id="editrole_div" class="modal-wrap popDemo dropList" style="display: none;dwidth:590px;margin-left:-188px;margin-top:-4px;">
+		     <div class="modal-header"><span class="close" onclick="closeDiv();">关闭</span></div>
+		     <div class="modal-body dropBox">
+		     <#list allFunction as function>
+		     	<div class="item">
+		     	<#assign isCheck=false>
+        		<#list roleList as check>
+	        		<#if check.id==function.function.id>
+	          			<#assign isCheck=true>
+	          		</#if>
+          		</#list>
+			     <span>
+			      <#if function.function.id==1>
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}" checked="checked" disabled="disabled">${function.function.title}
+			     	<#else>
+			     	<#if isCheck=true>
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}" checked="checked">${function.function.title}
+			     	<#else>
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}">${function.function.title}
+			     	</#if>
+			       </#if>
+			     </span>
+			     <ul id="children_ul_${function.function.id}">
+			      <#list function.children as children>
+			      <#assign childIsCheck=false>
+            	  <#list roleList as check>
+	            	 <#if check.id==children.id>
+	            	 	<#assign childIsCheck=true>
+	            	 </#if>
+             	  </#list>
+			       <#if children.id==3>
+			     	<li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}" checked="checked" disabled="disabled">${children.title}</li>
+			       <#else>
+			       <#if childIsCheck=true>
+			        <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}" checked="checked">${children.title}</li>
+			       <#else>
+			        <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}">${children.title}</li>
+			       </#if>
+			        </#if>
+			      </#list>
+			     </ul>
+		     	</div>
+		     </#list>
+		     <button class="popBtn" onclick="confim();">确认</button>
+		     </div>
+     </div>

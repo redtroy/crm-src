@@ -1,6 +1,7 @@
 package com.zijincaifu.crm.manage.login;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
@@ -18,65 +19,72 @@ import com.sxj.spring.modules.beanfactory.CustomizedPropertyPlaceholderConfigure
 import com.sxj.spring.modules.security.shiro.ShiroRedisCacheManager;
 import com.sxj.util.Constraints;
 
-public class ShiroEventListener implements BeanFactoryPostProcessor {
-
-	private static RedisTopics topics;
-
-	private static RedisCollections collections;
-
-	private static ShiroRedisCacheManager cacheManager;
-
-	private static String cacheName;
-
-	@Override
-	public void postProcessBeanFactory(
-			final ConfigurableListableBeanFactory beanFactory)
-			throws BeansException {
-		topics = beanFactory.getBean(RedisTopics.class);
-		collections = beanFactory.getBean(RedisCollections.class);
-		cacheManager = beanFactory
-				.getBean(SupervisorShiroRedisCacheManager.class);
-		cacheName = CustomizedPropertyPlaceholderConfigurer
-				.getContextProperty("webmanage.authorization.cache.name");
-		RTopic<Object> topic = topics
-				.getTopic(Constraints.MANAGER_CHANNEL_NAME);
-		topic.addListener(new MessageListener<Object>() {
-			@Override
-			public void onMessage(Object msg) {
-				if (!(msg instanceof String)) {
-					return;
-				}
-				String[] message = ((String) msg).split(",");
-				String type = message[0];
-				String accountId = message[1];
-				RMap<Object, Object> map = collections
-						.getMap(Constraints.SHIRO_MAP_KEY);
-				if (map == null) {
-					return;
-				}
-				if (map.get(accountId) == null) {
-					return;
-				}
-				List<PrincipalCollection> principals = (List<PrincipalCollection>) map
-						.get(accountId);
-				Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-				for (PrincipalCollection principal : principals) {
-					if ("del".equals(type)) {
-						cache.put(principal, new SimpleAuthorizationInfo());
-					} else if ("update".equals(type)) {
-						SimpleAuthorizationInfo old = (SimpleAuthorizationInfo) cache
-								.get(principal);
-						if (old == null) {
-							continue;
-						}
-						old.setStringPermissions(null);
-						cache.put(principal, old);
-					}
-
-				}
-
-			}
-		});
-
-	}
+public class ShiroEventListener implements BeanFactoryPostProcessor
+{
+    
+    private static RedisTopics topics;
+    
+    private static RedisCollections collections;
+    
+    private static ShiroRedisCacheManager cacheManager;
+    
+    private static String cacheName;
+    
+    @Override
+    public void postProcessBeanFactory(
+            final ConfigurableListableBeanFactory beanFactory)
+            throws BeansException
+    {
+        topics = beanFactory.getBean(RedisTopics.class);
+        collections = beanFactory.getBean(RedisCollections.class);
+        cacheManager = beanFactory.getBean(SupervisorShiroRedisCacheManager.class);
+        cacheName = CustomizedPropertyPlaceholderConfigurer.getContextProperty("crm.manage.authorization.cache.name");
+        RTopic<Object> topic = topics.getTopic(Constraints.MANAGER_CHANNEL_NAME);
+        topic.addListener(new MessageListener<Object>()
+        {
+            @Override
+            public void onMessage(Object msg)
+            {
+                if (!(msg instanceof PublishMessage))
+                {
+                    return;
+                }
+                PublishMessage message = (PublishMessage) msg;
+                String type = message.getType();
+                String userId = message.getUserId();
+                Set<String> roles = message.getRoles();
+                RMap<Object, Object> map = collections.getMap(Constraints.SHIRO_MAP_KEY);
+                if (map == null)
+                {
+                    return;
+                }
+                if (map.get(userId) == null)
+                {
+                    return;
+                }
+                List<PrincipalCollection> principals = (List<PrincipalCollection>) map.get(userId);
+                Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+                for (PrincipalCollection principal : principals)
+                {
+                    if ("del".equals(type))
+                    {
+                        cache.remove(principal);
+                    }
+                    else if ("update".equals(type))
+                    {
+                        SimpleAuthorizationInfo old = (SimpleAuthorizationInfo) cache.get(principal);
+                        if (old == null)
+                        {
+                            continue;
+                        }
+                        old.setRoles(roles);
+                        cache.put(principal, old);
+                    }
+                    
+                }
+                
+            }
+        });
+        
+    }
 }

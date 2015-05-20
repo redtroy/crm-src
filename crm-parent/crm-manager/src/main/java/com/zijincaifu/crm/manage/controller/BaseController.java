@@ -5,8 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -135,15 +136,15 @@ public class BaseController
         return message;
     }
     
-    protected PersonnelEntity getLoginInfo(HttpSession session)
+    protected PersonnelEntity getLoginInfo()
     {
-        Object object = session.getAttribute("userinfo");
-        if (object != null)
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.getPrincipal() == null)
         {
-            PersonnelEntity user = (PersonnelEntity) object;
-            return user;
+            return null;
         }
-        return null;
+        PersonnelEntity user = (PersonnelEntity) subject.getPrincipal();
+        return user;
         
     }
     

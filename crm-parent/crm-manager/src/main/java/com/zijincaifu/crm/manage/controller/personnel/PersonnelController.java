@@ -1,9 +1,12 @@
 package com.zijincaifu.crm.manage.controller.personnel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,18 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sxj.redis.core.pubsub.RedisTopics;
+import com.sxj.util.Constraints;
 import com.sxj.util.common.DateTimeUtils;
 import com.sxj.util.common.NumberUtils;
 import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
+import com.zijincaifu.crm.entity.personnel.FunctionEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
+import com.zijincaifu.crm.manage.login.PublishMessage;
 import com.zijincaifu.model.personnel.FunctionModel;
 import com.zijincaifu.model.personnel.PersonnelQuery;
 import com.zijincaifu.service.personnel.IFunctionService;
 import com.zijincaifu.service.personnel.IPersonnelService;
+import com.zijincaifu.service.personnel.IRoleService;
 
 @Controller
 @RequestMapping("/personnel")
@@ -34,6 +42,12 @@ public class PersonnelController extends BaseController
     @Autowired
     private IFunctionService functionService;
     
+    @Autowired
+    private IRoleService roleService;
+    
+    @Autowired
+    private RedisTopics topics;
+    
     @RequestMapping("personnelList")
     public String getPersonnelList(PersonnelQuery query, ModelMap map)
             throws WebException
@@ -44,13 +58,16 @@ public class PersonnelController extends BaseController
             {
                 query.setPagable(true);
             }
+            if (SecurityUtils.getSubject() != null
+                    && !SecurityUtils.getSubject().hasRole("9"))
+            {
+                PersonnelEntity user = getLoginInfo();
+                query.setUid(user.getUid());
+            }
             List<PersonnelEntity> list = personneService.queryPersonnels(query);
             PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
-            //            List<FunctionEntity> functionList = functionService
-            //                    .queryChildrenFunctions("0");
             map.put("list", list);
             map.put("company", company);
-            //            map.put("functions", functionList);
             map.put("query", query);
             return "manage/personnel/personnelList";
         }
@@ -120,6 +137,11 @@ public class PersonnelController extends BaseController
             PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             map.put("company", company);
             map.put("personnel", personnel);
+            
+            List<FunctionEntity> roleList = roleService.getAllRoleFunction(uid);
+            List<FunctionModel> allFunction = functionService.queryTreeFunctions();
+            map.put("allFunction", allFunction);
+            map.put("roleList", roleList);
             return "manage/personnel/personnelEdit";
         }
         catch (Exception e)
@@ -132,14 +154,33 @@ public class PersonnelController extends BaseController
     
     @RequestMapping("editPersonnel")
     public @ResponseBody Map<String, Object> editPersonnel(
-            PersonnelEntity personnel) throws WebException
+            PersonnelEntity personnel,
+            @RequestParam("functionIds") String functionIds)
+            throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            //            personnel.setFreezeStatus(1);
-            //            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
-            personneService.editPersonnel(personnel);
+            String[] ids = null;
+            Set<String> roles = new HashSet<>();
+            if (StringUtils.isNotEmpty(functionIds))
+            {
+                ids = functionIds.split(",");
+                if (!"none".equals(functionIds))
+                {
+                    for (int i = 0; i < ids.length; i++)
+                    {
+                        roles.add(ids[i]);
+                    }
+                }
+            }
+            personneService.editPersonnel(personnel, ids);
+            PublishMessage message = new PublishMessage();
+            message.setType("update");
+            message.setUserId(personnel.getUid());
+            message.setRoles(roles);
+            topics.getTopic(Constraints.MANAGER_CHANNEL_NAME).publish(message);
+            
             map.put("isOK", true);
         }
         catch (Exception e)
@@ -162,6 +203,12 @@ public class PersonnelController extends BaseController
             personnel.setFreezeStatus(freezeStatus);
             personneService.editPersonnel(personnel);
             map.put("isOK", true);
+            
+            PublishMessage message = new PublishMessage();
+            message.setType("del");
+            message.setUserId(personnel.getUid());
+            topics.getTopic(Constraints.MANAGER_CHANNEL_NAME).publish(message);
+            
         }
         catch (Exception e)
         {
@@ -186,6 +233,12 @@ public class PersonnelController extends BaseController
             personneService.editPersonnel(personnel);
             map.put("isOK", true);
             map.put("password", password);
+            
+            PublishMessage message = new PublishMessage();
+            message.setType("del");
+            message.setUserId(personnel.getUid());
+            topics.getTopic(Constraints.MANAGER_CHANNEL_NAME).publish(message);
+            
         }
         catch (Exception e)
         {
