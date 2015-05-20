@@ -85,6 +85,12 @@ public class PersonnelEntity extends Pagable implements Serializable
     @Column(name = "FREEZESTATUS")
     private Integer freezeStatus;
     
+    /**
+     * 最后登录时间
+     */
+    @Column(name = "LAST_LOGIN_TIME")
+    private Date lastLoginTime;
+    
     public String getId()
     {
         return id;
@@ -173,6 +179,16 @@ public class PersonnelEntity extends Pagable implements Serializable
     public void setFreezeStatus(Integer freezeStatus)
     {
         this.freezeStatus = freezeStatus;
+    }
+    
+    public Date getLastLoginTime()
+    {
+        return lastLoginTime;
+    }
+    
+    public void setLastLoginTime(Date lastLoginTime)
+    {
+        this.lastLoginTime = lastLoginTime;
     }
     
 }

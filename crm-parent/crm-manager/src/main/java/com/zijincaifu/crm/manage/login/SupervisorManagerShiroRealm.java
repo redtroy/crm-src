@@ -13,8 +13,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.permission.PermissionResolver;
@@ -24,16 +24,20 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sxj.spring.modules.util.Reflections;
 import com.sxj.util.logger.SxjLogger;
+import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
+import com.zijincaifu.service.personnel.IPersonnelService;
 
 public class SupervisorManagerShiroRealm extends AuthorizingRealm
 {
     
     // 用于获取用户信息及用户权限信息的业务接口
-    //	@Autowired
-    //	private ISystemAccountService accountService;
+    @Autowired
+    private IPersonnelService accountService;
+    
     //
     //	@Autowired 
     //	private IRoleService roleService;
@@ -107,12 +111,12 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
         //
         if (username != null && !"".equals(username))
         {
-            //            SystemAccountEntity account = accountService.getAccountByAccount(username);
-            //            if (account != null)
-            //            {
-            //                return new SimpleAuthenticationInfo(account,
-            //                        account.getPassword(), getName());
-            //            }
+            PersonnelEntity account = accountService.getPersonnel(username);
+            if (account != null)
+            {
+                return new SimpleAuthenticationInfo(account,
+                        account.getPassword(), getName());
+            }
         }
         return null;
     }
@@ -123,11 +127,11 @@ public class SupervisorManagerShiroRealm extends AuthorizingRealm
     @PostConstruct
     public void initCredentialsMatcher()
     {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(
-                HASH_ALGORITHM);
-        matcher.setHashIterations(HASH_INTERATIONS);
-        
-        setCredentialsMatcher(matcher);
+        //        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(
+        //                HASH_ALGORITHM);
+        //        matcher.setHashIterations(HASH_INTERATIONS);
+        //        
+        //        setCredentialsMatcher(matcher);
     }
     
     @Override

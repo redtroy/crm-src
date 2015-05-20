@@ -13,6 +13,7 @@
 		<result property="addTime" column="ADDTIME" jdbcType="TIMESTAMP"/>
 		<result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
 		<result property="freezeStatus" column="FREEZESTATUS" jdbcType="INTEGER"/>
+		<result property="lastLoginTime" column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" />
 	</resultMap>
 	
 	<!-- 获取员工信息 -->

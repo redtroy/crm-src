@@ -1,5 +1,6 @@
 package com.zijincaifu.service.impl.personnel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
-import com.sxj.util.persistent.ResultList;
-import com.sxj.util.persistent.ResultListImpl;
+import com.zijincaifu.crm.dao.personnel.IFunctionRoleDao;
 import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
+import com.zijincaifu.crm.entity.personnel.FunctionRoleEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.model.personnel.PersonnelQuery;
 import com.zijincaifu.service.personnel.IPersonnelService;
@@ -23,6 +24,8 @@ public class PersonnelServiceImpl implements IPersonnelService
     @Autowired
     private IPersonnelDao personnelDao;
     
+    @Autowired
+    private IFunctionRoleDao roleDao;
     
     @Override
     public List<PersonnelEntity> queryPersonnels(PersonnelQuery query)
@@ -49,15 +52,36 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("查询用戶信息错误", e);
         }
     }
-
-
+    
     @Override
     @Transactional
-    public void addPersonnel(PersonnelEntity personnel) throws ServiceException
+    public void addPersonnel(PersonnelEntity personnel, String[] functionIds)
+            throws ServiceException
     {
         try
         {
             personnelDao.addPersonnel(personnel);
+            
+            if (functionIds != null && functionIds.length > 0)
+            {
+                List<FunctionRoleEntity> roles = new ArrayList<FunctionRoleEntity>();
+                for (int i = 0; i < functionIds.length; i++)
+                {
+                    if (functionIds[i] != null
+                            && !"none".equals(functionIds[i]))
+                    {
+                        FunctionRoleEntity role = new FunctionRoleEntity();
+                        role.setEmployeeId(personnel.getUid());
+                        role.setFunctionId(functionIds[i]);
+                        roles.add(role);
+                    }
+                }
+                if (!roles.isEmpty())
+                {
+                    roleDao.addRoles(roles);
+                }
+                
+            }
         }
         catch (Exception e)
         {
@@ -65,15 +89,13 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("新增用戶信息错误", e);
         }
     }
-
-
+    
     @Override
     public PersonnelEntity getPersonnel(String uid)
     {
         return personnelDao.getPersonnel(uid);
     }
-
-
+    
     @Override
     public void editPersonnel(PersonnelEntity personnel)
     {

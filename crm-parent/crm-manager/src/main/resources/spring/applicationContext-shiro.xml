@@ -20,7 +20,7 @@
 		<property name="authenticationCacheName" value="${webmanage.authentication.cache.name}"></property>
 	</bean>
 	<bean class="com.zijincaifu.crm.manage.login.ShiroEventListener"></bean>
-	
+
 	<bean id="authenticationFilter"
 		class="com.zijincaifu.crm.manage.login.SupervisorManagerPermissionsAuthorizationFilter" />
 
@@ -72,7 +72,7 @@
 		<constructor-arg name="name" value="SHAREJSESSIONID_MANAGE" />
 		<!-- jsessionId的path为 / 用于多个系统共享jsessionId -->
 		<property name="path" value="/" />
-		<property name="domain" value="menchuang.org.cn"></property>
+		<property name="domain" value=""></property>
 	</bean>
 	<!-- session存储的实现 -->
 	<bean id="shiroSessionDao"
@@ -104,6 +104,12 @@
 		<!-- 访问地址的过滤规则,从上至下的优先级,如果有匹配的规则,就会返回,不会再进行匹配 -->
 		<property name="filterChainDefinitions">
 			<value>
+				/index.htm=user
+				/unauth.htm = anon
+				/customer/**=authc,user
+				/product/**=authc,user
+				/channel/**=authc,user
+				/personnel/**=authc,user
 			</value>
 		</property>
 		<!-- 声明自定义的过滤器 -->
