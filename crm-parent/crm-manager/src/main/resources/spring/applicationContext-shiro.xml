@@ -24,6 +24,7 @@
 	<bean id="authenticationFilter"
 		class="com.zijincaifu.crm.manage.login.SupervisorManagerPermissionsAuthorizationFilter">
 		<property name="collections" ref="redisCollections"></property>
+		<property name="cacheManager" ref="shiroCacheManager"></property>
 	</bean>
 
 
