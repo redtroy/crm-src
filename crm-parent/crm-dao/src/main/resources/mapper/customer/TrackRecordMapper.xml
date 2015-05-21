@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zijincaifu.crm.dao.customer.ITrackRecordDao">
+	<resultMap type="com.zijincaifu.crm.entity.customer.TrackRecordEntity"
+		id="TrackRecordResultMap">
+		<id property="id" column="ID" jdbcType="VARCHAR" />
+		<result property="customerId" column="CUSTOMER_ID" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="remark" column="REMARK" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<delete id="deleteTrackRecord" parameterType="String" >
+		<![CDATA[ DELETE FROM CRM_TRACK_RECORD WHERE CUSTOMER_ID=#{customerId}]]>
+	</delete>
+	
+	<!-- 查看 -->
+	<select id="queryTrackRecordList" resultMap="TrackRecordResultMap"
+		parameterType="com.sxj.util.persistent.QueryCondition">
+		<![CDATA[ SELECT * FROM CRM_TRACK_RECORD WHERE 1=1 ]]>
+		<!-- 客户 -->
+		<if test="condition.customerId != null and condition.customerId != ''">
+			<![CDATA[ AND CUSTOMER_ID =#{condition.customerId}]]>
+		</if>
+		<![CDATA[ ORDER BY CREATE_TIME DESC ]]>
+	</select>
+</mapper>

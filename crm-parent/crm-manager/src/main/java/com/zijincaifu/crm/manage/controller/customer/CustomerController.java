@@ -46,7 +46,7 @@ public class CustomerController extends BaseController
     private IAreaService areaService;
     
     @Autowired
-    private IPersonnelService personnelService;;
+    private IPersonnelService personnelService;
     
     @RequestMapping("/query")
     public String query(CustomerQuery query, ModelMap map) throws WebException
@@ -268,4 +268,23 @@ public class CustomerController extends BaseController
         return map;
     }
     
+    @RequestMapping("deleteCustomer")
+    public @ResponseBody Map<String, Object> deleteCustomer(String customerId)
+            throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+//            CustomerEntity customer = customerService.getCustomer(customerId);
+            customerService.deleteCustomer(customerId);
+            map.put("isOK", true);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
+    }
 }

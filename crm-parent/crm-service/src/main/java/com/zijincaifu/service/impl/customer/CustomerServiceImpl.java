@@ -13,6 +13,8 @@ import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.dao.customer.ICustomerDao;
+import com.zijincaifu.crm.dao.customer.IInvestItemDao;
+import com.zijincaifu.crm.dao.customer.ITrackRecordDao;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
 import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
@@ -28,6 +30,12 @@ public class CustomerServiceImpl implements ICustomerService
     
     @Autowired
     private IInvestItemService itemService;
+    
+    @Autowired
+    private IInvestItemDao investemDao;
+    
+    @Autowired
+    private ITrackRecordDao trackRecordDao;
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -153,6 +161,23 @@ public class CustomerServiceImpl implements ICustomerService
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
             throw new ServiceException("修改等级错误", e);
+        }
+    }
+
+    @Override
+    public void deleteCustomer(String customerId)
+    {
+        try
+        {
+            CustomerEntity customer=this.getCustomer(customerId);
+            customerDao.deleteCustomer(customer.getId());
+            investemDao.deleteItems(customerId);
+            trackRecordDao.deleteTrackRecord(customerId);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("删除客户错误", e);
         }
     }
 }

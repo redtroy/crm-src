@@ -19,4 +19,6 @@ public interface ICustomerService
     public CustomerEntity getCustomer(String customerId);
 
     public void updateCustomer(CustomerEntity customer);
+
+    public void deleteCustomer(String customerId);
 }

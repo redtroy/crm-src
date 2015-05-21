@@ -1,0 +1,22 @@
+
+<td colspan="11"><div class="tabTit fontYH f14">客户跟踪记录</div>
+	<div class="list">
+		<dl class="devList">
+		<dt class="titDev"></dt>
+		<form action="javascript:void(0);" id="addTrack_form_${customerId}">
+		<input type="hidden" name="customerId" id="customerId" value="${customerId}"/>
+		<dd class="ly-clearFix"><span class="time">&nbsp;&nbsp;</span><span class="comInfo">
+		<textarea cols="2" name="remark" id="remark" style="width:650px"></textarea>
+		</span>&nbsp;&nbsp;<span class="btnBox">
+		<button class="button button-green" onclick="subTrack('${customerId}')">新增</button>
+		</span></dd>
+		</form>
+		<#list list as model>
+             <dd class="ly-clearFix"><span class="time">${model.createTime?string("yyyy-MM-dd HH:mm:ss")}</span><span class="comInfo">${model.remark}</span></dd>
+         </#list>
+             <!-- <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
+             <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd>
+             <dd class="ly-clearFix"><span class="time">2015-04-20&nbsp;16:25:35</span><span class="comInfo">通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注通过网站观注，销售人员跟进通过网站观注，销售人员跟进通过网站观注</span></dd> -->
+		</dl>
+		</div>
+<div class="buttonBox mt15 mb10 tc"><span onclick="trackRecord('${customerId}')"><a href="javascript:void(0)" class="button button-gray btn-hide">收起</a></span></div></td>
