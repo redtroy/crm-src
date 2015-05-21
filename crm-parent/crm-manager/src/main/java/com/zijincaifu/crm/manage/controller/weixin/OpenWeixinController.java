@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sxj.spring.modules.mapper.JsonMapper;
+import com.sxj.spring.modules.web.MediaTypes;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.model.customer.OpenCustomerModel;
 
@@ -17,14 +19,17 @@ import com.zijincaifu.model.customer.OpenCustomerModel;
 @RequestMapping("/open")
 public class OpenWeixinController extends BaseController
 {
-    @RequestMapping(value = "/addCustomer", method = RequestMethod.GET)
-    public void addUser(@RequestBody OpenCustomerModel customer,
+    @RequestMapping(value = "/addCustomer", method = RequestMethod.POST, consumes = MediaTypes.JSON)
+    @ResponseBody
+    public void addCustomer(@RequestBody String json,
             HttpServletResponse response)
     {
         try
         {
-            String json = JsonMapper.nonDefaultMapper().toJson(customer);
-            System.out.println(json);
+            OpenCustomerModel cs = JsonMapper.nonEmptyMapper()
+                    .getMapper()
+                    .readValue(json, OpenCustomerModel.class);
+            System.out.println(cs);
             PrintWriter out = response.getWriter();
             out.print("1");
             out.flush();

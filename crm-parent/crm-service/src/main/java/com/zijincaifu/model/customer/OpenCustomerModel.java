@@ -27,7 +27,7 @@ public class OpenCustomerModel implements Serializable
     
     private String channelId;
     
-    private String employeId;
+    private String employeeId;
     
     private List<RecommendEntity> recommen;
     
@@ -101,14 +101,14 @@ public class OpenCustomerModel implements Serializable
         this.channelId = channelId;
     }
     
-    public String getEmployeId()
+    public String getEmployeeId()
     {
-        return employeId;
+        return employeeId;
     }
     
-    public void setEmployeId(String employeId)
+    public void setEmployeeId(String employeeId)
     {
-        this.employeId = employeId;
+        this.employeeId = employeeId;
     }
     
     public static void main(String[] args)
@@ -120,7 +120,7 @@ public class OpenCustomerModel implements Serializable
         model.setUnionId("AAAAAAAAAAAAAAAAAAAAAA");
         model.setProductId("产品ID");
         model.setChannelId("cccccc");
-        model.setEmployeId("11111");
+        model.setEmployeeId("11111");
         List<RecommendEntity> recommenList = new ArrayList<>();
         RecommendEntity r1 = new RecommendEntity();
         r1.setUnionId("11111111");

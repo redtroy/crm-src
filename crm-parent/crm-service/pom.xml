@@ -14,7 +14,6 @@
 		<dependency>
 			<groupId>com.zijincaifu</groupId>
 			<artifactId>crm-dao</artifactId>
-			<version>1.0</version>
 		</dependency>
 		<!-- springside -->
 		<dependency>
@@ -48,11 +47,11 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-lgpl</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			 <version>1.9.13</version>  
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
@@ -70,7 +69,6 @@
 		<dependency>
 			<groupId>com.sxj</groupId>
 			<artifactId>mybatis-shard</artifactId>
-			<version>3.2.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
