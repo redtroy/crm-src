@@ -14,8 +14,7 @@
 		<dependency>
 			<groupId>com.zijincaifu</groupId>
 			<artifactId>crm-dao</artifactId>
-			<version>1.0</version>
-		</dependency>
+			</dependency>
 		<!-- springside -->
 		<dependency>
 			<groupId>com.sxj</groupId>
@@ -60,12 +59,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sxj</groupId>
-			<artifactId>mybatis-shard</artifactId>
-			<version>3.2.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
