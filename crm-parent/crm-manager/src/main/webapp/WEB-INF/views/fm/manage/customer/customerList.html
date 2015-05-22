@@ -342,7 +342,11 @@ function deleteCustomer(customerId){
             </tr>
             <#assign index=0/>
             <#list list as model>
-            <tr class="bColor-red" title="有报名未处理的客户记录">
+            <#if model.level.getId()==0>
+             <tr class="bColor-red" title="有报名未处理的客户记录">
+            <#else>
+            <tr>
+            </#if>
               <td><a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a></td>
               <td>${model.name}</td>
               <td>${model.phone}</td>

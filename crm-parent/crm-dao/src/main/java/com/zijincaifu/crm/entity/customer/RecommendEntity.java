@@ -34,10 +34,10 @@ public class RecommendEntity extends Pagable implements Serializable
     private String id;
     
     /**
-     * 产品编码
+     * 投资明细ID
      */
-    @Column(name = "PRODUCT_ID")
-    private String productId;
+    @Column(name = "INVEST_ID")
+    private String investId;
     
     /**
      * 渠道
@@ -79,14 +79,14 @@ public class RecommendEntity extends Pagable implements Serializable
         this.id = id;
     }
     
-    public String getProductId()
+    public String getInvestId()
     {
-        return productId;
+        return investId;
     }
     
-    public void setProductId(String productId)
+    public void setInvestId(String investId)
     {
-        this.productId = productId;
+        this.investId = investId;
     }
     
     public String getUnionId()
