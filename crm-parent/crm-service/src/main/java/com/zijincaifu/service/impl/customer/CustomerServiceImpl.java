@@ -2,6 +2,7 @@ package com.zijincaifu.service.impl.customer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,14 @@ import com.zijincaifu.crm.dao.customer.IInvestItemDao;
 import com.zijincaifu.crm.dao.customer.ITrackRecordDao;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
+import com.zijincaifu.crm.entity.customer.RecommendEntity;
+import com.zijincaifu.crm.enu.customer.CustomerLevelEnum;
 import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
 import com.zijincaifu.model.customer.CustomerQuery;
+import com.zijincaifu.model.customer.OpenCustomerModel;
 import com.zijincaifu.service.customer.ICustomerService;
 import com.zijincaifu.service.customer.IInvestItemService;
+import com.zijincaifu.service.customer.IRecommendService;
 
 @Service
 public class CustomerServiceImpl implements ICustomerService
@@ -36,6 +41,9 @@ public class CustomerServiceImpl implements ICustomerService
     
     @Autowired
     private ITrackRecordDao trackRecordDao;
+    
+    @Autowired
+    private IRecommendService recommendService;
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -56,6 +64,41 @@ public class CustomerServiceImpl implements ICustomerService
             SxjLogger.error(e.getMessage(), e, this.getClass());
             throw new ServiceException("查询客户列表错误", e);
         }
+    }
+    
+    @Override
+    @Transactional
+    public boolean addWeixinCustomer(OpenCustomerModel model)
+            throws ServiceException
+    {
+        try
+        {
+            if (model == null)
+            {
+                throw new ServiceException("新增微信客户失败");
+            }
+            CustomerEntity customer = new CustomerEntity();
+            customer.setName(model.getName());
+            customer.setSex(model.getSex());
+            customer.setPhone(model.getPhone());
+            customer.setEmployeId(model.getEmployeeId());
+            customer.setState(0);
+            customer.setLevel(CustomerLevelEnum.NEW);
+            customer.setUnionId(model.getUnionId());
+            List<RecommendEntity> recommen = model.getRecommen();
+            for (Iterator iterator = recommen.iterator(); iterator.hasNext();)
+            {
+                RecommendEntity recommendEntity = (RecommendEntity) iterator.next();
+                
+            }
+            recommendService.addRecommend(recommen);
+            
+        }
+        catch (Exception e)
+        {
+            // TODO: handle exception
+        }
+        return false;
     }
     
     @Override
@@ -82,7 +125,6 @@ public class CustomerServiceImpl implements ICustomerService
                     item.setChannelId(list.get(0).getChannelId());
                     item.setState(InvestItemStateEnum.REGIST);
                     itemService.add(item);
-                    // TODO 增加推荐明细
                     return false;
                 }
                 else
@@ -103,7 +145,6 @@ public class CustomerServiceImpl implements ICustomerService
                     item.setChannelId(customer.getChannelId());
                     item.setState(InvestItemStateEnum.REGIST);
                     itemService.add(item);
-                    // TODO 增加推荐明细
                     return true;
                 }
             }
@@ -143,13 +184,13 @@ public class CustomerServiceImpl implements ICustomerService
         }
         
     }
-
+    
     @Override
     public CustomerEntity getCustomer(String customerId)
     {
         return customerDao.getCustomer(customerId);
     }
-
+    
     @Override
     public void updateCustomer(CustomerEntity customer)
     {
@@ -163,13 +204,13 @@ public class CustomerServiceImpl implements ICustomerService
             throw new ServiceException("修改等级错误", e);
         }
     }
-
+    
     @Override
     public void deleteCustomer(String customerId)
     {
         try
         {
-            CustomerEntity customer=this.getCustomer(customerId);
+            CustomerEntity customer = this.getCustomer(customerId);
             customerDao.deleteCustomer(customer.getId());
             investemDao.deleteItems(customerId);
             trackRecordDao.deleteTrackRecord(customerId);
@@ -180,4 +221,5 @@ public class CustomerServiceImpl implements ICustomerService
             throw new ServiceException("删除客户错误", e);
         }
     }
+    
 }

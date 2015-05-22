@@ -6,7 +6,7 @@
 	<resultMap type="com.zijincaifu.crm.entity.customer.RecommendEntity"
 		id="RecommendResultMap">
 		<id property="id" column="ID" jdbcType="VARCHAR" />
-		<result property="productId" column="PRODUCT_ID" jdbcType="VARCHAR" />
+		<result property="investId" column="INVEST_ID" jdbcType="VARCHAR" />
 		<result property="unionId" column="UNION_ID" jdbcType="VARCHAR" />
 		<result property="name" column="NAME" jdbcType="VARCHAR" />
 		<result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
@@ -18,8 +18,8 @@
 		parameterType="com.sxj.util.persistent.QueryCondition">
 		<![CDATA[SELECT * from CRM_RECOMMEND WHERE 1=1 ]]>
 		<!-- 产品 -->
-		<if test="condition.productId != null and condition.productId != ''">
-			<![CDATA[ AND PRODUCT_ID =#{condition.productId}]]>
+		<if test="condition.investId != null and condition.investId != ''">
+			<![CDATA[ AND INVEST_ID =#{condition.investId}]]>
 		</if>
 		<![CDATA[ ORDER BY LEVEL]]>
 	</select>

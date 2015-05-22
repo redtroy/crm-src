@@ -10,6 +10,5 @@ public interface IRecommendService
     public void addRecommend(List<RecommendEntity> recommendList)
             throws ServiceException;
     
-    public List<RecommendEntity> query(String productId)
-            throws ServiceException;
+    public List<RecommendEntity> query(String investId) throws ServiceException;
 }
