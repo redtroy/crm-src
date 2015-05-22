@@ -9,6 +9,7 @@ import com.sxj.mybatis.orm.annotations.GenerationType;
 import com.sxj.mybatis.orm.annotations.Id;
 import com.sxj.mybatis.orm.annotations.Table;
 import com.sxj.mybatis.pagination.Pagable;
+import com.sxj.util.common.StringUtils;
 import com.zijincaifu.crm.dao.customer.IRecommendDao;
 
 /**
@@ -40,6 +41,12 @@ public class RecommendEntity extends Pagable implements Serializable
     private String investId;
     
     /**
+     * 渠道
+     */
+    @Column(name = "CHANNEL_ID")
+    private String channelId;
+    
+    /**
      * 微信UnionId
      */
     @Column(name = "UNION_ID")
@@ -62,6 +69,8 @@ public class RecommendEntity extends Pagable implements Serializable
      */
     @Column(name = "LEVEL")
     private Integer level;
+    
+    private String level_zh;
     
     public String getId()
     {
@@ -123,4 +132,19 @@ public class RecommendEntity extends Pagable implements Serializable
         this.level = level;
     }
     
+    public String getChannelId()
+    {
+        return channelId;
+    }
+    
+    public void setChannelId(String channelId)
+    {
+        this.channelId = channelId;
+    }
+    
+    public String getLevel_zh()
+    {
+        
+        return StringUtils.transition(this.getLevel() + "");
+    }
 }

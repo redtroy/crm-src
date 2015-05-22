@@ -11,6 +11,7 @@
 		<result property="name" column="NAME" jdbcType="VARCHAR" />
 		<result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
 		<result property="level" column="LEVEL" jdbcType="INTEGER" />
+		<result property="channelId" column="CHANNELID" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<!-- 查看 -->
@@ -20,6 +21,10 @@
 		<!-- 产品 -->
 		<if test="condition.investId != null and condition.investId != ''">
 			<![CDATA[ AND INVEST_ID =#{condition.investId}]]>
+		</if>
+		<!-- 渠道 -->
+		<if test="condition.channelId != null and condition.channelId != ''">
+			<![CDATA[ AND CHANNELID =#{condition.channelId}]]>
 		</if>
 		<![CDATA[ ORDER BY LEVEL]]>
 	</select>
