@@ -41,13 +41,14 @@ public class RecommendServiceImpl implements IRecommendService
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
-    public List<RecommendEntity> query(String productId)
+    public List<RecommendEntity> query(String productId,String channelId)
             throws ServiceException
     {
         try
         {
             QueryCondition<TrackRecordEntity> query = new QueryCondition<>();
             query.addCondition("productId", productId);
+            query.addCondition("channelId", channelId);
             return dao.query(query);
         }
         catch (Exception e)
