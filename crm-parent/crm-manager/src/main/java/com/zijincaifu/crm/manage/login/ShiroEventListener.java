@@ -28,6 +28,8 @@ public class ShiroEventListener implements BeanFactoryPostProcessor
     
     private static ShiroRedisCacheManager cacheManager;
     
+    // private static DefaultWebSessionManager sessionManager;
+    
     private static String cacheName;
     
     @Override
@@ -39,6 +41,7 @@ public class ShiroEventListener implements BeanFactoryPostProcessor
         collections = beanFactory.getBean(RedisCollections.class);
         cacheManager = beanFactory.getBean(SupervisorShiroRedisCacheManager.class);
         cacheName = CustomizedPropertyPlaceholderConfigurer.getContextProperty("crm.manage.authorization.cache.name");
+        // sessionManager = beanFactory.getBean(DefaultWebSessionManager.class);
         RTopic<Object> topic = topics.getTopic(Constraints.MANAGER_CHANNEL_NAME);
         topic.addListener(new MessageListener<Object>()
         {
@@ -62,15 +65,22 @@ public class ShiroEventListener implements BeanFactoryPostProcessor
                 {
                     return;
                 }
-                List<PrincipalCollection> principals = (List<PrincipalCollection>) map.get(userId);
-                Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-                for (PrincipalCollection principal : principals)
+                if ("del".equals(type))
                 {
-                    if ("del".equals(type))
-                    {
-                        cache.remove(principal);
-                    }
-                    else if ("update".equals(type))
+                    //                    Collection<Session> activeSessions = sessionManager.getSessionDAO()
+                    //                            .getActiveSessions();
+                    //                    Iterator<Session> iterator = activeSessions.iterator();
+                    //                    while (iterator.hasNext())
+                    //                    {
+                    //                        Session next = iterator.next();
+                    //                        System.out.println(next);
+                    //                    }
+                }
+                else if ("update".equals(type))
+                {
+                    List<PrincipalCollection> principals = (List<PrincipalCollection>) map.get(userId);
+                    Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+                    for (PrincipalCollection principal : principals)
                     {
                         SimpleAuthorizationInfo old = (SimpleAuthorizationInfo) cache.get(principal);
                         if (old == null)

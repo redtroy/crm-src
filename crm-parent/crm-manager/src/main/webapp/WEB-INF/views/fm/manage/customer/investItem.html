@@ -26,7 +26,7 @@
 	                    <input type="text" class="input product_select" name="productName" value="" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
 	                    <input type="hidden" name="productId" value=""/>
 	                    </td>
-	                    <td><a href="#" class="reminput">查看</a></td>
+	                    <td><a href="javascript:void(0)" class="reminput">查看</a></td>
 	                    <td>${channelId}</td>
 	                    <td><select name="state" id="stateSelect">
 	                         <#list states as state>
@@ -41,7 +41,7 @@
                   <#list list as model>
                   <tr id="info_${model.id}" style="display:;">
 	                    <td>${model.name}</td>
-	                    <td><a href="#" class="reminput">查看</a></td>
+	                    <td><span onclick="showRecommend('${model.id}')"><a href="#" class="reminput">查看</a></span></td>
 	                    <td>${model.channelId}</td>
 	                    <td>${model.state.getName()}</td>
 	                    <td>
@@ -241,4 +241,16 @@ function loadValidform(){
 $(function(){
 	loadValidform();
 });
+
+function showRecommend(investId){
+	$.get("${basePath}recommend/query.htm?investId="+investId, function(result){
+		var isData=$(result).attr("isData");
+		if(isData){
+			pageIndex=dialogBoxOut(result);
+		}else{
+			messageInfo("没有推荐明细");
+		}
+		
+	  });
+};
 </script>     

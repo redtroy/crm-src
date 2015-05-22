@@ -154,7 +154,7 @@ function queryInvest(customerId,channelId){
 function trackRecord(customerId){
 	var state=$("#trackRecord_"+customerId).attr("state");
 	if(state=="0"){
-		 $.get("${basePath}customer/trackRecord.htm?customerId="+customerId,function(data){
+		 $.get("${basePath}customer/track/query.htm?customerId="+customerId,function(data){
 			    $("#trackRecord_"+customerId).empty();
 				$("#trackRecord_"+customerId).append(data);
 				$("#trackRecord_"+customerId).show();
@@ -226,6 +226,44 @@ function disEmploye(){
 	});
 	var customerId=$("#changeLevelDiv").attr("customerId","");
 };
+
+function subTrack(customerId){
+	var remark=$("#addTrack_form_"+customerId).find("textarea[name='remark']").val();
+	if(remark==''){
+		errorInfo("请输入跟踪记录");
+	}else{
+		var params=$("#addTrack_form_"+customerId).serialize();
+		 dialogBox(function(index){
+			 $.post("${basePath}customer/track/addTrackRecord.htm",params,function(data){
+				  layer.close(index);
+					if(data.isOK == true){
+						succInfo(function(){
+							$("#trackRecord_"+customerId).attr("state","0");
+							trackRecord(customerId);
+						},"新增成功");
+					}else{
+						errorInfo(data.error);
+					}
+				});
+		 },"是否确认添加跟踪记录");
+	}
+};
+
+function deleteCustomer(customerId){
+	dialogBox(function(index){
+		 $.post("${basePath}customer/deleteCustomer.htm?customerId="+customerId,function(data){
+			  layer.close(index);
+				if(data.isOK == true){
+					succInfo(function(){
+					query();
+					},"删除成功");
+				}else{
+					errorInfo(data.error);
+				}
+			});
+	 },"是否确认删除员工");
+};
+
 </script>
 </head>
 
@@ -304,7 +342,11 @@ function disEmploye(){
             </tr>
             <#assign index=0/>
             <#list list as model>
-            <tr class="bColor-red" title="有报名未处理的客户记录">
+            <#if model.level.getId()==0>
+             <tr class="bColor-red" title="有报名未处理的客户记录">
+            <#else>
+            <tr>
+            </#if>
               <td><a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a></td>
               <td>${model.name}</td>
               <td>${model.phone}</td>
@@ -315,7 +357,7 @@ function disEmploye(){
               <td><span onclick="trackRecord('${model.customerId}')"><a href="javascript:void(0);">管理记录</a></span></td>
               <td title="${model.unionId}" class="color-orange">查看</td>
               <td>${model.createTime?string("yyyy-MM-dd")}</td>
-              <td class="edit"><a href="#" class="del">删除</a> <span onclick="changeEmploye('${model.customerId}')"><a href="javascript:void(0)" class="allot memberBox meminput">分配</a></span></td>
+              <td class="edit"><span onclick="deleteCustomer('${model.customerId}')"><a href="javascript:void(0)" class="del">删除</a></span> <span onclick="changeEmploye('${model.customerId}')"><a href="javascript:void(0)" class="allot memberBox meminput">分配</a></span></td>
             </tr>
             <tr class="div_state" id="info_${model.customerId}" style="display: none;" state="0">
               <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
@@ -409,17 +451,6 @@ function disEmploye(){
   </div>
 </div>
 <@b.footer/>
-<div class="modal-wrap popDemo remList" style="display:none;">
-      <div class="modal-header"><span class="close">关闭</span></div>
-     <div class="modal-body memberBox" title="优先显示通过UnionID匹配到的员工编号，如果没有的情况下显示UnionID">
-       <div class="item fontYH color-blue">第一度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
-	   <div class="item fontYH color-blue">第二度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
-	   <div class="item fontYH color-blue">第三度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
-	   <div class="item fontYH color-blue">第四度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
-	   <div class="item fontYH color-blue">第五度推荐 ：<span title="陈绍伟">oO_eAjtxCKoRnicolAYtKcx3cu8c</span></div>
-  </div>
-  </div>
-  
 <div id="changeLevelDiv"  style="display:none;" customerId="">
 <div class="modal-wrap popDemo memLevel" >
   <div class="modal-header"><span class="close" onclick="closeDiv()">关闭</span></div>

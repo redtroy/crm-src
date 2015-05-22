@@ -16,8 +16,8 @@
 		<result property="name" column="PRODUCT_NAME" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<delete id="deleteItems" parameterType="String">
-	
+	<delete id="deleteItems" parameterType="String" >
+		<![CDATA[ DELETE FROM CRM_INVEST_ITEM WHERE CUSTOMER_ID=#{customerId}]]>
 	</delete>
 
 	<!-- 查看 -->
