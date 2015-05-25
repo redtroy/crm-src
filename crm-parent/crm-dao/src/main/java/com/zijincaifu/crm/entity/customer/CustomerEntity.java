@@ -61,6 +61,8 @@ public class CustomerEntity extends Pagable implements Serializable
     @Column(name = "EMPLOYE_ID")
     private String employeId;
     
+    private String employeName;
+    
     /**
      * 渠道编号
      */
@@ -314,6 +316,16 @@ public class CustomerEntity extends Pagable implements Serializable
     public void setState(Integer state)
     {
         this.state = state;
+    }
+    
+    public String getEmployeName()
+    {
+        return employeName;
+    }
+    
+    public void setEmployeName(String employeName)
+    {
+        this.employeName = employeName;
     }
     
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -54,6 +55,13 @@ public class CustomerController extends BaseController
         try
         {
             query.setPagable(true);
+            query.setShowCount(15);
+            if (SecurityUtils.getSubject() != null
+                    && !SecurityUtils.getSubject().hasRole("4"))
+            {
+                PersonnelEntity user = getLoginInfo();
+                query.setEmployeId(user.getUid());
+            }
             List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
             List<AreaEntity> cityList = areaService.getChildrenAreas("32");
             map.put("provinceList", provinceList);
@@ -129,7 +137,7 @@ public class CustomerController extends BaseController
                 throw new WebException("产品不能为空");
             }
             //TODO 设置员工
-            //customer.setEmployeId(login.getUid());
+            customer.setEmployeId(login.getUid());
             customer.setChannelId("AAA001");
             customer.setCreateTime(new Date());
             customer.setLevel(CustomerLevelEnum.NEW);
@@ -275,7 +283,7 @@ public class CustomerController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-//            CustomerEntity customer = customerService.getCustomer(customerId);
+            //            CustomerEntity customer = customerService.getCustomer(customerId);
             customerService.deleteCustomer(customerId);
             map.put("isOK", true);
         }
