@@ -45,6 +45,7 @@ function subPassword(){
 					succInfo(function(){
 						$('#editForm')[0].reset(); 
 						closeDiv();
+						window.location.href="${basePath}logout.htm";
 					 },"修改成功");
 				}
 				else{
@@ -55,11 +56,14 @@ function subPassword(){
 	}
 
 	function editPassword(){
+		$("#editForm").find("input[name='loginpassword']").val("");
+		$("#editForm").find("input[name='newpassword']").val("");
 		pageIndex=dialogBoxOutId('#editPasswordDiv');
 	};
 	
 	function closeDiv(){
 		layer.close(pageIndex);
+		$(".Validform_checktip").remove();
 	};
 </script>
 </head>
@@ -89,10 +93,10 @@ function subPassword(){
      <div class="modal-body passdwordBox">
      <div class="form-group">
      <label>新密码</label>
-     <input type="password" name="loginpassword" id="loginpassword" tabindex="1" class="input input-w270h36" placeholder="请输入新密码" datatype="*6-32" errormsg="密码不能少于6位" nullmsg="密码不能为空"/></div>
+     <input type="password" name="loginpassword" id="loginpassword" tabindex="1" class="input input-w270h36" placeholder="请输入新密码" datatype="*6-32" errormsg="密码不能少于6位" nullmsg="密码不能为空" value=""/></div>
      <div class="form-group">
      <label>确认密码</label>
-     <input type="password" name="newpassword" id="newpassword" tabindex="1" class="input input-w270h36" placeholder="请确认新密码" datatype="*6-32" errormsg="密码不能少于6位" nullmsg="密码不能为空"/>
+     <input type="password" name="newpassword" id="newpassword" tabindex="1" class="input input-w270h36" placeholder="请确认新密码" datatype="*6-32" recheck="loginpassword" errormsg="两次输入的密码不一致" nullmsg="密码不能为空" value=""/>
      </div>
      <div class="form-group">
      <label>&nbsp;</label>
