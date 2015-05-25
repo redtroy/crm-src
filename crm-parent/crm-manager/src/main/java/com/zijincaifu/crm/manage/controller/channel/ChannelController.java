@@ -149,4 +149,19 @@ public class ChannelController extends BaseController
         }
         return map;
     }
+    
+    @RequestMapping("loadCreateCode")
+    public String loadCreateCode(ModelMap map) throws WebException
+    {
+        try
+        {
+            return "manage/channel/createCode";
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("error", e.getMessage());
+            throw new WebException("", e);
+        }
+    }
 }

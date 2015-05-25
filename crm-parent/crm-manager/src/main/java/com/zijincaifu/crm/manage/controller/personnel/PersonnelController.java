@@ -248,4 +248,30 @@ public class PersonnelController extends BaseController
         }
         return map;
     }
+    
+    @RequestMapping("editPassword")
+    public @ResponseBody Map<String, Object> editPassword(String newpassword)
+            throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            PersonnelEntity personnel=getLoginInfo();
+            personnel.setPassword(newpassword);
+            personneService.editPersonnel(personnel);
+            map.put("isOK", true);
+            
+            PublishMessage message = new PublishMessage();
+            message.setType("del");
+            message.setUserId(personnel.getUid());
+            topics.getTopic(Constraints.MANAGER_CHANNEL_NAME).publish(message);
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("isOK", false);
+            map.put("error", e.getMessage());
+        }
+        return map;
+    }
 }

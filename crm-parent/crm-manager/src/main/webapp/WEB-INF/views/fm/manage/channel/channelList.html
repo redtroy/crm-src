@@ -11,6 +11,7 @@
 <script src="${b.staticPath}js/jquery.paginate.js"></script>
 <script src="${b.staticPath}js/datepicker.js"></script>
 <script src="${b.staticPath}js/datepicker.zh-CN.js"></script>
+<script src="${b.staticPath}js/jquery.bigautocomplete.js"></script>
 <script>
 function query(page){
 	var params=$("#search_form").serialize();
@@ -58,6 +59,13 @@ function deleteChannel(channelId){
 			});
 	 },"是否确认删除产品");
 };
+
+function createCode(){
+	$.get("${basePath}channel/loadCreateCode.htm",function(data){
+		$("#rightBar").empty();
+		$("#rightBar").append(data);
+	}); 
+};
 </script>
 </head>
 <@b.pageScript/>
@@ -98,7 +106,7 @@ function deleteChannel(channelId){
 			  <button class="button button-green f12" onclick="loadAddChannel();">新增渠道</button>
 			  </span> 
 			  <span class="btnBox">
-			  <button class="button button-red f12" onclick="javascript:window.location.href='creatqr.html'">生成二维码</button>
+			  <button class="button button-red f12" onclick="javascript:createCode()">生成二维码</button>
 			  </span> 
 			  </div>
           </div>
