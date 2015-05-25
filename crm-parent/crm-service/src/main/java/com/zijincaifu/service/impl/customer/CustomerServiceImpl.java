@@ -85,18 +85,43 @@ public class CustomerServiceImpl implements ICustomerService
             customer.setState(0);
             customer.setLevel(CustomerLevelEnum.NEW);
             customer.setUnionId(model.getUnionId());
+            
+            CustomerQuery query = new CustomerQuery();
+            query.setPhone(customer.getPhone());
+            List<CustomerEntity> list = queryCustomer(query);
+            
+            if (list == null || list.size() == 0)
+            { // 获取出生年月日   
+                if (customer.getCardNo() != null)
+                {
+                    String birthday = customer.getCardNo().substring(6, 14);
+                    Date birthdate = null;
+                    birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
+                    customer.setBirthday(birthdate);
+                }
+                customerDao.addCustomer(customer);
+            }
+            InvestItemEntity item = new InvestItemEntity();
+            item.setCustomerId(list.get(0).getCustomerId());
+            item.setProductId(model.getProductId());
+            item.setChannelId(list.get(0).getChannelId());
+            item.setState(InvestItemStateEnum.REGIST);
+            itemService.add(item);
+            
             List<RecommendEntity> recommen = model.getRecommen();
-            for (Iterator iterator = recommen.iterator(); iterator.hasNext();)
+            for (Iterator<RecommendEntity> iterator = recommen.iterator(); iterator.hasNext();)
             {
-                RecommendEntity recommendEntity = (RecommendEntity) iterator.next();
-                
+                RecommendEntity recommendEntity = iterator.next();
+                recommendEntity.setInvestId(item.getId());
             }
             recommendService.addRecommend(recommen);
             
         }
         catch (Exception e)
         {
-            // TODO: handle exception
+            
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("新增客户信息错误", e);
         }
         return false;
     }
@@ -117,17 +142,7 @@ public class CustomerServiceImpl implements ICustomerService
                 CustomerQuery query = new CustomerQuery();
                 query.setPhone(customer.getPhone());
                 List<CustomerEntity> list = queryCustomer(query);
-                if (list != null && list.size() > 0)
-                {
-                    InvestItemEntity item = new InvestItemEntity();
-                    item.setCustomerId(list.get(0).getCustomerId());
-                    item.setProductId(productId);
-                    item.setChannelId(list.get(0).getChannelId());
-                    item.setState(InvestItemStateEnum.REGIST);
-                    itemService.add(item);
-                    return false;
-                }
-                else
+                if (list == null || list.size() == 0)
                 {
                     // 获取出生年月日   
                     if (customer.getCardNo() != null)
@@ -138,15 +153,14 @@ public class CustomerServiceImpl implements ICustomerService
                         customer.setBirthday(birthdate);
                     }
                     customerDao.addCustomer(customer);
-                    
-                    InvestItemEntity item = new InvestItemEntity();
-                    item.setCustomerId(customer.getCustomerId());
-                    item.setProductId(productId);
-                    item.setChannelId(customer.getChannelId());
-                    item.setState(InvestItemStateEnum.REGIST);
-                    itemService.add(item);
-                    return true;
                 }
+                InvestItemEntity item = new InvestItemEntity();
+                item.setCustomerId(customer.getCustomerId());
+                item.setProductId(productId);
+                item.setChannelId(customer.getChannelId());
+                item.setState(InvestItemStateEnum.REGIST);
+                itemService.add(item);
+                return true;
             }
             
         }
