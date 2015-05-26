@@ -212,6 +212,10 @@ function cleanInput(){
 
 function disEmploye(){
 	var personnelId=$("#disPersonnel_form").find("input[name='personnelId']").val();
+	if(personnelId=='请输入员工编号'||personnelId==''){
+		errorInfo("请输入员工编号");
+		return false;
+	}
 	var customerId=$("#changeEmployeDiv").attr("customerId");
 	$.post("${basePath}customer/changePersonnel.htm?customerId="+customerId+"&personnelId="+personnelId,function(data){
 		if(data.result == "1"){

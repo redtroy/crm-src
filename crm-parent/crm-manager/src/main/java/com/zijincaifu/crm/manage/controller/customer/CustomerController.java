@@ -25,13 +25,17 @@ import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
+import com.zijincaifu.crm.entity.customer.TrackRecordEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.entity.system.AreaEntity;
 import com.zijincaifu.crm.enu.customer.CustomerLevelEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
+import com.zijincaifu.crm.model.customer.InvestItemModel;
 import com.zijincaifu.model.customer.CustomerQuery;
 import com.zijincaifu.model.personnel.PersonnelQuery;
 import com.zijincaifu.service.customer.ICustomerService;
+import com.zijincaifu.service.customer.IInvestItemService;
+import com.zijincaifu.service.customer.ITrackRecordService;
 import com.zijincaifu.service.personnel.IPersonnelService;
 import com.zijincaifu.service.system.IAreaService;
 
@@ -48,6 +52,12 @@ public class CustomerController extends BaseController
     
     @Autowired
     private IPersonnelService personnelService;
+    
+    @Autowired
+    private IInvestItemService investItemService;
+    
+    @Autowired
+    private ITrackRecordService trackRecordService;
     
     @RequestMapping("/query")
     public String query(CustomerQuery query, ModelMap map) throws WebException
@@ -283,9 +293,22 @@ public class CustomerController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            //            CustomerEntity customer = customerService.getCustomer(customerId);
-            customerService.deleteCustomer(customerId);
-            map.put("isOK", true);
+            CustomerEntity customer = customerService.getCustomer(customerId);
+            List<InvestItemModel> invests=investItemService.queryItems(customerId);
+            List<TrackRecordEntity> tracks=trackRecordService.query(customerId);
+            if(customer.getLevel().getId()!=0){
+                map.put("isOK", false);
+                map.put("error", "该用户不是新客户,不可删除");
+            }else if(invests.size()>1){
+                map.put("isOK", false);
+                map.put("error", "该用户下存在不止一条投资记录,不可删除");
+            }else if(tracks.size()!=0){
+                map.put("isOK", false);
+                map.put("error", "该用户下存在跟踪记录,不可删除");
+            }else{
+                customerService.deleteCustomer(customerId);
+                map.put("isOK", true);
+            }
         }
         catch (Exception e)
         {

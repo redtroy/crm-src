@@ -118,4 +118,23 @@ public class InvestItemServiceImpl implements IInvestItemService
         }
     }
     
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public List<InvestItemModel> queryItemsByProductId(String productId)
+            throws ServiceException
+    {
+        try
+        {
+            QueryCondition<InvestItemEntity> query = new QueryCondition<>();
+            query.addCondition("productId", productId);
+            List<InvestItemModel> list = itemDao.queryItemList(query);
+            return list;
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            throw new ServiceException("查询客户投资列表错误", e);
+        }
+    }
+    
 }
