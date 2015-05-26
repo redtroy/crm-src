@@ -138,6 +138,12 @@ public class CustomerEntity extends Pagable implements Serializable
     @Column(name = "ADDRESS")
     private String address;
     
+    /**
+     * 分配员工历史
+     */
+    @Column(name="EMPLOYE_ID_HISTORY")
+    private String employeIdHistory;
+    
     private String isNew;
     
     public String getId()
@@ -338,6 +344,16 @@ public class CustomerEntity extends Pagable implements Serializable
     public void setIsNew(String isNew)
     {
         this.isNew = isNew;
+    }
+
+    public String getEmployeIdHistory()
+    {
+        return employeIdHistory;
+    }
+
+    public void setEmployeIdHistory(String employeIdHistory)
+    {
+        this.employeIdHistory = employeIdHistory;
     }
     
 }

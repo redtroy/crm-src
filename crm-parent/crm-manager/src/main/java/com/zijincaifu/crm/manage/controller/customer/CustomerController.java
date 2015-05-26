@@ -248,7 +248,7 @@ public class CustomerController extends BaseController
             {
                 throw new WebException("客户信息不能为空");
             }
-            customerService.modifyCustomer(customer);
+            customerService.modifyCustomer(customer,getLoginInfo().getUid());
             map.put("isOK", true);
             map.put("customer", customer);
         }
@@ -271,7 +271,7 @@ public class CustomerController extends BaseController
         {
             CustomerEntity customer = customerService.getCustomer(customerId);
             customer.setLevel(level);
-            customerService.updateCustomer(customer);
+            customerService.updateCustomer(customer,getLoginInfo().getUid());
             map.put("isOK", true);
         }
         catch (Exception e)
@@ -341,8 +341,13 @@ public class CustomerController extends BaseController
             else
             {
                 CustomerEntity customer = customerService.getCustomer(customerId);
+                if(customer.getEmployeIdHistory()==null){
+                    customer.setEmployeIdHistory(customer.getEmployeId());
+                }else{
+                    customer.setEmployeIdHistory(customer.getEmployeIdHistory()+","+customer.getEmployeId());
+                }
                 customer.setEmployeId(personnelId);
-                customerService.updateCustomer(customer);
+                customerService.updateCustomer(customer,getLoginInfo().getUid());
                 map.put("result", "1");
                 HierarchicalCacheManager.set(CacheLevel.REDIS,
                         "CRM_CUSTOMER_LEVEL",

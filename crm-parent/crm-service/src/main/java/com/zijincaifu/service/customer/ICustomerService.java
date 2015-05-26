@@ -18,11 +18,11 @@ public interface ICustomerService
     public boolean addWeixinCustomer(OpenCustomerModel model)
             throws ServiceException;
     
-    public void modifyCustomer(CustomerEntity customer) throws ServiceException;
+    public void modifyCustomer(CustomerEntity customer,String uId) throws ServiceException;
     
     public CustomerEntity getCustomer(String customerId);
     
-    public void updateCustomer(CustomerEntity customer);
+    public void updateCustomer(CustomerEntity customer,String uId);
     
     public void deleteCustomer(String customerId);
 }
