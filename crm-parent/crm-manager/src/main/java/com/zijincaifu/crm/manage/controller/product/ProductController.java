@@ -40,6 +40,7 @@ public class ProductController extends BaseController
             if (query != null)
             {
                 query.setPagable(true);
+                query.setShowCount(15);
             }
             List<ProductEntity> list = productService.queryProducts(query);
             //            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
