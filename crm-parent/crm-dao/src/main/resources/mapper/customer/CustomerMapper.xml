@@ -25,6 +25,7 @@
 		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTH_DAY" jdbcType="DATE" />
 		<result property="address" column="ADDRESS" jdbcType="VARCHAR" />
+		<result property="employeIdHistory" column="EMPLOYE_ID_HISTORY" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 获取渠道信息 -->

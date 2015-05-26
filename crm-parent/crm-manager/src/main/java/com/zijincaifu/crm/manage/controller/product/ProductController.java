@@ -21,7 +21,9 @@ import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.manage.controller.BaseController;
+import com.zijincaifu.crm.model.customer.InvestItemModel;
 import com.zijincaifu.model.product.ProductQuery;
+import com.zijincaifu.service.customer.IInvestItemService;
 import com.zijincaifu.service.product.IProductService;
 
 @Controller
@@ -30,6 +32,9 @@ public class ProductController extends BaseController
 {
     @Autowired
     private IProductService productService;
+    
+    @Autowired
+    private IInvestItemService investItemService;
     
     @RequestMapping("productList")
     public String getProductList(ProductQuery query, ModelMap map)
@@ -143,8 +148,14 @@ public class ProductController extends BaseController
         try
         {
             ProductEntity product = productService.getProduct(productId);
-            productService.deleteProduct(product);
-            map.put("isOK", "delete");
+            List<InvestItemModel> invest=investItemService.queryItemsByProductId(productId);
+            if(invest.size()!=0){
+                map.put("isOK", "error");
+                map.put("error", "该产品已进行关联,不能删除");
+            }else{
+                productService.deleteProduct(product);
+                map.put("isOK", "delete");
+            }
         }
         catch (Exception e)
         {

@@ -180,7 +180,7 @@ public class CustomerServiceImpl implements ICustomerService
     
     @Override
     @Transactional
-    public void modifyCustomer(CustomerEntity customer) throws ServiceException
+    public void modifyCustomer(CustomerEntity customer,String uId) throws ServiceException
     {
         try
         {
@@ -194,7 +194,7 @@ public class CustomerServiceImpl implements ICustomerService
                     birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
                     customer.setBirthday(birthdate);
                 }
-                updateCustomer(customer);
+                updateCustomer(customer,uId);
             }
         }
         catch (Exception e)
@@ -212,16 +212,22 @@ public class CustomerServiceImpl implements ICustomerService
     }
     
     @Override
-    public void updateCustomer(CustomerEntity customer)
+    public void updateCustomer(CustomerEntity customer,String uId)
     {
+        boolean guishu=false;
         try
         {
-            customerDao.updateCustomer(customer);
+            CustomerEntity oldCustomer=this.getCustomer(customer.getCustomerId());
+            if(uId.equals("")||oldCustomer.getEmployeId().equals(uId)){
+                customerDao.updateCustomer(customer);
+            }else{
+                throw new ServiceException("该客户已经变更归属");
+            }
         }
         catch (Exception e)
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
-            throw new ServiceException("修改等级错误", e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
     
