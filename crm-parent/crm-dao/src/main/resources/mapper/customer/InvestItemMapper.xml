@@ -28,12 +28,12 @@
 		<if test="condition.customerId != null and condition.customerId != ''">
 			<![CDATA[ AND i.CUSTOMER_ID =#{condition.customerId}]]>
 		</if>
-		<if test="condition.id != null and condition.id != ''">
-			<![CDATA[ AND i.ID =#{condition.id}]]>
-		</if>
 		<!-- 产品 -->
 		<if test="condition.productId != null and condition.productId != ''">
 			<![CDATA[ AND i.PRODUCT_ID =#{condition.productId}]]>
+		</if>
+		<if test="condition.id != null and condition.id != ''">
+			<![CDATA[ AND i.ID =#{condition.id}]]>
 		</if>
 	</select>
 </mapper>
