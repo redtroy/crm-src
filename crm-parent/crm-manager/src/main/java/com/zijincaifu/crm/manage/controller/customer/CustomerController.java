@@ -366,40 +366,30 @@ public class CustomerController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-   CustomerEntity customer = customerService.getCustomer(customerId);
-            List<InvestItemModel> invests=investItemService.queryItems(customerId);
-            List<TrackRecordEntity> tracks=trackRecordService.query(customerId);
-            if(customer.getLevel().getId()!=0){
+            CustomerEntity customer = customerService.getCustomer(customerId);
+            List<InvestItemModel> invests = investItemService.queryItems(customerId);
+            List<TrackRecordEntity> tracks = trackRecordService.query(customerId);
+            if (customer.getLevel().getId() != 0)
+            {
                 map.put("isOK", false);
                 map.put("error", "该用户不是新客户,不可删除");
-            }else if(invests.size()>1){
+            }
+            else if (invests.size() > 1)
+            {
                 map.put("isOK", false);
                 map.put("error", "该用户下存在不止一条投资记录,不可删除");
-            }else if(tracks.size()!=0){
+            }
+            else if (tracks.size() != 0)
+            {
                 map.put("isOK", false);
                 map.put("error", "该用户下存在跟踪记录,不可删除");
-            }else{
-                customerService.deleteCustomer(customerId);
-                map.put("isOK", true);
-<<<<<<< .mine            CustomerEntity customer = customerService.getCustomer(customerId);
-            List<InvestItemModel> invests=investItemService.queryItems(customerId);
-            List<TrackRecordEntity> tracks=trackRecordService.query(customerId);
-            if(customer.getLevel().getId()!=0){
-                map.put("isOK", false);
-                map.put("error", "该用户不是新客户,不可删除");
-            }else if(invests.size()>1){
-                map.put("isOK", false);
-                map.put("error", "该用户下存在不止一条投资记录,不可删除");
-            }else if(tracks.size()!=0){
-                map.put("isOK", false);
-                map.put("error", "该用户下存在跟踪记录,不可删除");
-            }else{
+            }
+            else
+            {
                 customerService.deleteCustomer(customerId);
                 map.put("isOK", true);
             }
-=======            customerService.deleteCustomer(customerId);
-            map.put("isOK", true);
->>>>>>> .theirs        }
+        }
         catch (Exception e)
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
