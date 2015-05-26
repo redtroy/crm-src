@@ -138,6 +138,8 @@ public class CustomerEntity extends Pagable implements Serializable
     @Column(name = "ADDRESS")
     private String address;
     
+    private String isNew;
+    
     public String getId()
     {
         return id;
@@ -326,6 +328,16 @@ public class CustomerEntity extends Pagable implements Serializable
     public void setEmployeName(String employeName)
     {
         this.employeName = employeName;
+    }
+    
+    public String getIsNew()
+    {
+        return isNew;
+    }
+    
+    public void setIsNew(String isNew)
+    {
+        this.isNew = isNew;
     }
     
 }

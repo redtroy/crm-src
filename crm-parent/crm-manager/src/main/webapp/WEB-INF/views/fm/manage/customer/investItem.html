@@ -33,7 +33,7 @@
 	                     		<option value="${state.getId()}">${state.getName()}</option>
 	                    </#list>
 	                      </select></td>
-	                    <td><input type="text" class="input" name="amount" value="" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额"></td>
+	                    <td><input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15"></td>
 	                    <td>-</td>
 	                    <td>-</td>
 	                    <td><a href="javascript:addItem();" class="button button-purple">确定</a></td>
@@ -46,7 +46,7 @@
 	                    <td>${model.state.getName()}</td>
 	                    <td>
 	                     <#if model.amount??>
-	                    	${model.amount?string(',###.00')}
+	                    	${model.amount?string(',##0.00')}
 	                    <#else>
 	                    	-
 	                     </#if>
@@ -71,7 +71,7 @@
 	                    <input type="hidden" name="id" value="${model.id}"/>
 	                    <td>
 	                    <input type="text"  class="input product_select" name="productName" value="${model.name}" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
-	                    <input type="hidden" name="productId" value="${model.productId}"/>
+	                    <input type="hidden" name="productId" value="${model.productId}" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品"/>
 	                    </td>
 	                    <td><a href="#">查看</a></td>
 	                    <td>${model.channelId}</td>
@@ -88,9 +88,9 @@
 	                      </td>
 	                    <td>
 	                    <#if model.amount??>
-	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="金额非法" nullmsg="请输入投资金额" >
+	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15">
 	                    	<#else>
-	                    	<input type="text" class="input" name="amount" value="">
+	                    	<input type="text" class="input" name="amount" value="" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15">
 	                    </#if>
 	                    </td>
 	                    <td>

@@ -142,6 +142,7 @@ public class CustomerServiceImpl implements ICustomerService
                 CustomerQuery query = new CustomerQuery();
                 query.setPhone(customer.getPhone());
                 List<CustomerEntity> list = queryCustomer(query);
+                boolean isAdd = false;
                 if (list == null || list.size() == 0)
                 {
                     // 获取出生年月日   
@@ -153,6 +154,11 @@ public class CustomerServiceImpl implements ICustomerService
                         customer.setBirthday(birthdate);
                     }
                     customerDao.addCustomer(customer);
+                    isAdd = true;
+                }
+                else
+                {
+                    customer = list.get(0);
                 }
                 InvestItemEntity item = new InvestItemEntity();
                 item.setCustomerId(customer.getCustomerId());
@@ -160,7 +166,7 @@ public class CustomerServiceImpl implements ICustomerService
                 item.setChannelId(customer.getChannelId());
                 item.setState(InvestItemStateEnum.REGIST);
                 itemService.add(item);
-                return true;
+                return isAdd;
             }
             
         }
@@ -188,7 +194,7 @@ public class CustomerServiceImpl implements ICustomerService
                     birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
                     customer.setBirthday(birthdate);
                 }
-                customerDao.updateCustomer(customer);
+                updateCustomer(customer);
             }
         }
         catch (Exception e)

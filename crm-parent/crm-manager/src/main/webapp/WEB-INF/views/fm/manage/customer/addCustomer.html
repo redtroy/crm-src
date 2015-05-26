@@ -14,6 +14,7 @@
 			url : "${basePath}product/autoProduct.htm",
 			callback : function(data) {
 				if(data){
+					var name = $("#productName_com").val();
 					$("#productId_hidden").val(data.result);
 				}
 			},
@@ -125,7 +126,7 @@
 			   <tr>
               <th>投资产品</th>
               <input type="hidden" id="productId_hidden" name="productId" value=""/>
-              <td><input id="productName_com" type="text" name="productName" datatype="s2-20" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off" class="input input-addname"/><span class="color-red ml5">*</span></td>
+              <td><input id="productName_com" type="text" name="productName" datatype="s1-50" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off" class="input input-addname"/><span class="color-red ml5">*</span></td>
               </tr>         
           </table>
           </form>
