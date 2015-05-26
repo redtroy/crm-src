@@ -35,5 +35,6 @@
 		<if test="condition.id != null and condition.id != ''">
 			<![CDATA[ AND i.ID =#{condition.id}]]>
 		</if>
+		<![CDATA[ ORDER BY i.REGIST_TIME DESC]]>
 	</select>
 </mapper>

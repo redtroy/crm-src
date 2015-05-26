@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sxj.cache.manager.CacheLevel;
+import com.sxj.cache.manager.HierarchicalCacheManager;
 import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
@@ -66,17 +69,44 @@ public class CustomerController extends BaseController
         {
             query.setPagable(true);
             query.setShowCount(15);
+            boolean isAdmin = true;
             if (SecurityUtils.getSubject() != null
                     && !SecurityUtils.getSubject().hasRole("4"))
             {
                 PersonnelEntity user = getLoginInfo();
                 query.setEmployeId(user.getUid());
+                isAdmin = false;
             }
             List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
             List<AreaEntity> cityList = areaService.getChildrenAreas("32");
             map.put("provinceList", provinceList);
             map.put("cityList", cityList);
             List<CustomerEntity> list = customerService.queryCustomer(query);
+            for (Iterator<CustomerEntity> iterator = list.iterator(); iterator.hasNext();)
+            {
+                CustomerEntity customerEntity = iterator.next();
+                if (isAdmin)
+                {
+                    Object isNew = HierarchicalCacheManager.get(CacheLevel.REDIS,
+                            "CRM_CUSTOMER_LEVEL_AD",
+                            customerEntity.getCustomerId());
+                    if (isNew != null)
+                    {
+                        customerEntity.setIsNew((String) isNew);
+                    }
+                }
+                else
+                {
+                    Object isNew = HierarchicalCacheManager.get(CacheLevel.REDIS,
+                            "CRM_CUSTOMER_LEVEL",
+                            customerEntity.getCustomerId());
+                    if (isNew != null)
+                    {
+                        customerEntity.setIsNew((String) isNew);
+                    }
+                }
+                
+            }
             CustomerLevelEnum[] levels = CustomerLevelEnum.values();
             map.put("list", list);
             map.put("levels", levels);
@@ -88,6 +118,40 @@ public class CustomerController extends BaseController
             SxjLogger.error("查询客户信息错误", e, this.getClass());
             throw new WebException("查询客户信息错误", e);
         }
+    }
+    
+    @RequestMapping("/changeNew")
+    public @ResponseBody Map<String, Object> changeNew(String customerId)
+            throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            if (SecurityUtils.getSubject() != null
+                    && !SecurityUtils.getSubject().hasRole("4"))
+            {
+                HierarchicalCacheManager.set(CacheLevel.REDIS,
+                        "CRM_CUSTOMER_LEVEL",
+                        customerId,
+                        "0");
+                map.put("isNew", "0");
+            }
+            else
+            {
+                HierarchicalCacheManager.set(CacheLevel.REDIS,
+                        "CRM_CUSTOMER_LEVEL_AD",
+                        customerId,
+                        "0");
+                map.put("isNew", "0");
+            }
+            
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error("查询客户信息错误", e, this.getClass());
+            map.put("isNew", "1");
+        }
+        return map;
     }
     
     @RequestMapping("/toAdd")
@@ -152,6 +216,10 @@ public class CustomerController extends BaseController
             customer.setCreateTime(new Date());
             customer.setLevel(CustomerLevelEnum.NEW);
             boolean isAdd = customerService.addCustomer(customer, productId);
+            HierarchicalCacheManager.set(CacheLevel.REDIS,
+                    "CRM_CUSTOMER_LEVEL_AD",
+                    customer.getCustomerId(),
+                    "1");
             map.put("isOK", true);
             map.put("isAdd", isAdd);
         }
@@ -182,6 +250,7 @@ public class CustomerController extends BaseController
             }
             customerService.modifyCustomer(customer);
             map.put("isOK", true);
+            map.put("customer", customer);
         }
         catch (Exception e)
         {
@@ -275,6 +344,10 @@ public class CustomerController extends BaseController
                 customer.setEmployeId(personnelId);
                 customerService.updateCustomer(customer);
                 map.put("result", "1");
+                HierarchicalCacheManager.set(CacheLevel.REDIS,
+                        "CRM_CUSTOMER_LEVEL",
+                        customer.getCustomerId(),
+                        "1");
             }
         }
         catch (Exception e)
@@ -293,7 +366,22 @@ public class CustomerController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            CustomerEntity customer = customerService.getCustomer(customerId);
+   CustomerEntity customer = customerService.getCustomer(customerId);
+            List<InvestItemModel> invests=investItemService.queryItems(customerId);
+            List<TrackRecordEntity> tracks=trackRecordService.query(customerId);
+            if(customer.getLevel().getId()!=0){
+                map.put("isOK", false);
+                map.put("error", "该用户不是新客户,不可删除");
+            }else if(invests.size()>1){
+                map.put("isOK", false);
+                map.put("error", "该用户下存在不止一条投资记录,不可删除");
+            }else if(tracks.size()!=0){
+                map.put("isOK", false);
+                map.put("error", "该用户下存在跟踪记录,不可删除");
+            }else{
+                customerService.deleteCustomer(customerId);
+                map.put("isOK", true);
+<<<<<<< .mine            CustomerEntity customer = customerService.getCustomer(customerId);
             List<InvestItemModel> invests=investItemService.queryItems(customerId);
             List<TrackRecordEntity> tracks=trackRecordService.query(customerId);
             if(customer.getLevel().getId()!=0){
@@ -309,7 +397,9 @@ public class CustomerController extends BaseController
                 customerService.deleteCustomer(customerId);
                 map.put("isOK", true);
             }
-        }
+=======            customerService.deleteCustomer(customerId);
+            map.put("isOK", true);
+>>>>>>> .theirs        }
         catch (Exception e)
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
@@ -318,4 +408,18 @@ public class CustomerController extends BaseController
         }
         return map;
     }
+    
+    @RequestMapping("info")
+    public String getCustomerInfo(String customerId, ModelMap map)
+            throws WebException
+    {
+        CustomerEntity customer = customerService.getCustomer(customerId);
+        List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
+        List<AreaEntity> cityList = areaService.getChildrenAreas("32");
+        map.put("provinceList", provinceList);
+        map.put("cityList", cityList);
+        map.put("model", customer);
+        return "manage/customer/customerInfo";
+    }
+    
 }

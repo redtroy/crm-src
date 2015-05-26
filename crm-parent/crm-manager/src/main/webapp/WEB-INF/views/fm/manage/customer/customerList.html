@@ -66,22 +66,6 @@ function changeCity(customerId){
 	 $("#provinceName_hidden_"+customerId).val($("#province_"+customerId).find("option:selected").text());
 	
 }
-function modify(customerId){
-	var params=$("#modifyForm_"+customerId).serialize();
-	 dialogBox(function(index){
-		 $.post("${basePath}customer/modify.htm",params,function(data){
-			    layer.close(index);
-				if(data.isOK==true){
-					succInfo(function(){
-						 query();
-					 },"修改成功");
-				}
-				else{
-					errorInfo(data.error);
-				}
-		});
-	   },"是否确认修改客户");
-}
 function subModify(formIndex){
 	var thisForm=demo.eq(formIndex);
 	 var ad=thisForm.check();
@@ -99,6 +83,7 @@ $(function(){
 	$("#bigAutocompleteContent").ready(function(){
 		$("#bigAutocompleteContent").css("z-index",999999999);
 	});
+	$.Tipmsg.r=" ";
 	demo=$(".modify_class").Validform({
 		ajaxPost:true,
 		tiptype:3,
@@ -108,6 +93,9 @@ $(function(){
 		callback:function(data){
 			if(data.isOK==true){
 				succInfo(function(){
+					var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
+					alert(birthday);
+					$("#birthday_modify_"+data.customer.customerId).text(birthday);
 				 },"修改成功");
 			}
 			else{
@@ -128,9 +116,6 @@ $(function(){
 			var match = false;
 			for (var i = 0; i < data.length; i++) {
 				$("#personnelId").val(data[i].result);
-				/* if (data[i].title == name) {
-					$("#personnelId").val(data[i].result);
-				} */
 			}
 		}
 	});
@@ -355,7 +340,12 @@ function deleteCustomer(customerId){
             <tr>
             </#if>
               <td><a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a></td>
-              <td>${model.name}</td>
+              <td class="pr">
+              <#if model.isNew=="1">
+              <span id="customer_isNew_span_${model.customerId}" class="iconNew"></span>
+              </#if>
+              ${model.name}
+              </td>
               <td>${model.phone}</td>
               <td>${model.employeName}</td>
               <td><a href="javascript:queryInvest('${model.customerId}','${model.channelId}')">查询明细</a></td>
@@ -372,7 +362,7 @@ function deleteCustomer(customerId){
 			</@shiro.lacksRole>
             </tr>
             <tr class="div_state" id="info_${model.customerId}" style="display: none;" state="0">
-              <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
+             <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
               <form action="${basePath}customer/modify.htm" id="modifyForm_${model.customerId}" class="modify_class" method="post">
                 <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
                   <colgroup>
@@ -396,8 +386,9 @@ function deleteCustomer(customerId){
                   </tr>
                   <tr>
                      <input type="hidden" name="id" value="${model.id}"/> 
+                     <input type="hidden" name="customerId" value="${model.customerId}"/> 
                     <td><input type="text" class="input" name="name" value="${model.name}" datatype="s2-20" errormsg="客户姓名至少2个字符,最多20个字符！" nullmsg="请输入客户姓名" /></td>
-                    <td><select name="sex" id="sex">
+                    <td><select name="sex" id="sex_${model.customerId}">
 					    <option value="">请选择</option>
 					    <#if model.sex==1>
 					     <option value="1" selected="selected">男</option>
@@ -434,20 +425,21 @@ function deleteCustomer(customerId){
                       </#if>
                       </#list>
                       </select></td>
-                    <td><input type="text" class="input" name="cardNo" value="${model.cardNo}" datatype="idcard" errormsg="身份证号码格式不正确" ignore="ignore"/></td>
-                    <td>
+                    <td><input id="cardNo_modify_${model.customerId}" type="text" class="input" name="cardNo" value="${model.cardNo}" datatype="idcard" errormsg="身份证号码格式不正确" ignore="ignore"/></td>
+                    <td id="birthday_modify_${model.customerId}" >
                     <#if model.birthday??>
                       ${model.birthday?string("yyyy-MM-dd")}
                       <#else>
                       -
                     </#if>
                     </td>
-                    <td><input type="text" class="input inputAdd" name="address" value="${model.address}"/></td>
+                    <td><input id="address_modify_${model.customerId}"  type="text" class="input inputAdd" name="address" value="${model.address}"/></td>
                   </tr>
                 </tbody>
                 </table>
                 </form>
-                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div></td>
+                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div>
+                 </td> 
               </tr>
              <tr id="investItem_${model.customerId}" style="display:none;" state="0">
              </tr>
