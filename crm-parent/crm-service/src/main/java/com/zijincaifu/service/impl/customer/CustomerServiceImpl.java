@@ -214,11 +214,10 @@ public class CustomerServiceImpl implements ICustomerService
     @Override
     public void updateCustomer(CustomerEntity customer,String uId)
     {
-        boolean guishu=false;
         try
         {
             CustomerEntity oldCustomer=this.getCustomer(customer.getCustomerId());
-            if(uId.equals("")||oldCustomer.getEmployeId().equals(uId)){
+            if(uId.equals("")||oldCustomer.getEmployeId().equals("")||oldCustomer.getEmployeId().equals(uId)){
                 customerDao.updateCustomer(customer);
             }else{
                 throw new ServiceException("该客户已经变更归属");

@@ -347,7 +347,7 @@ public class CustomerController extends BaseController
                     customer.setEmployeIdHistory(customer.getEmployeIdHistory()+","+customer.getEmployeId());
                 }
                 customer.setEmployeId(personnelId);
-                customerService.updateCustomer(customer,getLoginInfo().getUid());
+                customerService.updateCustomer(customer,"");
                 map.put("result", "1");
                 HierarchicalCacheManager.set(CacheLevel.REDIS,
                         "CRM_CUSTOMER_LEVEL",
