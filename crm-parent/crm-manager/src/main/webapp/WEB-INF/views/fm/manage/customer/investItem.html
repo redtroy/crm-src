@@ -23,8 +23,8 @@
 	                   <input type="hidden" name="customerId" value="${customerId}"/>
 	                   <input type="hidden" name="channelId" value="${channelId}"/>
 	                    <td>
-	                    <input type="text" class="input product_select" name="productName" value="" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
-	                    <input type="hidden" name="productId" value=""/>
+	                    <input type="text" onchange="changeProduct(this); class="input product_select" name="productName" value="" datatype="s1-20" errormsg="请选择正确的产品" nullmsg="请选择正确的产品" autocomplete="off">
+	                    <input type="hidden" name="productId" value="" datatype="s1-20" errormsg="请选择正确的产品" nullmsg="请选择正确的产品"/>
 	                    </td>
 	                    <td><a href="javascript:void(0)" class="reminput">查看</a></td>
 	                    <td>${channelId}</td>
@@ -48,7 +48,7 @@
 	                     <#if model.amount??>
 	                    	${model.amount?string(',##0.00')}
 	                    <#else>
-	                    	-
+	                    	0.00
 	                     </#if>
 	                    </td>
 	                    <td>
@@ -70,8 +70,8 @@
                   <tr id="modify_${model.id}" style="display:none;" class="modifyItem_class">
 	                    <input type="hidden" name="id" value="${model.id}"/>
 	                    <td>
-	                    <input type="text"  class="input product_select" name="productName" value="${model.name}" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品" autocomplete="off">
-	                    <input type="hidden" name="productId" value="${model.productId}" datatype="s1-20" errormsg="产品非法" nullmsg="请选择产品"/>
+	                    <input type="text"  class="input product_select" name="productName" value="${model.name}" datatype="s1-20" errormsg="请选择正确的产品" nullmsg="请选择正确的产品" autocomplete="off" onchange="changeProduct(this);">
+	                    <input type="hidden" name="productId" value="${model.productId}" datatype="s1-20" errormsg="请选择正确的产品" nullmsg="请选择正确的产品"/>
 	                    </td>
 	                    <td><a href="#">查看</a></td>
 	                    <td>${model.channelId}</td>
@@ -135,6 +135,10 @@ function toModifyItem(id){
 function toAddItem(){
 	$("#addItem").show();
 	$("#add_href").hide();
+}
+
+function changeProduct(input){
+	$(input).next().val("");
 }
 
 function addItem(){

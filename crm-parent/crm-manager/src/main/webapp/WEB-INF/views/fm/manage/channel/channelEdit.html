@@ -1,9 +1,6 @@
-<link rel="stylesheet" href="${b.staticPath}js/datepicker.css">
-<script src="${b.staticPath}js/datepicker.js"></script>
-<script src="${b.staticPath}js/datepicker.zh-CN.js"></script>
 <script type="text/javascript">
 $(function(){
-    $("#time1").datepicker();
+	//$("#time3").datepicker().regional['zh-CN'];
 });
 function sub(){
 	 $("#edit_form").submit();
@@ -31,12 +28,12 @@ function editChannel(){
 					errorInfo(data.error);
 				}
 			});
-	 },"是否确认添加渠道");
+	 },"是否确认修改渠道");
 	
 }
 </script>
 
-<div class="heading fontYH f20">新增推广渠道 </div>
+<div class="heading fontYH f20">修改推广渠道 </div>
         <div class="mainBox newMem">
         <form id="edit_form" action="javascript:void(0);">
           <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
@@ -55,7 +52,7 @@ function editChannel(){
             </tr> 
 			<tr>
               <th>推广起始时间</th>
-              <td><input type="text" class="input input-time cal form-control" name="startTime" value="${channel.startTime?string("yyyy-MM-dd")}" datepicker style="width:120px" id="time1" readonly="true"  title="请选择推广时间" datatype="*1-32"  nullmsg="请选择推广时间"/></td>
+              <td><input type="text" class="input input-time cal form-control" name="startTime" value="${channel.startTime?string("yyyy-MM-dd")}" datepicker style="width:120px" id="time3" readonly="true"  title="请选择推广时间" datatype="*1-32"  nullmsg="请选择推广时间"/></td>
             </tr>   
           </table>
           </form>
