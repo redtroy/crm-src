@@ -11,6 +11,7 @@
 <@b.validate/>
 <script>
 $(function(){
+	$.Tipmsg.r=" ";
 	 $("#loginForm").Validform({
 			tiptype:3,
 			callback:function(form){
@@ -21,6 +22,11 @@ $(function(){
 function sub(){
 	 $("#loginForm").submit();
  }
+ 
+ function changeVal(){
+ 	$("#error_message").hide();
+ }
+ 
 </script>
 </head>
 
@@ -34,17 +40,18 @@ function sub(){
         <div class="regCont f14">
         <div class="item">
           <label class="f16">员工编号</label>
-          <input class="input" type="text" autocomplete="off" placeholder="" title="" id="" name="account" value="${account}" datatype="s6-6" errormsg="请输入6位员工编号" nullmsg="员工编号不能为空"/>
-          <#if message??>
-          <span class="Validform_checktip Validform_wrong">${message}</span>
-          </#if>
+          <input class="input" type="text" autocomplete="off" placeholder="" title="" id="" ajaxurl="${basePath}valid.htm" name="account" value="${account}" datatype="s6-6" errormsg="请输入正确的6位员工编号" nullmsg="员工编号不能为空"/>
         </div>
         <div class="item">
           <label class="f16">登录密码</label>
-          <input class="input" type="password" autocomplete="off" placeholder="" title="" name="password" datatype="s6-20" errormsg="请输入6-20位密码" nullmsg="密码不能为空"/>
+          <input class="input" type="password" autocomplete="off" placeholder="" title="" name="password" datatype="s6-200" errormsg="密码不可少于6位" nullmsg="密码不能为空" onchange="changeVal();"/>
           <p></p>
         </div>
-      <a href="javascript:sub();" class="button btn-login">立即登录</a> </div>
+      <a href="javascript:sub();" class="button btn-login">立即登录</a>
+       <#if message??>
+          <span id="error_message" class="Validform_checktip Validform_wrong">${message}</span>
+        </#if>
+      </div>
 </div>
 </form>
   </div>

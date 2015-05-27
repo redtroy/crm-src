@@ -66,22 +66,6 @@ function changeCity(customerId){
 	 $("#provinceName_hidden_"+customerId).val($("#province_"+customerId).find("option:selected").text());
 	
 }
-function modify(customerId){
-	var params=$("#modifyForm_"+customerId).serialize();
-	 dialogBox(function(index){
-		 $.post("${basePath}customer/modify.htm",params,function(data){
-			    layer.close(index);
-				if(data.isOK==true){
-					succInfo(function(){
-						 query();
-					 },"修改成功");
-				}
-				else{
-					errorInfo(data.error);
-				}
-		});
-	   },"是否确认修改客户");
-}
 function subModify(formIndex){
 	var thisForm=demo.eq(formIndex);
 	 var ad=thisForm.check();
@@ -99,6 +83,7 @@ $(function(){
 	$("#bigAutocompleteContent").ready(function(){
 		$("#bigAutocompleteContent").css("z-index",999999999);
 	});
+	$.Tipmsg.r=" ";
 	demo=$(".modify_class").Validform({
 		ajaxPost:true,
 		tiptype:3,
@@ -108,6 +93,9 @@ $(function(){
 		callback:function(data){
 			if(data.isOK==true){
 				succInfo(function(){
+					var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
+					alert(birthday);
+					$("#birthday_modify_"+data.customer.customerId).text(birthday);
 				 },"修改成功");
 			}
 			else{
@@ -128,9 +116,6 @@ $(function(){
 			var match = false;
 			for (var i = 0; i < data.length; i++) {
 				$("#personnelId").val(data[i].result);
-				/* if (data[i].title == name) {
-					$("#personnelId").val(data[i].result);
-				} */
 			}
 		}
 	});
@@ -212,6 +197,10 @@ function cleanInput(){
 
 function disEmploye(){
 	var personnelId=$("#disPersonnel_form").find("input[name='personnelId']").val();
+	if(personnelId=='请输入员工编号'||personnelId==''){
+		errorInfo("请输入员工编号");
+		return false;
+	}
 	var customerId=$("#changeEmployeDiv").attr("customerId");
 	$.post("${basePath}customer/changePersonnel.htm?customerId="+customerId+"&personnelId="+personnelId,function(data){
 		if(data.result == "1"){
@@ -283,11 +272,11 @@ function deleteCustomer(customerId){
               姓名
               <input class="input" type="text" name="name" value="${query.name}" />
               手机号
-              <input type="text" class="input" name="phone" value="${query.phone}" />
+              <input type="text" class="input" name="phone" value="${query.phone}"/>
               金融产品
-              <input type="text" class="input" name="productId" value="${query.productId}" />
+              <input type="text" class="input" name="productId" value="${query.productId}"  title="输入金融产品ID"/>
               客户来源
-              <input type="text" class="input" name="channelId" value="${query.channelId}" />
+              <input type="text" class="input" name="channelId" value="${query.channelId}" title="输入渠道ID"/>
               客户分级
               <select name="level" id="select4">
               <option value="">-请选择--</option>
@@ -304,11 +293,14 @@ function deleteCustomer(customerId){
               <input type="text" class="input input-time cal form-control" name="startDate" value="${query.startDate}" datepicker id="time1" />
               -
               <input type="text" class="input input-time cal form-control" name="endDate" value="${query.endDate}" datepicker id="time2"/>
-              <span class="advanced" style="display:;"> 归属员工
+             <@shiro.hasRole name="4"> 
+              <span class="advanced"> 归属员工
               <input type="text" class="input" name="employeId" value="${query.employeId}" />
               UnionID
               <input type="text" class="input" name="unionId" value="${query.unionId}" />
-              </span> <span class="btnBox">
+              </span>
+              </@shiro.hasRole>
+              <span class="btnBox">
               <button class="button button-search" onclick="query();">查询</button>
               </span> <span class="btnBox">
               <button class="button button-purple f12" onclick="to_add();">新增客户</button>
@@ -348,19 +340,29 @@ function deleteCustomer(customerId){
             <tr>
             </#if>
               <td><a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a></td>
-              <td>${model.name}</td>
+              <td class="pr">
+              <#if model.isNew=="1">
+              <span id="customer_isNew_span_${model.customerId}" class="iconNew"></span>
+              </#if>
+              ${model.name}
+              </td>
               <td>${model.phone}</td>
-              <td>${model.employeId}</td>
+              <td>${model.employeName}</td>
               <td><a href="javascript:queryInvest('${model.customerId}','${model.channelId}')">查询明细</a></td>
               <td>${model.channelId}</td>
               <td><span onclick="changeLevel('${model.customerId}',${model.level.getId()});"><a href="javascript:void(0)" class="levinput">${model.level.getName()}</a></span></td>
               <td><span onclick="trackRecord('${model.customerId}')"><a href="javascript:void(0);">管理记录</a></span></td>
               <td title="${model.unionId}" class="color-orange">查看</td>
               <td>${model.createTime?string("yyyy-MM-dd")}</td>
+              <@shiro.hasRole name="5"> 
               <td class="edit"><span onclick="deleteCustomer('${model.customerId}')"><a href="javascript:void(0)" class="del">删除</a></span> <span onclick="changeEmploye('${model.customerId}')"><a href="javascript:void(0)" class="allot memberBox meminput">分配</a></span></td>
+              </@shiro.hasRole> 
+              <@shiro.lacksRole name="5">
+			 <td class="edit">-</td>
+			</@shiro.lacksRole>
             </tr>
             <tr class="div_state" id="info_${model.customerId}" style="display: none;" state="0">
-              <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
+             <td colspan="11"><div class="tabTit fontYH f14">客户资料</div>
               <form action="${basePath}customer/modify.htm" id="modifyForm_${model.customerId}" class="modify_class" method="post">
                 <table border="0" cellpadding="0" cellspacing="0" class="table tableMember">
                   <colgroup>
@@ -384,8 +386,9 @@ function deleteCustomer(customerId){
                   </tr>
                   <tr>
                      <input type="hidden" name="id" value="${model.id}"/> 
+                     <input type="hidden" name="customerId" value="${model.customerId}"/> 
                     <td><input type="text" class="input" name="name" value="${model.name}" datatype="s2-20" errormsg="客户姓名至少2个字符,最多20个字符！" nullmsg="请输入客户姓名" /></td>
-                    <td><select name="sex" id="sex">
+                    <td><select name="sex" id="sex_${model.customerId}">
 					    <option value="">请选择</option>
 					    <#if model.sex==1>
 					     <option value="1" selected="selected">男</option>
@@ -422,20 +425,21 @@ function deleteCustomer(customerId){
                       </#if>
                       </#list>
                       </select></td>
-                    <td><input type="text" class="input" name="cardNo" value="${model.cardNo}" datatype="idcard" errormsg="身份证号码格式不正确" ignore="ignore"/></td>
-                    <td>
+                    <td><input id="cardNo_modify_${model.customerId}" type="text" class="input" name="cardNo" value="${model.cardNo}" datatype="idcard" errormsg="身份证号码格式不正确" ignore="ignore"/></td>
+                    <td id="birthday_modify_${model.customerId}" >
                     <#if model.birthday??>
                       ${model.birthday?string("yyyy-MM-dd")}
                       <#else>
                       -
                     </#if>
                     </td>
-                    <td><input type="text" class="input inputAdd" name="address" value="${model.address}"/></td>
+                    <td><input id="address_modify_${model.customerId}"  type="text" class="input inputAdd" name="address" value="${model.address}"/></td>
                   </tr>
                 </tbody>
                 </table>
                 </form>
-                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div></td>
+                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div>
+                 </td> 
               </tr>
              <tr id="investItem_${model.customerId}" style="display:none;" state="0">
              </tr>

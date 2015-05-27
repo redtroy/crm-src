@@ -1,6 +1,8 @@
 package com.zijincaifu.crm.manage.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.manage.login.SupervisorShiroRedisCache;
 import com.zijincaifu.service.personnel.IPersonnelService;
@@ -69,6 +73,32 @@ public class BasicController extends BaseController
         }
     }
     
+    @RequestMapping("valid")
+    public @ResponseBody Map<String, Object> valid(String param)
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try
+        {
+            PersonnelEntity personnel = accountService.getPersonnel(param);
+            if (personnel != null)
+            {
+                map.put("status", "y");
+            }
+            else
+            {
+                map.put("info", "该员工不存在,请重新输入");
+                map.put("status", "n");
+            }
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            map.put("status", "n");
+            map.put("info", "系统错误");
+        }
+        return map;
+    }
+    
     @RequestMapping("to_login")
     public String ToLogin()
     {
@@ -82,12 +112,14 @@ public class BasicController extends BaseController
         PersonnelEntity user = accountService.getPersonnel(account);
         if (user == null)
         {
-            map.put("message", "员工不存在");
+            map.put("account", account);
+            map.put("message", "该员工编号不存在");
             return LOGIN;
         }
         if (user.getFreezeStatus() == 0)
         {
-            map.put("message", "员工已冻结");
+            map.put("account", account);
+            map.put("message", "该账号已冻结");
             return LOGIN;
         }
         Subject currentUser = SecurityUtils.getSubject();

@@ -10,6 +10,7 @@
 		<result property="name" column="NAME" jdbcType="VARCHAR" />
 		<result property="phone" column="PHONE" jdbcType="VARCHAR" />
 		<result property="employeId" column="EMPLOYE_ID" jdbcType="VARCHAR" />
+		<result property="employeName" column="EMPLOYE_NAME" jdbcType="VARCHAR" />
 		<result property="channelId" column="CHANNEL_ID" jdbcType="VARCHAR" />
 		<result property="level" column="LEVEL" jdbcType="INTEGER" />
 		<result property="state" column="STATE" jdbcType="INTEGER" />
@@ -24,6 +25,7 @@
 		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTH_DAY" jdbcType="DATE" />
 		<result property="address" column="ADDRESS" jdbcType="VARCHAR" />
+		<result property="employeIdHistory" column="EMPLOYE_ID_HISTORY" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 获取渠道信息 -->
@@ -35,7 +37,7 @@
 	<!-- 查看渠道 -->
 	<select id="queryCustomerList" resultMap="CustomerResultMap"
 		parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT DISTINCT c.* FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID WHERE 1=1 ]]>
+		<![CDATA[SELECT DISTINCT c.*,e.NAME as EMPLOYE_NAME FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID INNER JOIN CRM_PERSONNEL e ON e.UID=c.EMPLOYE_ID WHERE 1=1 ]]>
 		<!-- 渠道编号 -->
 		<if test="condition.customerId != null and condition.customerId != ''">
 			<![CDATA[ AND c.CUSTOMER_ID =#{condition.customerId}]]>
@@ -62,8 +64,12 @@
 			<![CDATA[ AND c.EMPLOYE_ID =#{condition.employeId }]]>
 		</if>
 		<if
-			test="condition.startDate != null and condition.endDate != null and condition.startDate != '' and condition.endDate != ''">
-			<![CDATA[AND c.CREATE_TIME >=#{condition.startDate} AND c.CREATE_TIME <= #{condition.endDate}]]>
+			test="condition.startDate != null  and condition.startDate != ''">
+			<![CDATA[AND c.CREATE_TIME >=#{condition.startDate}]]>
+		</if>
+		<if
+			test="condition.endDate != null and condition.endDate != ''">
+			<![CDATA[AND c.CREATE_TIME <= #{condition.endDate}]]>
 		</if>
 		<![CDATA[ ORDER BY c.LEVEL asc,c.CUSTOMER_ID DESC]]>
 	</select>

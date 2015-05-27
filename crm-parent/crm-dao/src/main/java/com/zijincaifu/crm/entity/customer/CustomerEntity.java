@@ -61,6 +61,8 @@ public class CustomerEntity extends Pagable implements Serializable
     @Column(name = "EMPLOYE_ID")
     private String employeId;
     
+    private String employeName;
+    
     /**
      * 渠道编号
      */
@@ -135,6 +137,14 @@ public class CustomerEntity extends Pagable implements Serializable
      */
     @Column(name = "ADDRESS")
     private String address;
+    
+    /**
+     * 分配员工历史
+     */
+    @Column(name="EMPLOYE_ID_HISTORY")
+    private String employeIdHistory;
+    
+    private String isNew;
     
     public String getId()
     {
@@ -314,6 +324,36 @@ public class CustomerEntity extends Pagable implements Serializable
     public void setState(Integer state)
     {
         this.state = state;
+    }
+    
+    public String getEmployeName()
+    {
+        return employeName;
+    }
+    
+    public void setEmployeName(String employeName)
+    {
+        this.employeName = employeName;
+    }
+    
+    public String getIsNew()
+    {
+        return isNew;
+    }
+    
+    public void setIsNew(String isNew)
+    {
+        this.isNew = isNew;
+    }
+
+    public String getEmployeIdHistory()
+    {
+        return employeIdHistory;
+    }
+
+    public void setEmployeIdHistory(String employeIdHistory)
+    {
+        this.employeIdHistory = employeIdHistory;
     }
     
 }

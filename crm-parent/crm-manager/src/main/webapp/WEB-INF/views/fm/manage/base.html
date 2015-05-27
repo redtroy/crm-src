@@ -1,5 +1,5 @@
-<#assign staticPath="http://static.crm.org.cn:88/crm-manager/" />
-<#assign imagePath="http://storage.crm.org.cn:88/" />
+<#assign staticPath="http://61.132.53.150:88/crm-manager/" />
+<#assign imagePath="http://61.132.53.150:88/" />
 <script>
 </script>
 <#macro dialogBox>
@@ -64,7 +64,6 @@
 
 
 <script>
-
 Date.prototype.format = function(format){ 
 	var o = { 
 	"M+" : this.getMonth()+1, //month 
@@ -120,19 +119,20 @@ function loadingImg(){
 }
 
 function dialogBox(confirm,message){
-	var data=$("#diglog_div");
 	$("#diglog_message").text(message);
 	 var pageii = $.layer({
 		    type: 1,
 		    title: false,
-		    offset: ['192px', ''],
+		    offset: ['200px', ''],
+			move:'.tit',
+			moveType: 1,
 		   	area: ['20%', '20%'],
 		    border: [0], //去掉默认边框
 		    shade: [0.5], //去掉遮罩
 		    closeBtn: [0, false], //去掉默认关闭按钮
 		    //shift: 'left', //从左动画弹出
 		    page: {
-		        html: data.html()
+		    	 dom: "#diglog_div"
 		    }
 		});
 	 
@@ -162,6 +162,8 @@ function dialogBoxOut(html){
 		    title: false,
 		    offset: ['200px', ''],
 		   	area: ['10%', '10%'],
+		   	move:'.tit',
+		   	moveType: 1,
 		    border: [0], //去掉默认边框
 		    shade: [0.5,'#000'], //去掉遮罩
 		    closeBtn: [0, false], //去掉默认关闭按钮
@@ -177,6 +179,8 @@ function dialogBoxOutId(id){
 		    type: 1,
 		    title: false,
 		    offset: ['200px', ''],
+		    move:'.tit',
+		    moveType: 1,
 		   	area: ['10%', '10%'],
 		    border: [0], //去掉默认边框
 		    shade: [0.5,'#000'], //去掉遮罩
@@ -207,6 +211,8 @@ function errorInfo(message){
 		    title: false,
 		   	area: ['20%', '20%'],
 		    offset: ['192px', ''],
+		    move:'.tit',
+		    moveType: 1,
 		    border: [0], //去掉默认边框
 		    shade: [0.5], //去掉遮罩
 		    closeBtn: [0, false], //去掉默认关闭按钮
@@ -233,6 +239,8 @@ function messageInfo(message){
 		    type: 1,
 		    title: false,
 		   	area: ['20%', '20%'],
+		   	move:'.tit',
+		   	moveType: 1,
 		    offset: ['192px', ''],
 		    border: [0], //去掉默认边框
 		    shade: [0.5,'#000'], //去掉遮罩
@@ -260,6 +268,8 @@ function succInfo(confirm,message){
 	 var pageii = $.layer({
 		    type: 1,
 		    title: false,
+		    move:'.tit',
+		    moveType: 1,
 		   	area: ['20%', '20%'],
 		    offset: ['192px', ''],
 		    border: [0], //去掉默认边框

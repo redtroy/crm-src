@@ -1,0 +1,58 @@
+<script>
+$(function(){
+	 $("#createForm").Validform({
+			tiptype:3,
+			datatype:{
+				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
+			 },
+			callback:function(form){
+				addCustomer();
+			}
+		});
+	 
+	 $("#productName").bigAutocomplete({
+			url : "${basePath}product/autoProduct.htm",
+			callback : function(data) {
+				if(data){
+					$("#productId_hidden").val(data.result);
+				}
+			},
+			beforeShow : function(data) {
+				var name = $("#productName").val();
+				var match = false;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].title == name) {
+						$("#productId_hidden").val(data[i].result);
+					}
+				}
+			}
+		});
+});
+</script>
+<div class="heading fontYH f20">生成推广二维码 </div>
+        <div class="mainBox newMem">
+        <form action="javascript:void(0);" id="createForm">
+          <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
+            <col width="15%" />
+            <col width="85%" />
+            <tr>
+              <th>选择产品</th>
+              <td title="联想输入，下拉选择，不可以自己输入">
+              <input type="hidden" id="productId_hidden" name="productId" value=""/>
+              <input type="text" name="productName" id="productName" class="input input-addname" datatype="s2-20" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off"/></td>
+            </tr>
+            <tr>
+              <th>选择渠道</th>
+              <td title="联想输入，下拉选择，不可以自己输入">
+              <input type="hidden" id="channelId_hidden" name="channelId" value=""/>
+              <input type="text" name="channelName" id="channelName" class="input input-addname" datatype="s2-20" errormsg="投资渠道非法" nullmsg="请选择投资渠道"  autocomplete="off"/></td>
+            </tr>  
+			<tr>
+              <th>微信扫描二维码</th>
+              <td><span class="color-orange fontYH f20" >图片二维码<img src="" alt="" class="mr20" title="http://www.menchuang.org.cn" />&nbsp;&nbsp;链接二维码</span><img src="" alt="" class="ml20" /></td>
+            </tr>   
+            </tr>
+          </table>
+          <div class="buttonBox mb10 tc"><a href="channels.html" class="button button-orange mr15">确定</a><span onclick="query();"><a href="javascript:void(0)" class="button button-gray">返回</a></span></div>
+          </form>
+        </div>
