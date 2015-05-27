@@ -64,6 +64,7 @@ public class PersonnelController extends BaseController
                 PersonnelEntity user = getLoginInfo();
                 query.setUid(user.getUid());
             }
+            query.setShowCount(15);
             List<PersonnelEntity> list = personneService.queryPersonnels(query);
             PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             map.put("list", list);
