@@ -271,7 +271,7 @@ public class CustomerController extends BaseController
         {
             CustomerEntity customer = customerService.getCustomer(customerId);
             customer.setLevel(level);
-            customerService.updateCustomer(customer,getLoginInfo().getUid());
+            customerService.updateCustomer(customer,"");
             map.put("isOK", true);
         }
         catch (Exception e)

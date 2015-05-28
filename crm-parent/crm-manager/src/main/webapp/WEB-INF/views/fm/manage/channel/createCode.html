@@ -1,12 +1,16 @@
 <script>
 $(function(){
+	/* $("#bigAutocompleteContent").ready(function(){
+		$("#bigAutocompleteContent").css("z-index",999999999);
+	}); */
+	
 	 $("#createForm").Validform({
 			tiptype:3,
 			datatype:{
 				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
 			 },
 			callback:function(form){
-				addCustomer();
+				/* addCustomer(); */
 			}
 		});
 	 
@@ -27,7 +31,30 @@ $(function(){
 				}
 			}
 		});
+	 
+	 $("#channelName").bigAutocomplete({
+			url : "${basePath}channel/autoChannel.htm",
+			callback : function(data) {
+				if(data){
+					$("#channelId_hidden").val(data.result);
+				}
+			},
+			beforeShow : function(data) {
+				var name = $("#channelName").val();
+				var match = false;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].title == name) {
+						$("#channelId_hidden").val(data[i].result);
+					}
+				}
+			}
+		});
 });
+function loadCode(){
+	 var productId=$("#createForm").find("input[name='productId']").val();
+	 var channelId=$("#createForm").find("input[name='channelId']").val();
+	 alert(productId+"---"+channelId);
+};
 </script>
 <div class="heading fontYH f20">生成推广二维码 </div>
         <div class="mainBox newMem">
@@ -51,8 +78,7 @@ $(function(){
               <th>微信扫描二维码</th>
               <td><span class="color-orange fontYH f20" >图片二维码<img src="" alt="" class="mr20" title="http://www.menchuang.org.cn" />&nbsp;&nbsp;链接二维码</span><img src="" alt="" class="ml20" /></td>
             </tr>   
-            </tr>
           </table>
-          <div class="buttonBox mb10 tc"><a href="channels.html" class="button button-orange mr15">确定</a><span onclick="query();"><a href="javascript:void(0)" class="button button-gray">返回</a></span></div>
+          <div class="buttonBox mb10 tc"><span onclick="loadCode();"><a href="javascript:void(0)" class="button button-orange mr15">确定</a></span><span onclick="query();"><a href="javascript:void(0)" class="button button-gray">返回</a></span></div>
           </form>
         </div>
