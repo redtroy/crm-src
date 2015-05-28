@@ -46,6 +46,11 @@ function to_add(){
 
 function customerInfo(uid){
 	demo.resetForm();
+	$.get("${basePath}customer/changeNew.htm?customerId="+uid,function(data){
+		if(data.isNew=="0"){
+			$("#customer_isNew_span_"+uid).removeClass("iconNew");
+		}
+	});
 	$(".Validform_checktip").empty();
 	var nowState=$("#info_"+uid).attr("state");
 	if(nowState==0){
@@ -94,7 +99,6 @@ $(function(){
 			if(data.isOK==true){
 				succInfo(function(){
 					var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
-					alert(birthday);
 					$("#birthday_modify_"+data.customer.customerId).text(birthday);
 				 },"修改成功");
 			}
@@ -295,9 +299,9 @@ function deleteCustomer(customerId){
               <input type="text" class="input input-time cal form-control" name="endDate" value="${query.endDate}" datepicker id="time2"/>
              <@shiro.hasRole name="4"> 
               <span class="advanced"> 归属员工
-              <input type="text" class="input" name="employeId" value="${query.employeId}" />
+              <input type="text" class="input" name="employeId" value="${query.employeId}" title="输入归属员工ID"/>
               UnionID
-              <input type="text" class="input" name="unionId" value="${query.unionId}" />
+              <input type="text" class="input" name="unionId" value="${query.unionId}"/>
               </span>
               </@shiro.hasRole>
               <span class="btnBox">
