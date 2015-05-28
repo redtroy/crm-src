@@ -1,8 +1,14 @@
 package com.zijincaifu.crm.manage.controller.channel;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +21,11 @@ import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.channel.ChannelEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.crm.model.channel.ChannelModel;
 import com.zijincaifu.model.channel.ChannelQuery;
+import com.zijincaifu.model.product.ProductQuery;
 import com.zijincaifu.service.channel.IChannelService;
 
 @Controller
@@ -163,5 +171,42 @@ public class ChannelController extends BaseController
             map.put("error", e.getMessage());
             throw new WebException("", e);
         }
+    }
+    
+    /**
+     * 自动感应产品
+     * 
+     * @param request
+     * @param response
+     * @param keyword
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("autoChannel")
+    public @ResponseBody Map<String, String> autoChannel(
+            HttpServletRequest request, HttpServletResponse response,
+            String keyword) throws IOException
+    {
+        ChannelQuery query = new ChannelQuery();
+        if (keyword != "" && keyword != null)
+        {
+            query.setName(keyword);
+        }
+        List<ChannelModel> list = channelService.queryChannels(query);
+        List<String> strlist = new ArrayList<String>();
+        String sb = "";
+        for (ChannelModel channel : list)
+        {
+            sb = "{\"title\":\"" + channel.getName() + "\",\"result\":\""
+                    + channel.getChannelId() + "\"}";
+            strlist.add(sb);
+        }
+        String json = "{\"data\":" + strlist.toString() + "}";
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
+        out.close();
+        return null;
     }
 }
