@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
@@ -94,7 +95,7 @@ public class CustomerServiceImpl implements ICustomerService
             
             if (list == null || list.size() == 0)
             { // 获取出生年月日   
-                if (customer.getCardNo() != null)
+                if (StringUtils.isNotEmpty(customer.getCardNo()))
                 {
                     String birthday = customer.getCardNo().substring(6, 14);
                     Date birthdate = null;
@@ -106,6 +107,8 @@ public class CustomerServiceImpl implements ICustomerService
             else
             {
                 customer = list.get(0);
+                customer.setUnionId(model.getUnionId());
+                customerDao.updateCustomer(customer);
             }
             InvestItemEntity item = new InvestItemEntity();
             item.setCustomerId(customer.getCustomerId());
@@ -152,7 +155,7 @@ public class CustomerServiceImpl implements ICustomerService
                 if (list == null || list.size() == 0)
                 {
                     // 获取出生年月日   
-                    if (customer.getCardNo() != null)
+                    if (StringUtils.isNotEmpty(customer.getCardNo()))
                     {
                         String birthday = customer.getCardNo().substring(6, 14);
                         Date birthdate = null;
@@ -194,7 +197,7 @@ public class CustomerServiceImpl implements ICustomerService
             if (customer != null)
             {
                 // 获取出生年月日   
-                if (customer.getCardNo() != null)
+                if (StringUtils.isNotEmpty(customer.getCardNo()))
                 {
                     String birthday = customer.getCardNo().substring(6, 14);
                     Date birthdate = null;
