@@ -85,6 +85,8 @@ public class CustomerServiceImpl implements ICustomerService
             customer.setState(0);
             customer.setLevel(CustomerLevelEnum.NEW);
             customer.setUnionId(model.getUnionId());
+            customer.setChannelId(model.getChannelId());
+            customer.setCreateTime(new Date());
             
             CustomerQuery query = new CustomerQuery();
             query.setPhone(customer.getPhone());
@@ -101,10 +103,14 @@ public class CustomerServiceImpl implements ICustomerService
                 }
                 customerDao.addCustomer(customer);
             }
+            else
+            {
+                customer = list.get(0);
+            }
             InvestItemEntity item = new InvestItemEntity();
-            item.setCustomerId(list.get(0).getCustomerId());
+            item.setCustomerId(customer.getCustomerId());
             item.setProductId(model.getProductId());
-            item.setChannelId(list.get(0).getChannelId());
+            item.setChannelId(customer.getChannelId());
             item.setState(InvestItemStateEnum.REGIST);
             itemService.add(item);
             
@@ -121,7 +127,7 @@ public class CustomerServiceImpl implements ICustomerService
         {
             
             SxjLogger.error(e.getMessage(), e, this.getClass());
-            throw new ServiceException("新增客户信息错误", e);
+            throw new ServiceException("新增微信客户信息错误", e);
         }
         return false;
     }
@@ -180,7 +186,8 @@ public class CustomerServiceImpl implements ICustomerService
     
     @Override
     @Transactional
-    public void modifyCustomer(CustomerEntity customer,String uId) throws ServiceException
+    public void modifyCustomer(CustomerEntity customer, String uId)
+            throws ServiceException
     {
         try
         {
@@ -194,13 +201,13 @@ public class CustomerServiceImpl implements ICustomerService
                     birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
                     customer.setBirthday(birthdate);
                 }
-                updateCustomer(customer,uId);
+                updateCustomer(customer, uId);
             }
         }
         catch (Exception e)
         {
             SxjLogger.error(e.getMessage(), e, this.getClass());
-            throw new ServiceException("新增客户信息错误", e);
+            throw new ServiceException(e.getMessage(), e);
         }
         
     }
@@ -212,15 +219,19 @@ public class CustomerServiceImpl implements ICustomerService
     }
     
     @Override
-    public void updateCustomer(CustomerEntity customer,String uId)
+    public void updateCustomer(CustomerEntity customer, String uId)
     {
         try
         {
-            CustomerEntity oldCustomer=this.getCustomer(customer.getCustomerId());
-            if(uId.equals("")||oldCustomer.getEmployeId().equals("")||oldCustomer.getEmployeId().equals(uId)){
+            CustomerEntity oldCustomer = this.getCustomer(customer.getCustomerId());
+            if (uId.equals("") || oldCustomer.getEmployeId().equals("")
+                    || oldCustomer.getEmployeId().equals(uId))
+            {
                 customerDao.updateCustomer(customer);
-            }else{
-                throw new ServiceException("该客户已经变更归属");
+            }
+            else
+            {
+                throw new ServiceException("该客户不属于当前员工");
             }
         }
         catch (Exception e)
