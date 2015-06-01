@@ -37,7 +37,7 @@
 	<!-- 查看渠道 -->
 	<select id="queryCustomerList" resultMap="CustomerResultMap"
 		parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT DISTINCT c.*,e.NAME as EMPLOYE_NAME FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID INNER JOIN CRM_PERSONNEL e ON e.UID=c.EMPLOYE_ID WHERE 1=1 ]]>
+		<![CDATA[SELECT DISTINCT c.*,e.NAME as EMPLOYE_NAME FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID LEFT JOIN CRM_PERSONNEL e ON e.UID=c.EMPLOYE_ID WHERE 1=1 ]]>
 		<!-- 渠道编号 -->
 		<if test="condition.customerId != null and condition.customerId != ''">
 			<![CDATA[ AND c.CUSTOMER_ID =#{condition.customerId}]]>
