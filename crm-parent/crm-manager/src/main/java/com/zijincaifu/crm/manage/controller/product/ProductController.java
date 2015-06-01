@@ -191,7 +191,7 @@ public class ProductController extends BaseController
         for (ProductEntity product : list)
         {
             sb = "{\"title\":\"" + product.getName() + "\",\"result\":\""
-                    + product.getProductId() + "\"}";
+                    + product.getProductId() + "\",\"url\":\""+product.getProductUrl()+"\"}";
             strlist.add(sb);
         }
         String json = "{\"data\":" + strlist.toString() + "}";
