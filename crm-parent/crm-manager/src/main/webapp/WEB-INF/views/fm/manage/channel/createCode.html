@@ -20,6 +20,7 @@ $(function(){
 				if(data){
 					$("#productId_hidden").val(data.result);
 					$("#productUrl_hidden").val(data.url);
+					$("#proNameSpan").attr("class","Validform_checktip Validform_right");
 				}
 			},
 			beforeShow : function(data) {
@@ -29,6 +30,7 @@ $(function(){
 					if (data[i].title == name) {
 						$("#productId_hidden").val(data[i].result);
 						$("#productUrl_hidden").val(data[i].url);
+						$("#proNameSpan").attr("class","Validform_checktip Validform_right");
 					}
 				}
 			}
@@ -39,6 +41,7 @@ $(function(){
 			callback : function(data) {
 				if(data){
 					$("#channelId_hidden").val(data.result);
+					$("#channelNameSpan").attr("class","Validform_checktip Validform_right");
 				}
 			},
 			beforeShow : function(data) {
@@ -47,6 +50,7 @@ $(function(){
 				for (var i = 0; i < data.length; i++) {
 					if (data[i].title == name) {
 						$("#channelId_hidden").val(data[i].result);
+						$("#channelNameSpan").attr("class","Validform_checktip Validform_right");
 					}
 				}
 			}
@@ -56,6 +60,10 @@ function loadCode(){
 	 var temProductId=$("#createForm").find("input[name='productId']").val();
 	 var temProductUrl=$("#createForm").find("input[name='productUrl']").val();
 	 var temChannelId=$("#createForm").find("input[name='channelId']").val();
+	 if(temProductId==""||temProductUrl==""){
+		 alert("false");
+		 return false;
+	 }
 	 var productid=temProductId;
 	 var channelid=temChannelId;
 	 var url=temProductUrl;
@@ -71,6 +79,19 @@ function loadCode(){
 		  $("#urlCode").attr("src",backdata.goalurl);
 	   },"json")
 };
+
+function changePro(){
+	$("#createForm").find("input[name='productId']").val("");
+	$("#proNameSpan").attr("class","Validform_checktip Validform_wrong");
+	/* }else{
+		$("#proNameSpan").attr("class","Validform_checktip Validform_right");
+	} */
+}; 
+
+function changeChannel(){
+	$("#createForm").find("input[name='channelId']").val("");
+	$("#channelNameSpan").attr("class","Validform_checktip Validform_wrong");
+};
 </script>
 <div class="heading fontYH f20">生成推广二维码 </div>
         <div class="mainBox newMem">
@@ -81,15 +102,19 @@ function loadCode(){
             <tr>
               <th>选择产品</th>
               <td title="联想输入，下拉选择，不可以自己输入">
-              <input type="hidden" id="productId_hidden" name="productId" value=""/>
+              <input type="hidden" id="productId_hidden" name="productId" value="" />
               <input type="hidden" id="productUrl_hidden" name="productUrl" value=""/>
-              <input type="text" name="productName" id="productName" class="input input-addname" datatype="s2-20" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off"/></td>
+              <input type="text" name="productName" id="productName" class="input input-addname"  autocomplete="off" onchange="changePro()"/>
+              <span id="proNameSpan"></span>
+              </td>
             </tr>
             <tr>
               <th>选择渠道</th>
               <td title="联想输入，下拉选择，不可以自己输入">
               <input type="hidden" id="channelId_hidden" name="channelId" value=""/>
-              <input type="text" name="channelName" id="channelName" class="input input-addname" datatype="s2-20" errormsg="投资渠道非法" nullmsg="请选择投资渠道"  autocomplete="off"/></td>
+              <input type="text" name="channelName" id="channelName" class="input input-addname"  autocomplete="off" onchange="changeChannel()"/>
+              <span id="channelNameSpan"></span>
+              </td>
             </tr>  
 			<tr>
               <th>微信扫描二维码</th>
