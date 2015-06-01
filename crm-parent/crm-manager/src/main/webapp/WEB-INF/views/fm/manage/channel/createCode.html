@@ -19,6 +19,7 @@ $(function(){
 			callback : function(data) {
 				if(data){
 					$("#productId_hidden").val(data.result);
+					$("#productUrl_hidden").val(data.url);
 				}
 			},
 			beforeShow : function(data) {
@@ -27,6 +28,7 @@ $(function(){
 				for (var i = 0; i < data.length; i++) {
 					if (data[i].title == name) {
 						$("#productId_hidden").val(data[i].result);
+						$("#productUrl_hidden").val(data[i].url);
 					}
 				}
 			}
@@ -51,9 +53,23 @@ $(function(){
 		});
 });
 function loadCode(){
-	 var productId=$("#createForm").find("input[name='productId']").val();
-	 var channelId=$("#createForm").find("input[name='channelId']").val();
-	 alert(productId+"---"+channelId);
+	 var temProductId=$("#createForm").find("input[name='productId']").val();
+	 var temProductUrl=$("#createForm").find("input[name='productUrl']").val();
+	 var temChannelId=$("#createForm").find("input[name='channelId']").val();
+	 var productid=temProductId;
+	 var channelid=temChannelId;
+	 var url=temProductUrl;
+     var submitdingData = {
+    		productid : productid,
+    		channelid: channelid,
+    		employeeid:"${employeeId}",
+    		url:url
+       };
+	  $.post('http://www.mimeng360.com/index.php?g=User&m=Crmweixin&a=findkey', submitdingData,
+	      function(backdata){ 
+		  $("#picCode").attr("src",backdata.picurl);
+		  $("#urlCode").attr("src",backdata.goalurl);
+	   },"json")
 };
 </script>
 <div class="heading fontYH f20">生成推广二维码 </div>
@@ -66,6 +82,7 @@ function loadCode(){
               <th>选择产品</th>
               <td title="联想输入，下拉选择，不可以自己输入">
               <input type="hidden" id="productId_hidden" name="productId" value=""/>
+              <input type="hidden" id="productUrl_hidden" name="productUrl" value=""/>
               <input type="text" name="productName" id="productName" class="input input-addname" datatype="s2-20" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off"/></td>
             </tr>
             <tr>
@@ -76,7 +93,7 @@ function loadCode(){
             </tr>  
 			<tr>
               <th>微信扫描二维码</th>
-              <td><span class="color-orange fontYH f20" >图片二维码<img src="" alt="" class="mr20" title="http://www.menchuang.org.cn" />&nbsp;&nbsp;链接二维码</span><img src="" alt="" class="ml20" /></td>
+              <td><span class="color-orange fontYH f20" >图片二维码<img id="picCode" width="265px"  height="265px" src="" alt="" class="mr20" title="http://www.menchuang.org.cn" />&nbsp;&nbsp;链接二维码</span><img id="urlCode" width="265px"  height="265px" src="" alt="" class="ml20" /></td>
             </tr>   
           </table>
           <div class="buttonBox mb10 tc"><span onclick="loadCode();"><a href="javascript:void(0)" class="button button-orange mr15">确定</a></span><span onclick="query();"><a href="javascript:void(0)" class="button button-gray">返回</a></span></div>

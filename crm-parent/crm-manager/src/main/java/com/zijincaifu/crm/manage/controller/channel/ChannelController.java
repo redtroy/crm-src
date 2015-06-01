@@ -163,6 +163,7 @@ public class ChannelController extends BaseController
     {
         try
         {
+            map.put("employeeId", getLoginInfo().getUid());
             return "manage/channel/createCode";
         }
         catch (Exception e)
