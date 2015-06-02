@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sxj.cache.manager.CacheLevel;
+import com.sxj.cache.manager.HierarchicalCacheManager;
 import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
@@ -78,6 +80,7 @@ public class CustomerServiceImpl implements ICustomerService
             {
                 throw new ServiceException("新增微信客户失败");
             }
+            boolean isAdd = false;
             CustomerEntity customer = new CustomerEntity();
             customer.setName(model.getName());
             customer.setSex(model.getSex());
@@ -103,6 +106,11 @@ public class CustomerServiceImpl implements ICustomerService
                     customer.setBirthday(birthdate);
                 }
                 customerDao.addCustomer(customer);
+                HierarchicalCacheManager.set(CacheLevel.REDIS,
+                        "CRM_CUSTOMER_LEVEL_AD",
+                        customer.getCustomerId(),
+                        "1");
+                isAdd = true;
             }
             else
             {
@@ -113,7 +121,7 @@ public class CustomerServiceImpl implements ICustomerService
             InvestItemEntity item = new InvestItemEntity();
             item.setCustomerId(customer.getCustomerId());
             item.setProductId(model.getProductId());
-            item.setChannelId(customer.getChannelId());
+            item.setChannelId(model.getChannelId());
             item.setState(InvestItemStateEnum.REGIST);
             itemService.add(item);
             
@@ -121,10 +129,14 @@ public class CustomerServiceImpl implements ICustomerService
             for (Iterator<RecommendEntity> iterator = recommen.iterator(); iterator.hasNext();)
             {
                 RecommendEntity recommendEntity = iterator.next();
+                //                if (recommendEntity.getLevel() == 1)
+                //                {
+                //                    recommendEntity.setUnionId(model.getUnionId());
+                //                }
                 recommendEntity.setInvestId(item.getId());
             }
             recommendService.addRecommend(recommen);
-            
+            return isAdd;
         }
         catch (Exception e)
         {
@@ -132,7 +144,6 @@ public class CustomerServiceImpl implements ICustomerService
             SxjLogger.error(e.getMessage(), e, this.getClass());
             throw new ServiceException("新增微信客户信息错误", e);
         }
-        return false;
     }
     
     @Override
@@ -216,12 +227,14 @@ public class CustomerServiceImpl implements ICustomerService
     }
     
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public CustomerEntity getCustomer(String customerId)
     {
         return customerDao.getCustomer(customerId);
     }
     
     @Override
+    @Transactional
     public void updateCustomer(CustomerEntity customer, String uId)
     {
         try
@@ -245,6 +258,7 @@ public class CustomerServiceImpl implements ICustomerService
     }
     
     @Override
+    @Transactional
     public void deleteCustomer(String customerId)
     {
         try
