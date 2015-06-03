@@ -155,9 +155,9 @@ public class PersonnelServiceImpl implements IPersonnelService
         }
         
     }
-
-
+    
     @Override
+    @Transactional
     public List<PersonnelEntity> autoPersonnel(PersonnelQuery query)
     {
         try

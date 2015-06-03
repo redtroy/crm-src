@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.dao.customer.ITrackRecordDao;
-import com.zijincaifu.crm.entity.customer.InvestItemEntity;
 import com.zijincaifu.crm.entity.customer.TrackRecordEntity;
-import com.zijincaifu.crm.model.customer.InvestItemModel;
 import com.zijincaifu.service.customer.ITrackRecordService;
 
 @Service
@@ -21,6 +20,7 @@ public class TrackRecordServiceImpl implements ITrackRecordService
     private ITrackRecordDao trackRecordDao;
     
     @Override
+    @Transactional
     public List<TrackRecordEntity> query(String customerId)
             throws ServiceException
     {
@@ -38,8 +38,9 @@ public class TrackRecordServiceImpl implements ITrackRecordService
         }
         
     }
-
+    
     @Override
+    @Transactional
     public void addTrackRecord(TrackRecordEntity trackRecord)
     {
         try
