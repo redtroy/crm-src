@@ -35,7 +35,7 @@ public class OpenWeixinController extends BaseController
         PrintWriter out = response.getWriter();
         try
         {
-            
+            SxjLogger.info(json, this.getClass());
             if (StringUtils.isEmpty(json))
             {
                 out.print("0");

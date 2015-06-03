@@ -66,14 +66,15 @@ function loadCode(){
 	 }
 	 var productid=temProductId;
 	 var channelid=temChannelId;
+	 var employeeid="${employeeId}";
 	 var url=temProductUrl;
      var submitdingData = {
-    		productid : productid,
+    		productid: productid,
     		channelid: channelid,
     		employeeid:"${employeeId}",
     		url:url
        };
-	  $.post('http://www.mimeng360.com/index.php?g=User&m=Crmweixin&a=findkey', submitdingData,
+	  $.post("http://www.mimeng360.com/index.php?g=User&m=Crmweixin&a=findkey",submitdingData,
 	      function(backdata){ 
 		  $("#picCode").attr("src",backdata.picurl);
 		  $("#urlCode").attr("src",backdata.goalurl);

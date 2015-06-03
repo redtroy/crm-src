@@ -10,6 +10,7 @@
 		<result property="remark" column="REMARK" jdbcType="VARCHAR"/>
 		<result property="startTime" column="STARTTIME" jdbcType="TIMESTAMP"/>
 		<result property="uid" column="UID" jdbcType="VARCHAR"/>
+		<result property="isBind" column="IS_BIND" jdbcType="BOOLEAN"/>
 		<result property="personnelName" column="P_NAME" jdbcType="VARCHAR"/>
 	</resultMap>
 	

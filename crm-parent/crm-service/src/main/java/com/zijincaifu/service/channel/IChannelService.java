@@ -9,19 +9,19 @@ import com.zijincaifu.model.channel.ChannelQuery;
 
 public interface IChannelService
 {
-
+    
     /**
      * @param channel
      * @throws ServiceException
      */
     
     public List<ChannelModel> queryChannels(ChannelQuery query);
-
+    
     public void addChannel(ChannelEntity channel);
-
+    
     public ChannelModel getChannel(String channelId);
-
+    
     public void editChannel(ChannelEntity channel);
-
-    public void deleteProduct(String id);
+    
+    public void deleteChannel(String id);
 }

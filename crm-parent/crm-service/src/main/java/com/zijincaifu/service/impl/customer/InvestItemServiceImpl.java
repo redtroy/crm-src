@@ -137,6 +137,7 @@ public class InvestItemServiceImpl implements IInvestItemService
         }
     }
 
+    
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public List<InvestItemModel> queryItemsByChannelId(String channelId)
