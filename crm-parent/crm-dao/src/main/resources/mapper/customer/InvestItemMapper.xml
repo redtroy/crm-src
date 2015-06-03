@@ -33,7 +33,6 @@
 			<![CDATA[ AND i.PRODUCT_ID =#{condition.productId}]]>
 		</if>
 		<!-- 渠道 -->
-		<!-- 渠道 -->
 		<if test="condition.channelId != null and condition.channelId != ''">
 			<![CDATA[ AND i.CHANNEL_ID =#{condition.channelId}]]>
 		</if>
