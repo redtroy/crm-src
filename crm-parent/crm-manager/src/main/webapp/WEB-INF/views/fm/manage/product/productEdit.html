@@ -13,19 +13,35 @@ function sub(){
 	});
  
 function editProduct(){
-	var params=$("#edit_form").serialize();
-	 dialogBox(function(index){
-		 $.post("${basePath}product/editProduct.htm",params,function(data){
-			  layer.close(index);
-				if(data.isOK == true){
-					succInfo(function(){
-						query();
-					},"修改成功");
-				}else{
-					errorInfo(data.error);
-				}
-			});
-	 },"是否确认修改产品");
+	var url=$("#edit_form").find("input[name='productUrl']").val();
+	jQuery.ajax({
+		url:url,
+		type:"get",
+		success:function(result){
+			if(result=="1"){
+				var params=$("#edit_form").serialize();
+				 dialogBox(function(index){
+					 $.post("${basePath}product/editProduct.htm",params,function(data){
+						  layer.close(index);
+							if(data.isOK == true){
+								succInfo(function(){
+									query();
+								},"修改成功");
+							}else{
+								errorInfo(data.error);
+							}
+						});
+				 },"是否确认修改产品");
+			}else{
+				errorInfo("产品链接输入错误");
+			}
+		},
+		error:function(){
+			errorInfo("产品链接输入错误");
+		}
+	});
+	
+	
 	
 }
 </script>

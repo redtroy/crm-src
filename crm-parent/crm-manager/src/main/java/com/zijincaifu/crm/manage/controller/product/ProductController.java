@@ -128,8 +128,14 @@ public class ProductController extends BaseController
         {
             //            personnel.setFreezeStatus(1);
             //            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
-            productService.editProduct(product);
-            map.put("isOK", true);
+            List<InvestItemModel> invest=investItemService.queryItemsByProductId(product.getProductId());
+            if(invest.size()!=0){
+                map.put("isOK", false);
+                map.put("error", "该产品已进行关联,不能删除");
+            }else{
+                productService.editProduct(product);
+                map.put("isOK", true);
+            }
         }
         catch (Exception e)
         {
