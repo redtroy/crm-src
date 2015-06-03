@@ -32,6 +32,9 @@
 		<if test="condition.productId != null and condition.productId != ''">
 			<![CDATA[ AND i.PRODUCT_ID =#{condition.productId}]]>
 		</if>
+		<if test="condition.channelId!= null and condition.channelId!= ''">
+			<![CDATA[ AND i.CHANNEL_ID =#{condition.channelId}]]>
+		</if>
 		<if test="condition.id != null and condition.id != ''">
 			<![CDATA[ AND i.ID =#{condition.id}]]>
 		</if>

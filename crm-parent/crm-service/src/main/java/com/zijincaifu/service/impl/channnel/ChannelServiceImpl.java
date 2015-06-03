@@ -1,7 +1,6 @@
 package com.zijincaifu.service.impl.channnel;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +49,16 @@ public class ChannelServiceImpl implements IChannelService
             throw new ServiceException("查询渠道信息错误", e);
         }
     }
-
+    
     @Override
     public void addChannel(ChannelEntity channel)
     {
         try
         {
             Long lastkey = keyService.getKey(1);
-            String rfidNo = CustomDecimal.getDecimalString(3,1000,new BigDecimal(lastkey));
+            String rfidNo = CustomDecimal.getDecimalString(3,
+                    1000,
+                    new BigDecimal(lastkey));
             channel.setChannelId(rfidNo);
             channelDao.addChannel(channel);
         }
@@ -67,21 +68,21 @@ public class ChannelServiceImpl implements IChannelService
             throw new ServiceException("新增渠道信息错误", e);
         }
     }
-
+    
     @Override
     public ChannelModel getChannel(String channelId)
     {
         return channelDao.getChannel(channelId);
     }
-
+    
     @Override
     public void editChannel(ChannelEntity channel)
     {
         channelDao.updateChannel(channel);
     }
-
+    
     @Override
-    public void deleteProduct(String id)
+    public void deleteChannel(String id)
     {
         channelDao.deleteChannel(id);
     }

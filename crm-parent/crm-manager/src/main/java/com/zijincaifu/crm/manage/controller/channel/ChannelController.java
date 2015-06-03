@@ -21,12 +21,12 @@ import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.channel.ChannelEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
-import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.crm.model.channel.ChannelModel;
+import com.zijincaifu.crm.model.customer.InvestItemModel;
 import com.zijincaifu.model.channel.ChannelQuery;
-import com.zijincaifu.model.product.ProductQuery;
 import com.zijincaifu.service.channel.IChannelService;
+import com.zijincaifu.service.customer.IInvestItemService;
 
 @Controller
 @RequestMapping("/channel")
@@ -34,6 +34,9 @@ public class ChannelController extends BaseController
 {
     @Autowired
     private IChannelService channelService;
+    
+    @Autowired
+    private IInvestItemService investItemService;
     
     @RequestMapping("channelList")
     public String getChannelList(ChannelQuery query, ModelMap map)
@@ -146,8 +149,18 @@ public class ChannelController extends BaseController
         try
         {
             ChannelModel cm = channelService.getChannel(channelId);
-            channelService.deleteProduct(cm.getId());
-            map.put("isOK", "delete");
+            List<InvestItemModel> invest = investItemService.queryItemsByChannelId(channelId);
+            if (invest.size() != 0)
+            {
+                map.put("isOK", "error");
+                map.put("error", "该渠道已进行关联,不能删除");
+            }
+            else
+            {
+                channelService.deleteChannel(cm.getId());
+                map.put("isOK", "delete");
+            }
+            
         }
         catch (Exception e)
         {

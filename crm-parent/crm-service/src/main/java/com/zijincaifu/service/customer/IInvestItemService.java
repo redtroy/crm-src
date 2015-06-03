@@ -17,7 +17,9 @@ public interface IInvestItemService
     public void add(InvestItemEntity item) throws ServiceException;
     
     public InvestItemModel getItemModel(String id) throws ServiceException;
-
+    
     public List<InvestItemModel> queryItemsByProductId(String productId);
+    
+    public List<InvestItemModel> queryItemsByChannelId(String channelId);
     
 }
