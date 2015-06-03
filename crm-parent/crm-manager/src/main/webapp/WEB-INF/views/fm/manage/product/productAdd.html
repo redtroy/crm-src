@@ -14,20 +14,33 @@ function sub(){
 	});
  
 function addProduct(){
-	var params=$("#add_form").serialize();
-	 dialogBox(function(index){
-		 $.post("${basePath}product/addProduct.htm",params,function(data){
-			  layer.close(index);
-				if(data.isOK == true){
-					succInfo(function(){
-						query();
-					},"新增成功");
-				}else{
-					errorInfo(data.error);
-				}
-			});
-	 },"是否确认添加产品");
-	
+	var url=$("#add_form").find("input[name='productUrl']").val();
+	jQuery.ajax({
+		url:url,
+		type:"get",
+		success:function(result){
+			if(result=="1"){
+				var params=$("#add_form").serialize();
+			  	 dialogBox(function(index){
+			  		 $.post("${basePath}product/addProduct.htm",params,function(data){
+			  			  layer.close(index);
+			  				if(data.isOK == true){
+			  					succInfo(function(){
+			  						query();
+			  					},"新增成功");
+			  				}else{
+			  					errorInfo(data.error);
+			  				}
+			  			});
+			  	 },"是否确认添加产品");
+			}else{
+				errorInfo("产品链接输入错误");
+			}
+		},
+		error:function(){
+			errorInfo("产品链接输入错误");
+		}
+	});	
 }
 </script>
 <div class="heading fontYH f20">新增金融产品 </div>

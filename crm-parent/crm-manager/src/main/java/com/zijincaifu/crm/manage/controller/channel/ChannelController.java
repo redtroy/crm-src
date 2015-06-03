@@ -129,8 +129,14 @@ public class ChannelController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            channelService.editChannel(channel);
-            map.put("isOK", true);
+            List<InvestItemModel> invest=investItemService.queryItemsByChannelId(channel.getChannelId());
+            if(invest.size()!=0){
+                map.put("isOK", false);
+                map.put("error", "该产品已进行关联,不能删除");
+            }else{
+                channelService.editChannel(channel);
+                map.put("isOK", true);
+            }        
         }
         catch (Exception e)
         {
@@ -149,10 +155,14 @@ public class ChannelController extends BaseController
         try
         {
             ChannelModel cm = channelService.getChannel(channelId);
+            channelService.deleteProduct(cm.getId());
+            map.put("isOK", "delete");
+            ChannelModel cm = channelService.getChannel(channelId);
             List<InvestItemModel> invest = investItemService.queryItemsByChannelId(channelId);
             if (invest.size() != 0)
             {
-                map.put("isOK", "error");
+            List<InvestItemModel> invest=investItemService.queryItemsByChannelId(channelId);
+            if(invest.size()!=0){
                 map.put("error", "该渠道已进行关联,不能删除");
             }
             else

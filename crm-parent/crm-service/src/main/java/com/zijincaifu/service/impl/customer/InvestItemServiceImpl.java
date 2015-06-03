@@ -136,6 +136,7 @@ public class InvestItemServiceImpl implements IInvestItemService
             throw new ServiceException("查询客户投资列表错误", e);
         }
     }
+
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)

@@ -19,6 +19,7 @@ public interface IInvestItemService
     public InvestItemModel getItemModel(String id) throws ServiceException;
     
     public List<InvestItemModel> queryItemsByProductId(String productId);
+
     
     public List<InvestItemModel> queryItemsByChannelId(String channelId);
     
