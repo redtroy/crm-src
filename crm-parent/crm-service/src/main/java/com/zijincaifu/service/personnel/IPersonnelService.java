@@ -3,6 +3,7 @@ package com.zijincaifu.service.personnel;
 import java.util.List;
 
 import com.sxj.util.exception.ServiceException;
+import com.zijincaifu.crm.entity.customer.OrganizationEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.model.personnel.PersonnelQuery;
 
@@ -29,4 +30,8 @@ public interface IPersonnelService
     
     public List<PersonnelEntity> autoPersonnel(PersonnelQuery query)
             throws ServiceException;
+
+    public List<OrganizationEntity> queryOrg(String parentId);
+
+    public OrganizationEntity getOrg(String string);
 }

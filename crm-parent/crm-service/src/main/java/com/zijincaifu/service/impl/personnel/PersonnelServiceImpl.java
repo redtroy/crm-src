@@ -12,8 +12,10 @@ import org.springframework.util.CollectionUtils;
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
+import com.zijincaifu.crm.dao.customer.IOrganizationDao;
 import com.zijincaifu.crm.dao.personnel.IFunctionRoleDao;
 import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
+import com.zijincaifu.crm.entity.customer.OrganizationEntity;
 import com.zijincaifu.crm.entity.personnel.FunctionRoleEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.model.personnel.PersonnelQuery;
@@ -27,6 +29,9 @@ public class PersonnelServiceImpl implements IPersonnelService
     
     @Autowired
     private IFunctionRoleDao roleDao;
+    
+    @Autowired
+    private IOrganizationDao organizationDao;
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -176,6 +181,35 @@ public class PersonnelServiceImpl implements IPersonnelService
         catch (Exception e)
         {
             throw new ServiceException("查询用戶信息错误", e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public List<OrganizationEntity> queryOrg(String parentId)
+    {
+        try
+        {
+            List<OrganizationEntity> list = organizationDao.queryOrg(parentId);
+            return list;
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException("查询层级信息错误", e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public OrganizationEntity getOrg(String orgId)
+    {
+        try
+        {
+            return organizationDao.getOrg(orgId);
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException("查询层级信息错误", e);
         }
     }
     

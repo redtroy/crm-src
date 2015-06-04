@@ -1,10 +1,16 @@
 package com.zijincaifu.crm.manage.controller.personnel;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +27,16 @@ import com.sxj.util.common.NumberUtils;
 import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
+import com.zijincaifu.crm.entity.customer.OrganizationEntity;
 import com.zijincaifu.crm.entity.personnel.FunctionEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.enu.personnel.PersonnelCompanyEnum;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.crm.manage.login.PublishMessage;
 import com.zijincaifu.model.personnel.FunctionModel;
 import com.zijincaifu.model.personnel.PersonnelQuery;
+import com.zijincaifu.model.product.ProductQuery;
 import com.zijincaifu.service.personnel.IFunctionService;
 import com.zijincaifu.service.personnel.IPersonnelService;
 import com.zijincaifu.service.personnel.IRoleService;
@@ -88,6 +97,8 @@ public class PersonnelController extends BaseController
         {
             PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             map.put("company", company);
+            List<OrganizationEntity> orgList=personneService.queryOrg("0");
+            map.put("org", orgList);
             List<FunctionModel> allFunction = functionService.queryTreeFunctions();
             map.put("allFunction", allFunction);
             return "manage/personnel/personnelAdd";
@@ -103,7 +114,7 @@ public class PersonnelController extends BaseController
     @RequestMapping("addPersonnel")
     public @ResponseBody Map<String, Object> addPersonnel(
             PersonnelEntity personnel,
-            @RequestParam("functionIds") String functionIds)
+            @RequestParam("functionIds") String functionIds,String companyStr)
             throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -114,6 +125,11 @@ public class PersonnelController extends BaseController
             {
                 ids = functionIds.split(",");
             }
+            String[] companys=companyStr.split(",");
+            OrganizationEntity org=personneService.getOrg(companys[companys.length-1]);
+            personnel.setCompanyStr(companyStr);
+            personnel.setCompany(Integer.parseInt(org.getId()));
+            personnel.setCompanyName(org.getName());
             personnel.setFreezeStatus(1);
             personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
             personneService.addPersonnel(personnel, ids);
@@ -138,7 +154,8 @@ public class PersonnelController extends BaseController
             PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
             map.put("company", company);
             map.put("personnel", personnel);
-            
+            List<OrganizationEntity> orgList=personneService.queryOrg("0");
+            map.put("org", orgList);
             List<FunctionEntity> roleList = roleService.getAllRoleFunction(uid);
             List<FunctionModel> allFunction = functionService.queryTreeFunctions();
             map.put("allFunction", allFunction);
@@ -273,6 +290,40 @@ public class PersonnelController extends BaseController
             map.put("isOK", false);
             map.put("error", e.getMessage());
         }
+        return map;
+    }
+    
+    /**
+     * 获取层级
+     * 
+     * @param request
+     * @param response
+     * @param keyword
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("queryOrg")
+    public @ResponseBody Map<String, Object> queryOrg(
+            HttpServletRequest request, HttpServletResponse response,
+            String parentId) throws IOException
+    {
+        Map<String,Object> map=new HashMap<>();
+        List<OrganizationEntity> list = personneService.queryOrg(parentId);
+        map.put("list", list);
+//        List<String> strlist = new ArrayList<String>();
+//        String sb = "";
+//        for (OrganizationEntity org : list)
+//        {
+//            sb = "{\"name\":\"" + org.getName() + "\",\"id\":\""
+//                    + org.getId() + "\",\"level\":\""+org.getLevel()+"\"}";
+//            strlist.add(sb);
+//        }
+      //  String json = "{\"data\":" + strlist.toString() + ",\"length\":"+list.size()+"}";
+       // response.setCharacterEncoding("UTF-8");
+       // PrintWriter out = response.getWriter();
+        //out.print(json);
+        //out.flush();
+       // out.close();
         return map;
     }
 }

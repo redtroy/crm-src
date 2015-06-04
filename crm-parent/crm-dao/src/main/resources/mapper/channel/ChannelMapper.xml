@@ -51,7 +51,7 @@
 			<![CDATA[ AND C.UID =#{condition.loadId}]]>
 		</if>
 		<!-- 紫金财富特定员工录入的渠道所有人都可以看到 -->
-		<![CDATA[ OR C.UID='111']]>
+		<![CDATA[ OR C.UID='E00001']]>
 		<![CDATA[ ORDER BY C.CHANNELID DESC]]>
 	</select>
 </mapper>
