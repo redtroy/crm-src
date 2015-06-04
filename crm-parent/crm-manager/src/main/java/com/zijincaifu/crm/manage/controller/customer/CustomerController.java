@@ -75,6 +75,7 @@ public class CustomerController extends BaseController
             {
                 PersonnelEntity user = getLoginInfo();
                 query.setEmployeId(user.getUid());
+                //query.setDefaultUid("E00001");
                 isAdmin = false;
             }
             List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
@@ -111,6 +112,7 @@ public class CustomerController extends BaseController
             map.put("list", list);
             map.put("levels", levels);
             map.put("query", query);
+            map.put("loginUid", getLoginInfo().getUid());
             return "manage/customer/customerList";
         }
         catch (Exception e)
@@ -248,7 +250,7 @@ public class CustomerController extends BaseController
             {
                 throw new WebException("客户信息不能为空");
             }
-            customerService.modifyCustomer(customer,getLoginInfo().getUid());
+            customerService.modifyCustomer(customer, getLoginInfo().getUid());
             map.put("isOK", true);
             map.put("customer", customer);
         }
@@ -271,7 +273,7 @@ public class CustomerController extends BaseController
         {
             CustomerEntity customer = customerService.getCustomer(customerId);
             customer.setLevel(level);
-            customerService.updateCustomer(customer,"");
+            customerService.updateCustomer(customer, "");
             map.put("isOK", true);
         }
         catch (Exception e)
@@ -341,13 +343,17 @@ public class CustomerController extends BaseController
             else
             {
                 CustomerEntity customer = customerService.getCustomer(customerId);
-                if(customer.getEmployeIdHistory()==null){
+                if (customer.getEmployeIdHistory() == null)
+                {
                     customer.setEmployeIdHistory(customer.getEmployeId());
-                }else{
-                    customer.setEmployeIdHistory(customer.getEmployeIdHistory()+","+customer.getEmployeId());
+                }
+                else
+                {
+                    customer.setEmployeIdHistory(customer.getEmployeIdHistory()
+                            + "," + customer.getEmployeId());
                 }
                 customer.setEmployeId(personnelId);
-                customerService.updateCustomer(customer,"");
+                customerService.updateCustomer(customer, "");
                 map.put("result", "1");
                 HierarchicalCacheManager.set(CacheLevel.REDIS,
                         "CRM_CUSTOMER_LEVEL",

@@ -41,12 +41,6 @@ public class RecommendEntity extends Pagable implements Serializable
     private String investId;
     
     /**
-     * 渠道
-     */
-    @Column(name = "CHANNEL_ID")
-    private String channelId;
-    
-    /**
      * 微信UnionId
      */
     @Column(name = "UNION_ID")
@@ -63,6 +57,12 @@ public class RecommendEntity extends Pagable implements Serializable
      */
     @Column(name = "PARENT_ID")
     private String parentId;
+    
+    /**
+     * CRM编号
+     */
+    @Column(name = "UID")
+    private String uid;
     
     /**
      * 等级
@@ -132,19 +132,20 @@ public class RecommendEntity extends Pagable implements Serializable
         this.level = level;
     }
     
-    public String getChannelId()
-    {
-        return channelId;
-    }
-    
-    public void setChannelId(String channelId)
-    {
-        this.channelId = channelId;
-    }
-    
     public String getLevel_zh()
     {
         
         return StringUtils.transition(this.getLevel() + "");
     }
+    
+    public String getUid()
+    {
+        return uid;
+    }
+    
+    public void setUid(String uid)
+    {
+        this.uid = uid;
+    }
+    
 }

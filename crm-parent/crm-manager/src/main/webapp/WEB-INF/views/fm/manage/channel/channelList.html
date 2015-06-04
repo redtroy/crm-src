@@ -135,7 +135,11 @@ function createCode(){
 			  <td>${model.personnelName}</td>
               <td>${model.remark}</td>
               <td>${model.startTime?string("yyyy-MM-dd")}</td>
+              <#if model.uid!="E00001"||loginUid=="E00001">
               <td class="edit"><span onclick="deleteChannel('${model.channelId}')"><a href="javascript:void(0);" class="del">删除</a></span><span onclick="loadEditChannel('${model.channelId}');"><a href="javascript:void(0)" class="allot">修改</a></span></td>
+              <#else>
+              <td class="edit">-</td>
+              </#if>
             </tr>
             </#list>
             <!-- <tr>

@@ -32,7 +32,7 @@ function query(page){
 };
 
 function loadAddPersonnel(){
-	$.post("${basePath}personnel/loadAddPersonnel.htm",null,function(data){
+	$.post("${basePath}personnel/loadAddPersonnel.htm?"+Math.random(),null,function(data){
 		$("#rightBar").empty();
 		$("#rightBar").append(data);
 		/* var totalPage=pager.attr("totalPage");
@@ -42,7 +42,7 @@ function loadAddPersonnel(){
 }; 
 
 function loadEditPersonnel(uid){
-	$.get("${basePath}personnel/loadEditPersonnel.htm?uid="+uid,function(data){
+	$.get("${basePath}personnel/loadEditPersonnel.htm?uid="+uid+"&"+Math.random(),function(data){
 		$("#rightBar").empty();
 		$("#rightBar").append(data);
 	}); 
@@ -124,11 +124,9 @@ function initPassword(uid){
 			  <span class="btnBox">
               <button class="button button-search" onclick="query();">查询</button>
               </span>
-              
           </div>
           </form>
           </@shiro.hasRole>  
-          
           </div>
             
           <table border="0" cellspacing="0" cellpadding="0" class="tabList mb10"  id="res_table">
@@ -156,16 +154,20 @@ function initPassword(uid){
               <td>${model.company.getName()}</td>
 			  <td>${model.unionId}</td>
               <td>${model.addTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-               <@shiro.hasRole name="10"> 
+               <@shiro.hasRole name="10">
+               <#if model.uid!="E00001"||loginUid=="E00001">
 	              <td class="edit">
-	              <#if model.freezeStatus==0>
-					<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
+	                <#if model.freezeStatus==0>
+						<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
 					<#else>
-					<span onclick="freeze('${model.uid}',0)"><a href="javascript:void(0);" class="del">冻结</a></span>
+						<span onclick="freeze('${model.uid}',0)"><a href="javascript:void(0);" class="del">冻结</a></span>
 					</#if>
 					<span onclick="loadEditPersonnel('${model.uid}')"><a href="javascript:void(0);" class="allot">修改</a></span>
 					<span onclick="initPassword('${model.uid}')"><a href="javascript:void(0);" class="reset btn-password">初始化密码</a></span>
 				 </td>
+				 <#else>
+				  <td class="edit">-</td>
+				</#if>
 			</@shiro.hasRole>
 			<@shiro.lacksRole name="10">
 			 <td class="edit">-</td>

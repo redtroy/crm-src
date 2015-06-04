@@ -1,5 +1,6 @@
 package com.zijincaifu.crm.manage.controller.personnel;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sxj.redis.core.pubsub.RedisTopics;
 import com.sxj.util.Constraints;
-import com.sxj.util.common.DateTimeUtils;
 import com.sxj.util.common.NumberUtils;
 import com.sxj.util.common.StringUtils;
 import com.sxj.util.exception.WebException;
@@ -70,6 +70,7 @@ public class PersonnelController extends BaseController
             map.put("list", list);
             map.put("company", company);
             map.put("query", query);
+            map.put("loginUid", getLoginInfo().getUid());
             return "manage/personnel/personnelList";
         }
         catch (Exception e)
@@ -115,7 +116,7 @@ public class PersonnelController extends BaseController
                 ids = functionIds.split(",");
             }
             personnel.setFreezeStatus(1);
-            personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
+            personnel.setAddTime(new Date());
             personneService.addPersonnel(personnel, ids);
             map.put("isOK", true);
         }
@@ -257,7 +258,7 @@ public class PersonnelController extends BaseController
         Map<String, Object> map = new HashMap<String, Object>();
         try
         {
-            PersonnelEntity personnel=getLoginInfo();
+            PersonnelEntity personnel = getLoginInfo();
             personnel.setPassword(newpassword);
             personneService.editPersonnel(personnel);
             map.put("isOK", true);

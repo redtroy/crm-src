@@ -53,10 +53,12 @@ public class ChannelController extends BaseController
             {
                 PersonnelEntity user = getLoginInfo();
                 query.setUid(user.getUid());
+                query.setDefaultUid("E00001");
             }
             List<ChannelModel> list = channelService.queryChannels(query);
             map.put("list", list);
             map.put("query", query);
+            map.put("loginUid", getLoginInfo().getUid());
             return "manage/channel/channelList";
         }
         catch (Exception e)

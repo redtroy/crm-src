@@ -21,7 +21,7 @@
 	
 	<!-- 查看渠道 -->
 	<select id="queryChannel" resultMap="ChannelResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT C.*,P.NAME P_NAME FROM CRM_CHANNEL C LEFT JOIN CRM_PERSONNEL P ON(C.UID=P.UID) WHERE 1=1 ]]>
+		<![CDATA[SELECT C.*,P.NAME P_NAME FROM CRM_CHANNEL C LEFT JOIN CRM_PERSONNEL P ON C.UID=P.UID WHERE 1=1 ]]>
 		<!-- 渠道编号 -->
 		<if test="condition.channelId != null and condition.channelId != ''">
 			<![CDATA[ AND C.CHANNELID =#{condition.channelId}]]>
@@ -46,12 +46,10 @@
 		<if test="condition.uid != null and condition.uid != ''">
 			<![CDATA[ AND C.UID =#{condition.uid}]]>
 		</if>
-		<!-- 登陆人ID,如果该员工是一般权限只能查看自己增加的渠道 -->
-		<if test="condition.loadId != null and condition.loadId != ''">
-			<![CDATA[ AND C.UID =#{condition.loadId}]]>
+		<if test="condition.defaultUid!= null and condition.defaultUid != ''">
+			<![CDATA[ OR C.UID =#{condition.defaultUid}]]>
 		</if>
 		<!-- 紫金财富特定员工录入的渠道所有人都可以看到 -->
-		<![CDATA[ OR C.UID='111']]>
 		<![CDATA[ ORDER BY C.CHANNELID DESC]]>
 	</select>
 </mapper>

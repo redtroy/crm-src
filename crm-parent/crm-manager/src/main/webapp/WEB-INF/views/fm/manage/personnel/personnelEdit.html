@@ -96,7 +96,7 @@ function confim(){
               <td><input type="text" name="password" class="input input-addname" title="填写登录密码"  datatype="password" errormsg="密码只能由数字字母组成,且不能少于6位" nullmsg="密码不能为空" value="${personnel.password}"/></td>
             </tr>
 			<tr>
-              <th>所属公司${personnel.company}</th>
+              <th>所属公司</th>
               <td>
                <select name="company" id="select4" >
               	<#list company as company><#if company.id==personnel.company.id>
@@ -121,7 +121,7 @@ function confim(){
             </tr>  
 			<tr>
               <th>UnionID</th>
-              <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="s1-128"  nullmsg="UnionId不能为空" value="${personnel.unionId}"/>
+              <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="s1-256"  nullmsg="UnionId不能为空" value="${personnel.unionId}"/>
               &nbsp;&nbsp;<span style="color: red;font-size: 12px;">请关注资金财富公众号,点底部菜单的"获取UnionId"</span></td>
 			</tr>   
           </table>
