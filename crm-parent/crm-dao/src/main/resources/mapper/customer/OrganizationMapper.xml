@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zijincaifu.crm.dao.customer.IOrganizationDao">
+	<resultMap type="com.zijincaifu.crm.entity.customer.OrganizationEntity" id="OrganizationResultMap">
+		<id property="id" column="ID" jdbcType="INTEGER"/>
+		<result property="name" column="NAME" jdbcType="VARCHAR"/>
+		<result property="parentId" column="PARENT_ID" jdbcType="INTEGER"/>
+		<result property="level" column="LEVEL" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 获取层级信息 -->
+	<select id="queryOrg" resultMap="OrganizationResultMap" parameterType="String">
+		<![CDATA[ SELECT * FROM CRM_ORG WHERE PARENT_ID=#{parentId}]]>
+	</select>
+	
+	<!-- 获取层级信息 -->
+	<select id="getOrg" resultMap="OrganizationResultMap" parameterType="String">
+		<![CDATA[ SELECT * FROM CRM_ORG WHERE ID=#{orgId}]]>
+	</select>
+
+</mapper>

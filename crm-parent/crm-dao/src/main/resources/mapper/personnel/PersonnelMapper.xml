@@ -14,31 +14,33 @@
 		<result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
 		<result property="freezeStatus" column="FREEZESTATUS" jdbcType="INTEGER"/>
 		<result property="lastLoginTime" column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" />
+		<result property="companyStr" column="COMPANYSTR" jdbcType="VARCHAR" />
+		<result property="companyName" column="COMPANY_NAME" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<!-- 获取员工信息 -->
 	<select id="getPersonnel" resultMap="PersonnelResultMap" parameterType="String">
-		<![CDATA[ SELECT * FROM CRM_PERSONNEL WHERE UID=#{uid}]]>
+		<![CDATA[ SELECT PER.*,ORG.NAME AS COMPANY_NAME FROM CRM_PERSONNEL AS PER LEFT JOIN CRM_ORG AS ORG ON (PER.COMPANY=ORG.ID) WHERE UID=#{uid}]]>
 	</select>
 	
 	<!-- 查看员工 -->
 	<select id="queryPersonnel" resultMap="PersonnelResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT  * FROM CRM_PERSONNEL WHERE 1=1 ]]>
+		<![CDATA[SELECT  PER.*,ORG.NAME AS COMPANY_NAME FROM CRM_PERSONNEL AS PER LEFT JOIN CRM_ORG AS ORG ON (PER.COMPANY=ORG.ID) WHERE 1=1 ]]>
 		<!-- 员工编号 -->
 		<if test="condition.uid != null and condition.uid != ''">
-			<![CDATA[  AND UID =#{condition.uid}]]>
+			<![CDATA[  AND PER.UID =#{condition.uid}]]>
 		</if>
 		<!-- 员工姓名 -->
 		<if test="condition.name != null and condition.name != ''">
-			<![CDATA[  AND NAME LIKE CONCAT('%',#{condition.name},'%')]]>
+			<![CDATA[  AND PER.NAME LIKE CONCAT('%',#{condition.name},'%')]]>
 		</if>
 		<!-- 所属分公司 -->
 		<if test="condition.company != null ">
-			<![CDATA[  AND COMPANY =#{condition.company}]]>
+			<![CDATA[  AND PER.COMPANY =#{condition.company}]]>
 		</if>
 		<!-- 员工ID,一般权限员工将传递此参数,只搜索自己的信息 -->
 		<if test="condition.id != null and condition.id != ''">
-			<![CDATA[  AND ID =#{condition.id}]]>
+			<![CDATA[  AND PER.ID =#{condition.id}]]>
 		</if>
 		<![CDATA[ ORDER BY UID DESC]]>
 	</select>

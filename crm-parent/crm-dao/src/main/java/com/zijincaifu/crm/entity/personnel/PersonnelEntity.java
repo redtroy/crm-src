@@ -59,7 +59,10 @@ public class PersonnelEntity extends Pagable implements Serializable
      * 所属分公司
      */
     @Column(name = "COMPANY")
-    private PersonnelCompanyEnum company;
+    private Integer company;
+    
+    
+    private String companyName;
     
     /**
      * 关注微信后生成的UnionId
@@ -91,6 +94,22 @@ public class PersonnelEntity extends Pagable implements Serializable
     @Column(name = "LAST_LOGIN_TIME")
     private Date lastLoginTime;
     
+    /**
+     * 所属公司字符串
+     */
+    @Column(name = "COMPANYSTR")
+    private String companyStr;
+    
+    public String getCompanyStr()
+    {
+        return companyStr;
+    }
+
+    public void setCompanyStr(String companyStr)
+    {
+        this.companyStr = companyStr;
+    }
+
     public String getId()
     {
         return id;
@@ -131,16 +150,28 @@ public class PersonnelEntity extends Pagable implements Serializable
         this.phone = phone;
     }
     
-    public PersonnelCompanyEnum getCompany()
+  
+    
+    public Integer getCompany()
     {
         return company;
     }
-    
-    public void setCompany(PersonnelCompanyEnum company)
+
+    public void setCompany(Integer company)
     {
         this.company = company;
     }
-    
+
+    public String getCompanyName()
+    {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName)
+    {
+        this.companyName = companyName;
+    }
+
     public String getUnionId()
     {
         return unionId;

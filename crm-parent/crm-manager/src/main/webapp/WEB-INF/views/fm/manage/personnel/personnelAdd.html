@@ -1,13 +1,32 @@
 <script type="text/javascript">
+/* $(function(){
+	$(".companySel").live("select",function(){
+		var parentId=$(this).val();
+		$.post("${basePath}personnel/queryOrg.htm?parentId="+parentId,function(data){
+			var html="";
+		    for (var i = 0; i < data.list.length; i++) {
+		    	if(i==0){
+		    		html+="<select name='company' id='companySel"+data.list[i].level+"' class='companySel'>";
+		    	}
+		    	html+="<option value='"+data.list[i].id+"'>"+data.list[i].name+"</option>";
+			}
+		    html+="</select>";
+		    $(this).parent().nextAll().remove();
+		    $("#select_td").append(html);
+		});
+	});
+}
+); */
+
 function sub(){
-	
 	 $("#add_form").submit();
  };
  $("#add_form").Validform({
 		tiptype:3,
 		datatype:{
 			"phone":/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/,
-			"password":/^[A-Za-z0-9]{6,32}$/
+			"password":/^[A-Za-z0-9]{6,32}$/,
+			"company":/^[1-99999999999]$/
 		 },
 		callback:function(form){
 			addPersonnel();
@@ -16,8 +35,16 @@ function sub(){
  
 function addPersonnel(){
 	var params=$("#add_form").serialize();
+	
+	 var companyStr = new Array();
+	 $(".companySel").each(function(i){
+		 if($(this).val()!=0){
+		 	companyStr[i]=$(this).val();
+		 }
+     });
+	
 	 dialogBox(function(index){
-		 $.post("${basePath}personnel/addPersonnel.htm",params,function(data){
+		 $.post("${basePath}personnel/addPersonnel.htm?companyStr="+companyStr,params,function(data){
 			  layer.close(index);
 				if(data.isOK == true){
 					succInfo(function(){
@@ -73,7 +100,28 @@ function confim(){
 	   });
 	   $("input[name='functionIds']").val(values);
 	   closeDiv();
-}
+};
+
+function changeSelect(sel){
+	var parentId=$(sel).val();
+	if(parentId==0){
+		$(sel).nextAll().remove();
+		return false;
+	}
+	$.post("${basePath}personnel/queryOrg.htm?parentId="+parentId,function(data){
+		var html="";
+	    for (var i = 0; i < data.list.length; i++) {
+	    	if(i==0){
+	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelect(this)' >";
+	    		html+="<option value='0'>--请选择--</option>";
+	    	}
+	    	html+="<option value='"+data.list[i].id+"'>"+data.list[i].name+"</option>";
+		}
+	    html+="</select>";
+	    $(sel).nextAll().remove();
+	    $("#select_td").append(html);
+	});
+};
 </script>
 <div class="heading fontYH f20">新增员工 </div>
         <div class="mainBox newMem">
@@ -95,14 +143,14 @@ function confim(){
             </tr>
 			<tr>
               <th>所属公司</th>
-              <td>
-               <select name="company" id="select4" >
-              	<#list company as company><#if company.id==query.company>
-				<option value="${company.getId()}" selected="selected">${company.getName()}</option>
-				<#else>
-				<option value="${company.getId()}">${company.getName()}</option>
-				</#if></#list>
+              <td id="select_td">
+               <select id="companySel1"  class="companySel"  onchange="changeSelect(this);" datatype="company" errormsg="请选择所属公司" nullmsg="请选择所属公司">
+               <option value="0" selected="selected">--请选择--</option>
+              	<#list org as org>
+				<option value="${org.getId()}">${org.getName()}</option>
+				</#list>
               </select>
+              
               </td>
             </tr>
 			<tr>
