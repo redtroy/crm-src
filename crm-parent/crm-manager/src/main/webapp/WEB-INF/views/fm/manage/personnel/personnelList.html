@@ -14,10 +14,19 @@
 <@b.validate/>
 <script>
 function query(page){
+	 var company = new Array();
+	 $(".companySel").each(function(i){
+		 if($(this).val()!=''){
+		 	company[i]=$(this).val();
+		 }
+     });
+	
+	 $("#search_form").find("input[name='company']").val(company);
 	var params=$("#search_form").serialize();
 	 if(page!=undefined){
 		   params=params+"&currentPage="+page;
-	   }
+	 }
+	 
 	 $.post("${basePath}personnel/personnelList.htm",params,function(data){
 		var res=$(data).find("#rightBar");
 		var pager=$(data).find("#pager");
@@ -81,6 +90,27 @@ function initPassword(uid){
 			});
 	 },"是否确认初始化密码");
 };
+
+function changeSelect(sel){
+	var parentId=$(sel).val();
+	if(parentId==''){
+		$(sel).nextAll().remove();
+		return false;
+	}
+	$.post("${basePath}personnel/queryOrg.htm?parentId="+parentId,function(data){
+		var html="";
+	    for (var i = 0; i < data.list.length; i++) {
+	    	if(i==0){
+	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelect(this)' >";
+	    		html+="<option value=''>--请选择--</option>";
+	    	}
+	    	html+="<option value='"+data.list[i].id+"'>"+data.list[i].name+"</option>";
+		}
+	    html+="</select>";
+	    $(sel).nextAll().remove();
+	    $("#select_span").append(html);
+	});
+};
 </script>
 
 </head>
@@ -104,23 +134,22 @@ function initPassword(uid){
         <form action="javascript:void(0);" id="search_form" class="needValid">
           <div class=" f12 ly-left">
 		  员工ID
-              <input class="input" type="text" name="uid" value="${query.uid}" />
+              <input class="input" type="text" name="uid" value="${query.uid}"  style="width: 80px"/>
 			  员工姓名
-              <input class="input" type="text" name="name" value="${query.name}" />
+              <input class="input" type="text" name="name" value="${query.name}" style="width: 80px;"/>
 			  所属公司
-              <select name="company" id="select4">
-              <option value="">-请选择-</option> 
-              	<#list company as company><#if company.id==query.company>
-				<option value="${company.getId()}" selected="selected">${company.getName()}</option>
-				<#else>
-				<option value="${company.getId()}">${company.getName()}</option>
-				</#if></#list>
-			  <!-- <option selected="selected">集团总部</option>
-              <option>南京公司</option>
-              <option>苏州公司</option>
-              <option>扬州公司</option>
-              <option>常州公司</option> -->
+			  <span id="select_span">
+			  <input name="company" type="hidden"/>
+			  <#list orgStrList as org>
+			  	${org.getName()}--
+			  </#list>
+              <select id="companySel1"  class="companySel"  onchange="changeSelect(this);" >
+               <option value="" selected="selected">--请选择--</option>
+              	<#list org as org>
+				<option value="${org.getId()}">${org.getName()}</option>
+				</#list>
               </select>
+              </span>
 			  <span class="btnBox">
               <button class="button button-search" onclick="query();">查询</button>
               </span>

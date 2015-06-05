@@ -36,15 +36,18 @@ function sub(){
 function addPersonnel(){
 	var params=$("#add_form").serialize();
 	
-	 var companyStr = new Array();
+
+	var company = new Array();
 	 $(".companySel").each(function(i){
-		 if($(this).val()!=0){
-		 	companyStr[i]=$(this).val();
-		 }
-     });
+
+		 if($(this).val()!=''){
+		 	company[i]=$(this).val();
+    });
+	 $("#add_form").find("#companyStr_id").val(company);
 	
 	 dialogBox(function(index){
-		 $.post("${basePath}personnel/addPersonnel.htm?companyStr="+companyStr,params,function(data){
+
+		 $.post("${basePath}personnel/addPersonnel.htm",params,function(data){
 			  layer.close(index);
 				if(data.isOK == true){
 					succInfo(function(){
@@ -102,7 +105,8 @@ function confim(){
 	   closeDiv();
 };
 
-function changeSelect(sel){
+
+function changeSelectAdd(sel){
 	var parentId=$(sel).val();
 	if(parentId==0){
 		$(sel).nextAll().remove();
@@ -112,7 +116,8 @@ function changeSelect(sel){
 		var html="";
 	    for (var i = 0; i < data.list.length; i++) {
 	    	if(i==0){
-	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelect(this)' >";
+
+	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelectAdd(this)' >";
 	    		html+="<option value='0'>--请选择--</option>";
 	    	}
 	    	html+="<option value='"+data.list[i].id+"'>"+data.list[i].name+"</option>";
@@ -126,6 +131,7 @@ function changeSelect(sel){
 <div class="heading fontYH f20">新增员工 </div>
         <div class="mainBox newMem">
         <form id="add_form" action="javascript:void(0);">
+         <input id="companyStr_id" name="companyStr" type="hidden" value=""/>
           <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
             <col width="15%" />
             <col width="85%" />
@@ -144,13 +150,17 @@ function changeSelect(sel){
 			<tr>
               <th>所属公司</th>
               <td id="select_td">
-               <select id="companySel1"  class="companySel"  onchange="changeSelect(this);" datatype="company" errormsg="请选择所属公司" nullmsg="请选择所属公司">
+
+              <#list orgStrList as org>
+              ${org.getName()}--
+              </#list>
+               <select id="companySel1"  class="companySel"  onchange="changeSelectAdd(this);" ><!-- datatype="company" errormsg="请选择所属公司" nullmsg="请选择所属公司" -->
                <option value="0" selected="selected">--请选择--</option>
               	<#list org as org>
 				<option value="${org.getId()}">${org.getName()}</option>
 				</#list>
               </select>
-              
+
               </td>
             </tr>
 			<tr>
@@ -162,6 +172,7 @@ function changeSelect(sel){
             </tr>  
 			<tr>
               <th>UnionID</th>
+
               <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="*1-256"  nullmsg="UnionId不能为空"/>
               &nbsp;&nbsp;<span style="color: red;font-size: 12px;">请关注资金财富公众号,点底部菜单的"获取UnionId"</span></td>
 			</tr>   

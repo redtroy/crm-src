@@ -49,6 +49,7 @@ public class PersonnelServiceImpl implements IPersonnelService
             condition.addCondition("uid", query.getUid());
             condition.addCondition("name", query.getName());
             condition.addCondition("company", query.getCompany());
+            condition.addCondition("companyStr", query.getCompanyStr());
             condition.setPage(query);
             List<PersonnelEntity> list = personnelDao.queryPersonnel(condition);
             query.setPage(condition);

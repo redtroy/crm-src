@@ -35,8 +35,8 @@
 			<![CDATA[  AND PER.NAME LIKE CONCAT('%',#{condition.name},'%')]]>
 		</if>
 		<!-- 所属分公司 -->
-		<if test="condition.company != null ">
-			<![CDATA[  AND PER.COMPANY =#{condition.company}]]>
+		<if test="condition.companyStr != null  and condition.companyStr !='' ">
+			<![CDATA[  AND PER.COMPANYSTR  LIKE CONCAT(#{condition.companyStr},'%')]]>
 		</if>
 		<!-- 员工ID,一般权限员工将传递此参数,只搜索自己的信息 -->
 		<if test="condition.id != null and condition.id != ''">

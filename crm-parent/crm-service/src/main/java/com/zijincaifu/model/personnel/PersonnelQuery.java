@@ -18,7 +18,19 @@ public class PersonnelQuery extends Pagable implements Serializable
     
     private String name;
     
-    private Integer company;
+    private String company;
+    
+    private String companyStr;
+
+    public String getCompanyStr()
+    {
+        return companyStr;
+    }
+
+    public void setCompanyStr(String companyStr)
+    {
+        this.companyStr = companyStr;
+    }
 
     public String getId()
     {
@@ -50,12 +62,12 @@ public class PersonnelQuery extends Pagable implements Serializable
         this.name = name;
     }
 
-    public Integer getCompany()
+    public String getCompany()
     {
         return company;
     }
 
-    public void setCompany(Integer company)
+    public void setCompany(String company)
     {
         this.company = company;
     }
