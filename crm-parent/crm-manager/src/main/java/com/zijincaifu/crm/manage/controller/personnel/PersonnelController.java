@@ -73,11 +73,22 @@ public class PersonnelController extends BaseController
                 PersonnelEntity user = getLoginInfo();
                 query.setUid(user.getUid());
             }
+            if(StringUtils.isNotEmpty(query.getCompany())){
+                query.setCompanyStr(getLoginInfo().getCompanyStr()+","+query.getCompany());
+            }else{
+                query.setCompanyStr(getLoginInfo().getCompanyStr());
+            }
             query.setShowCount(15);
             List<PersonnelEntity> list = personneService.queryPersonnels(query);
-            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
+            List<OrganizationEntity> orgStrList=new ArrayList<OrganizationEntity>();
+            String[] companyStrs=getLoginInfo().getCompanyStr().split(",");
+            for(int i=0;i<companyStrs.length;i++){
+                orgStrList.add(personneService.getOrg(companyStrs[i]));
+            }
+            List<OrganizationEntity> orgList=personneService.queryOrg(getLoginInfo().getCompany()+"");
+            map.put("org", orgList);
             map.put("list", list);
-            map.put("company", company);
+            map.put("orgStrList", orgStrList);
             map.put("query", query);
             return "manage/personnel/personnelList";
         }
@@ -95,9 +106,13 @@ public class PersonnelController extends BaseController
     {
         try
         {
-            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
-            map.put("company", company);
-            List<OrganizationEntity> orgList=personneService.queryOrg("0");
+            List<OrganizationEntity> orgStrList=new ArrayList<OrganizationEntity>();
+            String[] companyStrs=getLoginInfo().getCompanyStr().split(",");
+            for(int i=0;i<companyStrs.length;i++){
+                orgStrList.add(personneService.getOrg(companyStrs[i]));
+            }
+            List<OrganizationEntity> orgList=personneService.queryOrg(getLoginInfo().getCompany()+"");
+            map.put("orgStrList", orgStrList);
             map.put("org", orgList);
             List<FunctionModel> allFunction = functionService.queryTreeFunctions();
             map.put("allFunction", allFunction);
@@ -114,7 +129,7 @@ public class PersonnelController extends BaseController
     @RequestMapping("addPersonnel")
     public @ResponseBody Map<String, Object> addPersonnel(
             PersonnelEntity personnel,
-            @RequestParam("functionIds") String functionIds,String companyStr)
+            @RequestParam("functionIds") String functionIds)
             throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -125,10 +140,16 @@ public class PersonnelController extends BaseController
             {
                 ids = functionIds.split(",");
             }
-            String[] companys=companyStr.split(",");
-            OrganizationEntity org=personneService.getOrg(companys[companys.length-1]);
-            personnel.setCompanyStr(companyStr);
-            personnel.setCompany(Integer.parseInt(org.getId()));
+//            String[] companys=companyStr.split(",");
+            if(StringUtils.isNotEmpty(personnel.getCompanyStr()+"")){
+                personnel.setCompanyStr(getLoginInfo().getCompanyStr()+","+personnel.getCompanyStr());
+            }else{
+                personnel.setCompanyStr(getLoginInfo().getCompanyStr());
+            }
+            String[] temCom=personnel.getCompanyStr().split(",");
+            OrganizationEntity org=personneService.getOrg(temCom[temCom.length-1]);
+//            personnel.setCompanyStr(companyStr);
+            personnel.setCompany(Integer.parseInt(temCom[temCom.length-1]));
             personnel.setCompanyName(org.getName());
             personnel.setFreezeStatus(1);
             personnel.setAddTime(DateTimeUtils.getCurrentLocaleTime());
@@ -151,10 +172,20 @@ public class PersonnelController extends BaseController
         try
         {
             PersonnelEntity personnel = personneService.getPersonnel(uid);
-            PersonnelCompanyEnum[] company = PersonnelCompanyEnum.values();
-            map.put("company", company);
             map.put("personnel", personnel);
-            List<OrganizationEntity> orgList=personneService.queryOrg("0");
+            List<OrganizationEntity> orgStrList=new ArrayList<OrganizationEntity>();
+            String[] companyStrs=getLoginInfo().getCompanyStr().split(",");
+            for(int i=0;i<companyStrs.length;i++){
+                orgStrList.add(personneService.getOrg(companyStrs[i]));
+            }
+            List<OrganizationEntity> orgList=personneService.queryOrg(getLoginInfo().getCompany()+"");
+            map.put("orgStrList", orgStrList);
+            map.put("parentStr", getLoginInfo().getCompanyStr());
+            if(personnel.getCompanyStr().equals(getLoginInfo().getCompanyStr())){
+                map.put("ownStr", "false");
+            }else{
+                map.put("ownStr", personnel.getCompanyStr().split(getLoginInfo().getCompanyStr()+",")[1]);
+            }
             map.put("org", orgList);
             List<FunctionEntity> roleList = roleService.getAllRoleFunction(uid);
             List<FunctionModel> allFunction = functionService.queryTreeFunctions();
@@ -192,6 +223,16 @@ public class PersonnelController extends BaseController
                     }
                 }
             }
+            if(StringUtils.isNotEmpty(personnel.getCompanyStr()+"")){
+                personnel.setCompanyStr(getLoginInfo().getCompanyStr()+","+personnel.getCompanyStr());
+            }else{
+                personnel.setCompanyStr(getLoginInfo().getCompanyStr());
+            }
+            String[] temCom=personnel.getCompanyStr().split(",");
+            OrganizationEntity org=personneService.getOrg(temCom[temCom.length-1]);
+            
+            personnel.setCompany(Integer.parseInt(org.getId()));
+            personnel.setCompanyName(org.getName());
             personneService.editPersonnel(personnel, ids);
             PublishMessage message = new PublishMessage();
             message.setType("update");
