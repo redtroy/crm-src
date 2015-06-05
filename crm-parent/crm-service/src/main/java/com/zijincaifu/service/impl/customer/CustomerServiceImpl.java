@@ -123,7 +123,9 @@ public class CustomerServiceImpl implements ICustomerService
                 customer.setUnionId(model.getUnionId());
                 customerDao.updateCustomer(customer);
             }
+            
             InvestItemEntity item = new InvestItemEntity();
+            customer.setEmployeId(model.getEmployeeId());
             item.setCustomerId(customer.getCustomerId());
             item.setProductId(model.getProductId());
             item.setChannelId(model.getChannelId());
@@ -138,13 +140,19 @@ public class CustomerServiceImpl implements ICustomerService
                 RecommendEntity recommendEntity = iterator.next();
                 if (recommendEntity.getLevel() == 1)
                 {
-                    recommendEntity.setParentId(employe.getUnionId());
-                    if (recommendEntity.getUnionId()
-                            .equals(employe.getUnionId()))
+                    if (StringUtils.isEmpty(recommendEntity.getUnionId()))
                     {
+                        iterator.remove();
                         sub = 0;
                         continue;
                     }
+                    //                    recommendEntity.setParentId(employe.getUnionId());
+                    //                    if (recommendEntity.getUnionId()
+                    //                            .equals(employe.getUnionId()))
+                    //                    {
+                    //                        
+                    //                        continue;
+                    //                    }
                 }
                 recommendEntity.setLevel(recommendEntity.getLevel() + sub);
                 recommendEntity.setInvestId(item.getId());

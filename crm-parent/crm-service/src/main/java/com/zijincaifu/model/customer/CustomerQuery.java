@@ -34,6 +34,8 @@ public class CustomerQuery extends Pagable implements Serializable
     
     private String employeId;
     
+    private String companyStr;
+    
     public String getCustomerId()
     {
         return customerId;
@@ -142,6 +144,16 @@ public class CustomerQuery extends Pagable implements Serializable
     public void setDefaultUid(String defaultUid)
     {
         this.defaultUid = defaultUid;
+    }
+    
+    public String getCompanyStr()
+    {
+        return companyStr;
+    }
+    
+    public void setCompanyStr(String companyStr)
+    {
+        this.companyStr = companyStr;
     }
     
 }
