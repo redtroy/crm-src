@@ -21,7 +21,7 @@ $(document).ready(function(){
 
 function query(page){
 	 var company = new Array();
-	 $(".companySel").each(function(i){
+	 $(".companySelSearch").each(function(i){
 		 if($(this).val()!=''){
 		 	company[i]=$(this).val();
 		 }
@@ -61,7 +61,7 @@ function query(page){
 					   var html="";
 					    for (var j = 0; j < data.list.length; j++) {
 					    	if(j==0){
-					    		html+="<select  class='companySel'  id='companySel"+data.list[j].level+"' onchange='changeSelectEdit(this)' >";
+					    		html+="<select  class='companySelSearch'  id='companySel"+data.list[j].level+"' onchange='changeSelectEdit(this)' >";
 					    		html+="<option value=''>--请选择--</option>";
 					    	}
 					    	if(company[i]==data.list[j].id){
@@ -183,7 +183,7 @@ function changeSelect(sel){
 			  <#list orgStrList as org>
 			  	${org.getName()}--
 			  </#list>
-              <select id="companySel1"  class="companySel"  onchange="changeSelect(this);" >
+              <select id="companySel1"  class="companySelSearch"  onchange="changeSelect(this);" >
                <option value="" selected="selected">--请选择--</option>
               	<#list org as org>
 				<option value="${org.getId()}">${org.getName()}</option>
