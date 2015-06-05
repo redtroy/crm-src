@@ -33,7 +33,7 @@
 	                     		<option value="${state.getId()}">${state.getName()}</option>
 	                    </#list>
 	                      </select></td>
-	                    <td><input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="输入正确的金额" nullmsg="请输入金额" maxlength="15"></td>
+	                    <td><input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="输入正确的金额" nullmsg="请输入金额" maxlength="15" onblur="toDecimal2(this);"></td>
 	                    <td>-</td>
 	                    <td>-</td>
 	                    <td><a href="javascript:addItem();" class="button button-purple">确定</a></td>
@@ -41,7 +41,7 @@
                   <#list list as model>
                   <tr id="info_${model.id}" style="display:;">
 	                    <td>${model.name}</td>
-	                    <td><span onclick="showRecommend('${model.id}')"><a href="#" class="reminput">查看</a></span></td>
+	                    <td><span onclick="showRecommend('${model.id}');"><a href="#" class="reminput">查看</a></span></td>
 	                    <td>${model.channelId}</td>
 	                    <td>${model.state.getName()}</td>
 	                    <td>
@@ -88,9 +88,9 @@
 	                      </td>
 	                    <td>
 	                    <#if model.amount??>
-	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15">
+	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15" onblur="toDecimal2(this);"/>
 	                    	<#else>
-	                    	<input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15">
+	                    	<input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15" onblur="toDecimal2(this);"/>
 	                    </#if>
 	                    </td>
 	                    <td>
@@ -140,6 +140,25 @@ function toAddItem(){
 function changeProduct(input){
 	$(input).next().val("");
 }
+
+function toDecimal2(input) {
+	var x=$(input).val();
+	var f = parseFloat(x);              
+	if (isNaN(f)) {   
+	   return false;              
+	}              
+	var f = Math.round(x*100)/100;              
+	var s = f.toString();              
+	var rs = s.indexOf('.');              
+	if (rs < 0) {   
+     rs = s.length;                  
+　　　s += '.';   
+            }              
+	while (s.length <= rs + 2) {   
+	   s += '0';              
+	}
+	$(input).val(s);
+} 
 
 function addItem(){
 	 var thisForm=addDdemo;
@@ -206,7 +225,17 @@ function loadValidform(){
 		   ajaxPost:true,
 			tiptype:3,
 			datatype:{
-				"amount":/^(?!0+(?:\.1+)?$)(?:[0-9]\d*|0)(?:\.\d{1,2})?$/
+				"amount":function(gets,obj,curform,regxp){
+					var reg=/^(?!0+(?:\.1+)?$)(?:[0-9]\d*|0)(?:\.\d{1,2})?$/;
+					var state=$(curform).find("#stateSelect").val();
+					if(state==1&&(gets==""||gets=="0.00")){
+						return "请输入投资金额";
+					}
+					if(!reg.test(gets)){
+						return false;
+					}
+					
+				}
 			 },
 			callback:function(data){
 			}
@@ -215,7 +244,17 @@ function loadValidform(){
 		   ajaxPost:true,
 			tiptype:3,
 			datatype:{
-				"amount":/^(?!0+(?:\.1+)?$)(?:[0-9]\d*|0)(?:\.\d{1,2})?$/
+				"amount":function(gets,obj,curform,regxp){
+					var reg=/^(?!0+(?:\.1+)?$)(?:[0-9]\d*|0)(?:\.\d{1,2})?$/;
+					var state=$(curform).find("#stateSelect").val();
+					if(state==1&&(gets==""||gets=="0.00")){
+						return "请输入投资金额";
+					}
+					if(!reg.test(gets)){
+						return false;
+					}
+					
+				}
 			 },
 			callback:function(data){
 				

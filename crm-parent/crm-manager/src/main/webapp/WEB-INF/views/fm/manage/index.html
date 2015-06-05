@@ -42,6 +42,7 @@ function subPassword(){
 		 $.post("${basePath}personnel/editPassword.htm?newpassword="+newpassword,function(data){
 			    layer.close(index);
 				if(data.isOK==true){
+					closeDiv();
 					succInfo(function(){
 						$('#editForm')[0].reset(); 
 						closeDiv();

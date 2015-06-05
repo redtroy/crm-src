@@ -1,6 +1,6 @@
  <tr id="info_${model.id}" style="display:;">
 	                    <td>${model.name}</td>
-	                    <td><a href="#" class="reminput">查看</a></td>
+	                    <td><a href="javaScript:showRecommend('${model.id}');" class="reminput">查看</a></td>
 	                    <td>${model.channelId}</td>
 	                    <td>${model.state.getName()}</td>
 	                    <td>
@@ -47,9 +47,9 @@
 	                      </td>
 	                    <td>
 	                    <#if model.amount??>
-	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15">
+	                    	<input type="text" class="input" name="amount" value="${model.amount?string('0.00')}" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15" onblur="toDecimal2(this);"/>
 	                    	<#else>
-	                    	<input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15">
+	                    	<input type="text" class="input" name="amount" value="0.00" datatype="amount" errormsg="请输入正确的金额" nullmsg="请输入金额" maxlength="15" onblur="toDecimal2(this);"/>
 	                    </#if>
 	                    </td>
 	                    <td>
