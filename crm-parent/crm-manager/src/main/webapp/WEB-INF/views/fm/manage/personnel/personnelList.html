@@ -81,7 +81,7 @@ function query(page){
 };
 
 function loadAddPersonnel(){
-	$.post("${basePath}personnel/loadAddPersonnel.htm?"+Math.random(),null,function(data){
+	$.post("${basePath}personnel/loadAddPersonnel.htm",null,function(data){
 		$("#rightBar").empty();
 		$("#rightBar").append(data);
 		/* var totalPage=pager.attr("totalPage");
@@ -91,7 +91,7 @@ function loadAddPersonnel(){
 }; 
 
 function loadEditPersonnel(uid){
-	$.get("${basePath}personnel/loadEditPersonnel.htm?uid="+uid+"&"+Math.random(),function(data){
+	$.get("${basePath}personnel/loadEditPersonnel.htm?uid="+uid,function(data){
 		$("#rightBar").empty();
 		$("#rightBar").append(data);
 	}); 
@@ -193,9 +193,11 @@ function changeSelect(sel){
 			  <span class="btnBox">
               <button class="button button-search" onclick="query();">查询</button>
               </span>
+              
           </div>
           </form>
           </@shiro.hasRole>  
+          
           </div>
             
           <table border="0" cellspacing="0" cellpadding="0" class="tabList mb10"  id="res_table">
@@ -223,20 +225,16 @@ function changeSelect(sel){
               <td>${model.companyName}</td>
 			  <td>${model.unionId}</td>
               <td>${model.addTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-               <@shiro.hasRole name="10">
-               <#if model.uid!="E00001"||loginUid=="E00001">
+               <@shiro.hasRole name="10"> 
 	              <td class="edit">
-	                <#if model.freezeStatus==0>
-						<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
+	              <#if model.freezeStatus==0>
+					<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
 					<#else>
-						<span onclick="freeze('${model.uid}',0)"><a href="javascript:void(0);" class="del">冻结</a></span>
+					<span onclick="freeze('${model.uid}',0)"><a href="javascript:void(0);" class="del">冻结</a></span>
 					</#if>
 					<span onclick="loadEditPersonnel('${model.uid}')"><a href="javascript:void(0);" class="allot">修改</a></span>
 					<span onclick="initPassword('${model.uid}')"><a href="javascript:void(0);" class="reset btn-password">初始化密码</a></span>
 				 </td>
-				 <#else>
-				  <td class="edit">-</td>
-				</#if>
 			</@shiro.hasRole>
 			<@shiro.lacksRole name="10">
 			 <td class="edit">-</td>
@@ -253,16 +251,6 @@ function changeSelect(sel){
   </div>
 </div>
 <@b.footer/>
-      <div class="modal-wrap popDemo passwordBox" style="display:none">
-     <div class="modal-header"><span title="关闭" class="close">关闭</span></div>
-     <div class="modal-body">
-     <div class="tipBox ly-clearFix">
-     <span class="icon32 icon-32-info"></span>
-     <p class="color-blue fontYH f18">初始密码为：5896123，谢谢!</p>
-     </div>
-     <button class="popBtn">确认</button>
-     </div>
-     </div>
        <div class="maskdivgen" style="display:none"></div>
 </body>
 </html>
