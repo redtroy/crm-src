@@ -29,7 +29,8 @@ public class RecommendServiceImpl implements IRecommendService
     {
         try
         {
-            dao.insertRecommend(recommendList);
+            if (recommendList != null && recommendList.size() > 0)
+                dao.insertRecommend(recommendList);
         }
         catch (Exception e)
         {
