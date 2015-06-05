@@ -36,6 +36,8 @@ public interface IPersonnelDao {
 
     public List<PersonnelEntity> autoPersonnel(
             QueryCondition<PersonnelEntity> condition);
+
+    public PersonnelEntity getPersonnelByPhone(String phone);
 	
 
 }

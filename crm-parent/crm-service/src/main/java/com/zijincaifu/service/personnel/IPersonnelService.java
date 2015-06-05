@@ -34,4 +34,6 @@ public interface IPersonnelService
     public List<OrganizationEntity> queryOrg(String parentId);
 
     public OrganizationEntity getOrg(String string);
+
+    public PersonnelEntity getPersonnelByPhone(String phone);
 }

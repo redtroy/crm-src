@@ -213,5 +213,12 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("查询层级信息错误", e);
         }
     }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+    public PersonnelEntity getPersonnelByPhone(String phone)
+    {
+        return personnelDao.getPersonnelByPhone(phone);
+    }
     
 }
