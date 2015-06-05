@@ -75,9 +75,9 @@ public class CustomerController extends BaseController
             {
                 PersonnelEntity user = getLoginInfo();
                 query.setEmployeId(user.getUid());
-                //query.setDefaultUid("E00001");
                 isAdmin = false;
             }
+            query.setCompanyStr(getLoginInfo().getCompanyStr());
             List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
             List<AreaEntity> cityList = areaService.getChildrenAreas("32");
             map.put("provinceList", provinceList);

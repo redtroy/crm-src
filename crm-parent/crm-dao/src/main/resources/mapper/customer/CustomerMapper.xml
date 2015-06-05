@@ -64,7 +64,10 @@
 		<if test="condition.employeId != null and condition.employeId != ''">
 			<![CDATA[ AND c.EMPLOYE_ID =#{condition.employeId }]]>
 		</if>
-		
+		<!-- 所属分公司 -->
+		<if test="condition.companyStr != null  and condition.companyStr !='' ">
+			<![CDATA[  AND e.COMPANYSTR  LIKE CONCAT(#{condition.companyStr},'%')]]>
+		</if>
 		<if test="condition.defaultUid != null and condition.defaultUid != ''">
 			<![CDATA[ OR c.EMPLOYE_ID=#{condition.defaultUid } ]]>
 		</if>
