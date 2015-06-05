@@ -2,6 +2,7 @@ package com.zijincaifu.crm.manage.controller.weixin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sxj.spring.modules.mapper.JsonMapper;
 import com.sxj.spring.modules.web.MediaTypes;
+import com.sxj.util.common.ISxjHttpClient;
 import com.sxj.util.common.StringUtils;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
@@ -31,6 +33,9 @@ public class OpenWeixinController extends BaseController
     
     @Autowired
     private IPersonnelService personnelService;
+    
+    @Autowired
+    private ISxjHttpClient httpClient;
     
     @RequestMapping(value = "/addCustomer", method = RequestMethod.POST, consumes = MediaTypes.JSON)
     @ResponseBody
@@ -65,7 +70,14 @@ public class OpenWeixinController extends BaseController
         }
         
     }
-    
+//    @RequestMapping(value = "/updateUnion", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String,String> getCordSrc(Map<String,String> map){
+//       String res = httpClient.post("", map);
+//        return null;
+//        
+//    }
+//    
     @RequestMapping(value = "/updateUnion", method = RequestMethod.GET)
     @ResponseBody
     public void updateUnion(String phone,String unionId,

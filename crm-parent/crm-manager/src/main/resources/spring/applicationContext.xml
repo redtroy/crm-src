@@ -83,11 +83,9 @@
 			<value>config/redis-advance.properties</value>
 		</constructor-arg>
 	</bean>
-	<bean class="com.sxj.util.comet.CometServiceImpl" />
 	
-	<bean class="com.sxj.statemachine.spring.StateMachineFactoryBean">
-		<property name="basePackages" value="com.zijincaifu.crm.machine">
-		</property>
+	<bean id="httpClient" class="com.sxj.util.common.SxjHttpClientImpl">
+		<property name="charset" value="UTF-8" />
 	</bean>
 	
 </beans>
