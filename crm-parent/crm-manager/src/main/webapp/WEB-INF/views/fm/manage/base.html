@@ -522,12 +522,18 @@ function classLoadUpload(text){
 <#macro leftMenu isLoad>
 <div class="yard-200 ly-left leftMenu fontYH">
       <ul>
-        <li><a href="${basePath}customer/query.htm" class="bgMember on">客户管理</a></li>
-        <li><a href="${basePath}product/productList.htm" class="bgProduct">产品管理</a></li>
-        <li><a href="${basePath}channel/channelList.htm" class="bgChannel">渠道管理</a></li>
-        <li><a href="${basePath}personnel/personnelList.htm" class="bgCrm">后台管理</a></li>
+        <li><a href="javascript:clickFunction('${basePath}customer/query.htm');" class="bgMember on">客户管理</a></li>
+        <li><a href="javascript:clickFunction('${basePath}product/productList.htm');" class="bgProduct">产品管理</a></li>
+        <li><a href="javascript:clickFunction('${basePath}channel/channelList.htm');" class="bgChannel">渠道管理</a></li>
+        <li><a href="javascript:clickFunction('${basePath}personnel/personnelList.htm');" class="bgCrm">后台管理</a></li>
       </ul>
 </div>
+<script type="text/javascript">
+function clickFunction(url){
+	url=url+"?"+Math.random();
+	window.location.href=url;
+}
+</script>
 </#macro>
 <#macro pager>
 <!--<div id="pager" class="jPaginate" totalPage="${query.totalPage}" currentPage="${query.currentPage}"></div>  -->
