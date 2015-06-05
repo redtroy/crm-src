@@ -55,6 +55,7 @@ public class ChannelController extends BaseController
                 query.setUid(user.getUid());
                 query.setDefaultUid("E00001");
             }
+            query.setCompanyStr(getLoginInfo().getCompanyStr());
             List<ChannelModel> list = channelService.queryChannels(query);
             map.put("list", list);
             map.put("query", query);
@@ -216,6 +217,7 @@ public class ChannelController extends BaseController
         {
             query.setName(keyword);
         }
+        query.setCompanyStr(getLoginInfo().getCompanyStr());
         List<ChannelModel> list = channelService.queryChannels(query);
         List<String> strlist = new ArrayList<String>();
         String sb = "";

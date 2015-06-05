@@ -112,82 +112,85 @@ function subModify(formIndex){
 	 }
 	 
  }
+ function loadValidform(){
+		$("#bigAutocompleteContent").ready(function(){
+			$("#bigAutocompleteContent").css("z-index",999999999);
+		});
+		$.Tipmsg.r=" ";
+		demo=$(".modify_class").Validform({
+			ajaxPost:true,
+			tiptype:3,
+			datatype:{
+				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
+			 },
+			callback:function(data){
+				if(data.isOK==true){
+					succInfo(function(){
+						var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
+						$("#birthday_modify_"+data.customer.customerId).text(birthday);
+						$("#address_modify_"+data.customer.customerId).val(data.customer.address);
+						$("#cardNo_modify_"+data.customer.customerId).val(data.customer.cardNo);
+						$("#name_modify_"+data.customer.customerId).val(data.customer.name);
+						$("#phone_modify_"+data.customer.customerId).val(data.customer.phone);
+						$("#sex_"+data.customer.customerId).val(data.customer.sex);
+						$("#provinceName_hidden_"+data.customer.customerId).val(data.customer.provinceName);
+						$("#cityName_hidden_"+data.customer.customerId).val(data.customer.cityName);
+						$("#province_"+data.customer.customerId).val(data.customer.province);
+						$("#city_"+data.customer.customerId).val(data.customer.city);
+					 },"修改成功");
+				}
+				else{
+					errorInfo(data.error);
+			}
+			}
+		});
+		
+		$("#personnelId").bigAutocomplete({
+			url : "${basePath}customer/autoPersonnel.htm",
+			callback : function(data) {
+				if(data){
+					$("#personnelId").val(data.result);
+				}
+			},
+			beforeShow : function(data) {
+				var name = $("#personnelId").val();
+				var match = false;
+				for (var i = 0; i < data.length; i++) {
+					$("#personnelId").val(data[i].result);
+				}
+			}
+		});
+		
+		$("input[placeholder]").each(function () {
+	        var self = $(this);
+	        // 保存原始文字颜色
+	        var color = self.css('color');
+	        // value 填充为 placeholder 值
+	        self.val(self.attr("placeholder")).bind({
+	            // 成为焦点的时候将内容置空，颜色变为真是颜色
+	            focus: function () {
+	                if (self.val() === self.attr("placeholder")) {
+	                    self.val("");
+	                }
+	                self.css('color', color);
+	            },
+	            // 失去焦点的时候，如果内容为空，修改为 placeholder 值，并修改颜色
+	            blur: function () {
+	                if (self.attr("placeholder") && self.val() === "") {
+	                    self.val(self.attr("placeholder"));
+	                    self.css('color', '#BBB');
+	                }
+	            }
+	        });
+	        // 修改颜色
+	        self.css('color', '#BBB');
+	    });
+		
+		
+ }
+ 
 $(function(){
-	$("#bigAutocompleteContent").ready(function(){
-		$("#bigAutocompleteContent").css("z-index",999999999);
-	});
-	$.Tipmsg.r=" ";
-	demo=$(".modify_class").Validform({
-		ajaxPost:true,
-		tiptype:3,
-		datatype:{
-			"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
-		 },
-		callback:function(data){
-			if(data.isOK==true){
-				succInfo(function(){
-					var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
-					$("#birthday_modify_"+data.customer.customerId).text(birthday);
-					$("#address_modify_"+data.customer.customerId).val(data.customer.address);
-					$("#cardNo_modify_"+data.customer.customerId).val(data.customer.cardNo);
-					$("#name_modify_"+data.customer.customerId).val(data.customer.name);
-					$("#phone_modify_"+data.customer.customerId).val(data.customer.phone);
-					$("#sex_"+data.customer.customerId).val(data.customer.sex);
-					$("#provinceName_hidden_"+data.customer.customerId).val(data.customer.provinceName);
-					$("#cityName_hidden_"+data.customer.customerId).val(data.customer.cityName);
-					$("#province_"+data.customer.customerId).val(data.customer.province);
-					$("#city_"+data.customer.customerId).val(data.customer.city);
-				 },"修改成功");
-			}
-			else{
-				errorInfo(data.error);
-		}
-		}
-	});
-	
-	$("#personnelId").bigAutocomplete({
-		url : "${basePath}customer/autoPersonnel.htm",
-		callback : function(data) {
-			if(data){
-				$("#personnelId").val(data.result);
-			}
-		},
-		beforeShow : function(data) {
-			var name = $("#personnelId").val();
-			var match = false;
-			for (var i = 0; i < data.length; i++) {
-				$("#personnelId").val(data[i].result);
-			}
-		}
-	});
-	
-	$("input[placeholder]").each(function () {
-        var self = $(this);
-        // 保存原始文字颜色
-        var color = self.css('color');
-        // value 填充为 placeholder 值
-        self.val(self.attr("placeholder")).bind({
-            // 成为焦点的时候将内容置空，颜色变为真是颜色
-            focus: function () {
-                if (self.val() === self.attr("placeholder")) {
-                    self.val("");
-                }
-                self.css('color', color);
-            },
-            // 失去焦点的时候，如果内容为空，修改为 placeholder 值，并修改颜色
-            blur: function () {
-                if (self.attr("placeholder") && self.val() === "") {
-                    self.val(self.attr("placeholder"));
-                    self.css('color', '#BBB');
-                }
-            }
-        });
-        // 修改颜色
-        self.css('color', '#BBB');
-    });
-	
-	
-	
+	loadValidform();
 });
 function queryInvest(customerId,channelId){
 	var state=$("#investItem_"+customerId).attr("state");

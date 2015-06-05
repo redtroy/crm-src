@@ -28,6 +28,8 @@ public class ChannelQuery extends Pagable implements Serializable
     
     private String defaultUid;
     
+    private String companyStr;
+    
     public String getId()
     {
         return id;
@@ -106,6 +108,16 @@ public class ChannelQuery extends Pagable implements Serializable
     public void setUid(String uid)
     {
         this.uid = uid;
+    }
+    
+    public String getCompanyStr()
+    {
+        return companyStr;
+    }
+    
+    public void setCompanyStr(String companyStr)
+    {
+        this.companyStr = companyStr;
     }
     
 }

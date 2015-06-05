@@ -17,12 +17,12 @@
 	<!-- 查看 -->
 	<select id="query" resultMap="RecommendResultMap"
 		parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT * from CRM_RECOMMEND WHERE 1=1 ]]>
+		<![CDATA[SELECT c.ID,c.INVEST_ID,c.UNION_ID,c.`NAME`,c.PARENT_ID,c.`LEVEL`,p.UID as UID from CRM_RECOMMEND c LEFT JOIN CRM_PERSONNEL p on c.UNION_ID=p.UNIONID   WHERE 1=1]]>
 		<if test="condition.investId != null and condition.investId != ''">
-			<![CDATA[ AND INVEST_ID =#{condition.investId}]]>
+			<![CDATA[ AND c.INVEST_ID =#{condition.investId}]]>
 		</if>
 		<if test="condition.uid != null and condition.uid != ''">
-			<![CDATA[ AND UID =#{condition.uid}]]>
+			<![CDATA[ AND p.UID =#{condition.uid}]]>
 		</if>
 		<![CDATA[ ORDER BY LEVEL]]>
 	</select>

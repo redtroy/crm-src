@@ -49,6 +49,10 @@
 		<if test="condition.defaultUid!= null and condition.defaultUid != ''">
 			<![CDATA[ OR C.UID =#{condition.defaultUid}]]>
 		</if>
+		<!-- 所属分公司 -->
+		<if test="condition.companyStr != null  and condition.companyStr !='' ">
+			<![CDATA[  AND P.COMPANYSTR  LIKE CONCAT(#{condition.companyStr},'%')]]>
+		</if>
 		<!-- 紫金财富特定员工录入的渠道所有人都可以看到 -->
 		<![CDATA[ ORDER BY C.CHANNELID DESC]]>
 	</select>
