@@ -13,6 +13,12 @@
 <@b.dialogBox/>
 <@b.validate/>
 <script>
+
+$(document).ready(function(){
+	  
+}); 
+
+
 function query(page){
 	 var company = new Array();
 	 $(".companySel").each(function(i){
@@ -37,6 +43,40 @@ function query(page){
 		loadPage(currentPage,totalPage,query);
 		$("#time1").datepicker();
 		$("#time2").datepicker();
+		
+		/*  */
+		 /*  var ownStr="${ownStr}";
+		  if(ownStr=="false"){
+			  return false;
+		  } */
+		  
+		  /* var companyArr=companyStr.split(","); */
+		  $("#companySel1 option[value='"+company[0]+"']").attr("selected", true);
+		  for(var i=1;i<company.length;i++){
+			  $.ajax({
+				   type: "POST",
+				   url: "${basePath}personnel/queryOrg.htm?parentId="+company[i-1],
+				   async: false,
+				   success: function(data){
+					   var html="";
+					    for (var j = 0; j < data.list.length; j++) {
+					    	if(j==0){
+					    		html+="<select  class='companySel'  id='companySel"+data.list[j].level+"' onchange='changeSelectEdit(this)' >";
+					    		html+="<option value=''>--请选择--</option>";
+					    	}
+					    	if(company[i]==data.list[j].id){
+					    		html+="<option value='"+data.list[j].id+"' selected='selected' >"+data.list[j].name+"</option>";
+					    	}else{
+					    		html+="<option value='"+data.list[j].id+"'>"+data.list[j].name+"</option>";
+					    	}
+						}
+					    html+="</select>";
+					   /*  $(sel).nextAll().remove(); */
+					    $("#select_span").append(html);
+				   }
+				});
+		  }
+		/*  */
 	});
 };
 
