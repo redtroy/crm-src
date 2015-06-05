@@ -53,4 +53,9 @@
 		</if>
 		<![CDATA[ ORDER BY UID DESC]]>
 	</select>
+	
+	<!-- 根据手机号码获取员工信息 -->
+	<select id="getPersonnelByPhone" resultMap="PersonnelResultMap" parameterType="String">
+		<![CDATA[ SELECT * FROM CRM_PERSONNEL WHERE PHONE=#{phone}]]>
+	</select>
 </mapper>
