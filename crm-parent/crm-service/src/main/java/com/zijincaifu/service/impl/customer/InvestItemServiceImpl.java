@@ -1,5 +1,6 @@
 package com.zijincaifu.service.impl.customer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sxj.util.exception.ServiceException;
 import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
+import com.zijincaifu.crm.dao.customer.ICustomerDao;
 import com.zijincaifu.crm.dao.customer.IInvestItemDao;
+import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
+import com.zijincaifu.crm.entity.customer.RecommendEntity;
+import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
 import com.zijincaifu.crm.model.customer.InvestItemModel;
 import com.zijincaifu.service.customer.IInvestItemService;
+import com.zijincaifu.service.customer.IRecommendService;
+import com.zijincaifu.service.personnel.IPersonnelService;
 
 @Service
 public class InvestItemServiceImpl implements IInvestItemService
@@ -23,6 +30,15 @@ public class InvestItemServiceImpl implements IInvestItemService
     
     @Autowired
     private IInvestItemDao itemDao;
+    
+    @Autowired
+    private ICustomerDao customerDao;
+    
+    @Autowired
+    private IRecommendService recommendService;
+    
+    @Autowired
+    private IPersonnelService personService;
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -83,6 +99,22 @@ public class InvestItemServiceImpl implements IInvestItemService
                 item.setInvestTime(new Date());
             }
             itemDao.addItem(item);
+            
+            //添加推荐明细
+            CustomerEntity customer = customerDao.getCustomer(item.getCustomerId());
+            
+            PersonnelEntity employe = personService.getPersonnel(customer.getEmployeId());
+            RecommendEntity recommendEntity = new RecommendEntity();
+            recommendEntity.setInvestId(item.getId());
+            recommendEntity.setLevel(1);
+            recommendEntity.setParentId("0");
+            recommendEntity.setName(employe.getName());
+            recommendEntity.setUid(customer.getEmployeId());
+            recommendEntity.setUnionId(employe.getUnionId());
+            List<RecommendEntity> recommendList = new ArrayList<>();
+            recommendList.add(recommendEntity);
+            recommendService.addRecommend(recommendList);
+            
         }
         catch (Exception e)
         {
@@ -136,7 +168,6 @@ public class InvestItemServiceImpl implements IInvestItemService
             throw new ServiceException("查询客户投资列表错误", e);
         }
     }
-
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)

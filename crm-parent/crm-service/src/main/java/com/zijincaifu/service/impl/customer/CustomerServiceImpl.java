@@ -19,9 +19,11 @@ import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.dao.customer.ICustomerDao;
 import com.zijincaifu.crm.dao.customer.IInvestItemDao;
 import com.zijincaifu.crm.dao.customer.ITrackRecordDao;
+import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
 import com.zijincaifu.crm.entity.customer.RecommendEntity;
+import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.enu.customer.CustomerLevelEnum;
 import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
 import com.zijincaifu.model.customer.CustomerQuery;
@@ -47,6 +49,9 @@ public class CustomerServiceImpl implements ICustomerService
     
     @Autowired
     private IRecommendService recommendService;
+    
+    @Autowired
+    private IPersonnelDao personnelDao;
     
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -125,14 +130,23 @@ public class CustomerServiceImpl implements ICustomerService
             item.setState(InvestItemStateEnum.REGIST);
             itemService.add(item);
             
+            PersonnelEntity employe = personnelDao.getPersonnel(customer.getEmployeId());
             List<RecommendEntity> recommen = model.getRecommen();
+            int sub = 1;
             for (Iterator<RecommendEntity> iterator = recommen.iterator(); iterator.hasNext();)
             {
                 RecommendEntity recommendEntity = iterator.next();
-                //                if (recommendEntity.getLevel() == 1)
-                //                {
-                //                    recommendEntity.setUnionId(model.getUnionId());
-                //                }
+                if (recommendEntity.getLevel() == 1)
+                {
+                    recommendEntity.setParentId(employe.getUnionId());
+                    if (recommendEntity.getUnionId()
+                            .equals(employe.getUnionId()))
+                    {
+                        sub = 0;
+                        continue;
+                    }
+                }
+                recommendEntity.setLevel(recommendEntity.getLevel() + sub);
                 recommendEntity.setInvestId(item.getId());
             }
             recommendService.addRecommend(recommen);
@@ -186,6 +200,21 @@ public class CustomerServiceImpl implements ICustomerService
                 item.setChannelId(customer.getChannelId());
                 item.setState(InvestItemStateEnum.REGIST);
                 itemService.add(item);
+                
+                //添加推荐明细
+                //                PersonnelEntity employe = personnelDao.getPersonnel(customer.getEmployeId());
+                //                RecommendEntity recommendEntity = new RecommendEntity();
+                //                recommendEntity.setChannelId(item.getChannelId());
+                //                recommendEntity.setInvestId(item.getId());
+                //                recommendEntity.setLevel(1);
+                //                recommendEntity.setParentId("0");
+                //                recommendEntity.setName(employe.getName());
+                //                recommendEntity.setUid(customer.getEmployeId());
+                //                recommendEntity.setUnionId(employe.getUnionId());
+                //                List<RecommendEntity> recommendList = new ArrayList<>();
+                //                recommendList.add(recommendEntity);
+                //                recommendService.addRecommend(recommendList);
+                
                 return isAdd;
             }
             

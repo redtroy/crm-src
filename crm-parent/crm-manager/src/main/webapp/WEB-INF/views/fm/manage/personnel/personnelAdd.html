@@ -36,15 +36,17 @@ function sub(){
 function addPersonnel(){
 	var params=$("#add_form").serialize();
 	
+
 	var company = new Array();
 	 $(".companySel").each(function(i){
+
 		 if($(this).val()!=''){
 		 	company[i]=$(this).val();
-		 }
     });
 	 $("#add_form").find("#companyStr_id").val(company);
 	
 	 dialogBox(function(index){
+
 		 $.post("${basePath}personnel/addPersonnel.htm",params,function(data){
 			  layer.close(index);
 				if(data.isOK == true){
@@ -103,6 +105,7 @@ function confim(){
 	   closeDiv();
 };
 
+
 function changeSelectAdd(sel){
 	var parentId=$(sel).val();
 	if(parentId==0){
@@ -113,6 +116,7 @@ function changeSelectAdd(sel){
 		var html="";
 	    for (var i = 0; i < data.list.length; i++) {
 	    	if(i==0){
+
 	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelectAdd(this)' >";
 	    		html+="<option value='0'>--请选择--</option>";
 	    	}
@@ -146,6 +150,7 @@ function changeSelectAdd(sel){
 			<tr>
               <th>所属公司</th>
               <td id="select_td">
+
               <#list orgStrList as org>
               ${org.getName()}--
               </#list>
@@ -155,6 +160,7 @@ function changeSelectAdd(sel){
 				<option value="${org.getId()}">${org.getName()}</option>
 				</#list>
               </select>
+
               </td>
             </tr>
 			<tr>
@@ -166,7 +172,8 @@ function changeSelectAdd(sel){
             </tr>  
 			<tr>
               <th>UnionID</th>
-              <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="*1-128"  nullmsg="UnionId不能为空"/>
+
+              <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="*1-256"  nullmsg="UnionId不能为空"/>
               &nbsp;&nbsp;<span style="color: red;font-size: 12px;">请关注资金财富公众号,点底部菜单的"获取UnionId"</span></td>
 			</tr>   
           </table>

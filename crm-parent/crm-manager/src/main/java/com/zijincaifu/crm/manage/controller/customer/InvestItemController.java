@@ -98,6 +98,7 @@ public class InvestItemController extends BaseController
             {
                 throw new WebException("投资信息不能为空");
             }
+            item.setChannelId("AAA001");
             itemService.add(item);
             map.put("isOK", true);
             map.put("id", item.getId());

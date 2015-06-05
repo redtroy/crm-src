@@ -11,11 +11,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sxj.util.common.DateTimeUtils;
 import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.customer.TrackRecordEntity;
-import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.service.customer.ITrackRecordService;
 
@@ -27,8 +25,7 @@ public class TrackRecordController extends BaseController
     private ITrackRecordService trackRecordService;
     
     @RequestMapping("/query")
-    public String query(String customerId, ModelMap map)
-            throws WebException
+    public String query(String customerId, ModelMap map) throws WebException
     {
         try
         {
@@ -45,8 +42,8 @@ public class TrackRecordController extends BaseController
     }
     
     @RequestMapping("addTrackRecord")
-    public @ResponseBody Map<String, Object> addTrackRecord(TrackRecordEntity trackRecord)
-            throws WebException
+    public @ResponseBody Map<String, Object> addTrackRecord(
+            TrackRecordEntity trackRecord) throws WebException
     {
         Map<String, Object> map = new HashMap<String, Object>();
         try

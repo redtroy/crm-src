@@ -141,10 +141,12 @@ public class CustomerEntity extends Pagable implements Serializable
     /**
      * 分配员工历史
      */
-    @Column(name="EMPLOYE_ID_HISTORY")
+    @Column(name = "EMPLOYE_ID_HISTORY")
     private String employeIdHistory;
     
     private String isNew;
+    
+    private Integer itemState;
     
     public String getId()
     {
@@ -345,15 +347,25 @@ public class CustomerEntity extends Pagable implements Serializable
     {
         this.isNew = isNew;
     }
-
+    
     public String getEmployeIdHistory()
     {
         return employeIdHistory;
     }
-
+    
     public void setEmployeIdHistory(String employeIdHistory)
     {
         this.employeIdHistory = employeIdHistory;
+    }
+    
+    public Integer getItemState()
+    {
+        return itemState;
+    }
+    
+    public void setItemState(Integer itemState)
+    {
+        this.itemState = itemState;
     }
     
 }

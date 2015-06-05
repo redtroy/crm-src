@@ -44,7 +44,6 @@
 		</if>
 		<![CDATA[ ORDER BY UID DESC]]>
 	</select>
-	
 	<!-- 查看员工 -->
 	<select id="autoPersonnel" resultMap="PersonnelResultMap" parameterType="com.sxj.util.persistent.QueryCondition">
 		<![CDATA[SELECT  * FROM CRM_PERSONNEL WHERE 1=1 ]]>
@@ -54,5 +53,4 @@
 		</if>
 		<![CDATA[ ORDER BY UID DESC]]>
 	</select>
-
 </mapper>
