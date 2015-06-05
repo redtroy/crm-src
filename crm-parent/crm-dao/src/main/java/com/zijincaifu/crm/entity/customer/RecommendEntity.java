@@ -125,7 +125,7 @@ public class RecommendEntity extends Pagable implements Serializable
     public Integer getLevel()
     {
         return level;
-    }
+    } 
     
     public void setLevel(Integer level)
     {
