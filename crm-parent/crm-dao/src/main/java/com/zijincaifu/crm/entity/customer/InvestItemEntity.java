@@ -149,6 +149,10 @@ public class InvestItemEntity extends Pagable implements Serializable
     
     public Date getInvestTime()
     {
+        if (!getState().equals(InvestItemStateEnum.INVEST))
+        {
+            return null;
+        }
         return investTime;
     }
     

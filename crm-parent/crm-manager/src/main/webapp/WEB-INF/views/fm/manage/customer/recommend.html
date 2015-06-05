@@ -3,11 +3,16 @@
      <div class="modal-body memberBox" title="优先显示通过UnionID匹配到的员工编号，如果没有的情况下显示UnionID">
      <#list list as model>
        <div class="item fontYH color-blue">第${model.level_zh}度推荐 ：<span title="">
-       <#if model.uid??>
-        ${model.uid}
+       <#if model.level==1>
+       ${model.uid}
+       <#else>
+       <#if model.uid2??>
+        ${model.uid2}
         <#else>
         ${model.unionId}
        </#if>
+       </#if>
+       
        </span></div>
        </#list>
   </div>
