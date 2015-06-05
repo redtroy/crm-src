@@ -86,6 +86,7 @@ public class PersonnelController extends BaseController
                 orgStrList.add(personneService.getOrg(companyStrs[i]));
             }
             List<OrganizationEntity> orgList=personneService.queryOrg(getLoginInfo().getCompany()+"");
+            map.put("company", query.getCompany());
             map.put("org", orgList);
             map.put("list", list);
             map.put("orgStrList", orgStrList);
