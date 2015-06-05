@@ -34,18 +34,15 @@ function sub(){
 	});
  
 function addPersonnel(){
-	var params=$("#add_form").serialize();
-	
-
 	var company = new Array();
 	 $(".companySel").each(function(i){
-
 		 if($(this).val()!=''){
 		 	company[i]=$(this).val();
 		 }
     });
 	 $("#add_form").find("#companyStr_id").val(company);
-	
+
+	var params=$("#add_form").serialize();
 	 dialogBox(function(index){
 
 		 $.post("${basePath}personnel/addPersonnel.htm",params,function(data){
@@ -119,7 +116,7 @@ function changeSelectAdd(sel){
 	    	if(i==0){
 
 	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelectAdd(this)' >";
-	    		html+="<option value='0'>--请选择--</option>";
+	    		html+="<option value=''>--请选择--</option>";
 	    	}
 	    	html+="<option value='"+data.list[i].id+"'>"+data.list[i].name+"</option>";
 		}
@@ -156,7 +153,7 @@ function changeSelectAdd(sel){
               ${org.getName()}--
               </#list>
                <select id="companySel1"  class="companySel"  onchange="changeSelectAdd(this);" ><!-- datatype="company" errormsg="请选择所属公司" nullmsg="请选择所属公司" -->
-               <option value="0" selected="selected">--请选择--</option>
+               <option value="" selected="selected">--请选择--</option>
               	<#list org as org>
 				<option value="${org.getId()}">${org.getName()}</option>
 				</#list>
