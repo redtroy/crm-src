@@ -29,11 +29,11 @@
 		</if>
 		<!--新增产品时间 -->
 		<if test="condition.startTime != null and condition.startTime != ''">
-			<![CDATA[ AND ADDTIME >=#{condition.startTime}]]>
+			<![CDATA[ AND ADDTIME >#{condition.startTime}]]>
 		</if>
 		<!--新增产品时间 -->
 		<if test="condition.endTime != null and condition.endTime != ''">
-			<![CDATA[ AND ADDTIME <=#{condition.endTime}]]>
+			<![CDATA[ AND ADDTIME <DATE_ADD(#{condition.endTime},INTERVAL 1 DAY)]]>
 		</if>
 		<![CDATA[ ORDER BY PRODUCTID DESC]]>
 	</select>

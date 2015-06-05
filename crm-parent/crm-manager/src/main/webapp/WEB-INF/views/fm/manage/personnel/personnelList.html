@@ -26,7 +26,6 @@ function query(page){
 		 	company[i]=$(this).val();
 		 }
      });
-	
 	 $("#search_form").find("input[name='company']").val(company);
 	var params=$("#search_form").serialize();
 	 if(page!=undefined){
@@ -49,7 +48,6 @@ function query(page){
 		  if(ownStr=="false"){
 			  return false;
 		  } */
-		  
 		  /* var companyArr=companyStr.split(","); */
 		  $("#companySel1 option[value='"+company[0]+"']").attr("selected", true);
 		  for(var i=1;i<company.length;i++){
@@ -141,7 +139,7 @@ function changeSelect(sel){
 		var html="";
 	    for (var i = 0; i < data.list.length; i++) {
 	    	if(i==0){
-	    		html+="<select  class='companySel'  id='companySel"+data.list[i].level+"' onchange='changeSelect(this)' >";
+	    		html+="<select  class='companySelSearch'  id='companySel"+data.list[i].level+"' onchange='changeSelect(this)' >";
 	    		html+="<option value=''>--请选择--</option>";
 	    	}
 	    	html+="<option value='"+data.list[i].id+"'>"+data.list[i].name+"</option>";
