@@ -100,6 +100,24 @@ public class PersonnelEntity extends Pagable implements Serializable
     @Column(name = "COMPANYSTR")
     private String companyStr;
     
+    /**
+     * 电话号码存档
+     * @return
+     */
+    @Column(name="PHONESTR")
+    private String phoneStr;
+    
+    
+    public String getPhoneStr()
+    {
+        return phoneStr;
+    }
+
+    public void setPhoneStr(String phoneStr)
+    {
+        this.phoneStr = phoneStr;
+    }
+
     public String getCompanyStr()
     {
         return companyStr;

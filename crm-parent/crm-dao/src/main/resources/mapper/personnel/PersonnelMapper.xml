@@ -16,6 +16,7 @@
 		<result property="lastLoginTime" column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" />
 		<result property="companyStr" column="COMPANYSTR" jdbcType="VARCHAR" />
 		<result property="companyName" column="COMPANY_NAME" jdbcType="VARCHAR" />
+		<result property="phoneStr" column="PHONESTR" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<!-- 获取员工信息 -->

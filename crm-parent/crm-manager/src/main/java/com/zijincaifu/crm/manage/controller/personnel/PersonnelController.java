@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
+import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -311,6 +312,12 @@ public class PersonnelController extends BaseController
             String[] temCom = personnel.getCompanyStr().split(",");
             OrganizationEntity org = personneService.getOrg(temCom[temCom.length - 1]);
             
+            PersonnelEntity temPer=personneService.getPersonnel(personnel.getUid());
+            if(StringUtil.isBlank(temPer.getPhoneStr())){
+                personnel.setPhoneStr(personnel.getPhone());
+            }else{
+                personnel.setPhoneStr(temPer.getPhoneStr()+","+personnel.getPhone());
+            }
             personnel.setCompany(Integer.parseInt(org.getId()));
             personnel.setCompanyName(org.getName());
             personneService.editPersonnel(personnel, ids);
