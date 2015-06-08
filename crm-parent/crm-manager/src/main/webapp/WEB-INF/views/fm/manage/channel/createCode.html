@@ -68,17 +68,28 @@ function loadCode(){
 	 var channelid=temChannelId;
 	 var employeeid="${employeeId}";
 	 var url=temProductUrl;
-     var submitdingData = {
+     var createCodeEntity = {
     		productid: productid,
     		channelid: channelid,
     		employeeid:"${employeeId}",
     		url:url
        };
-	  $.post("http://www.mimeng360.com/index.php?g=User&m=Crmweixin&a=findkey",submitdingData,
+     
+     $.post("${basePath}open/createCode.htm",createCodeEntity,function(data){
+			if(data.isOK == true){
+				var urlJson=data.urls;
+				var urls=eval('('+urlJson+')');
+				$("#picCode").attr("src",urls.picurl);
+				$("#urlCode").attr("src",urls.goalurl);
+			}else{
+				errorInfo("获取二维码错误");
+			}
+	});
+	  /* $.post("http://www.mimeng360.com/index.php?g=User&m=Crmweixin&a=findkey",createCodeEntity,
 	      function(backdata){ 
 		  $("#picCode").attr("src",backdata.picurl);
 		  $("#urlCode").attr("src",backdata.goalurl);
-	   },"json")
+	   },"json") */
 };
 
 function changePro(){
