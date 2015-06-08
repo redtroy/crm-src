@@ -189,6 +189,9 @@ function addItem(){
 			});
 			 $.Hidemsg();
 		   },"是否确认添加投资明细");
+	 }else{
+		 thisForm.resetForm();
+		 thisForm.check();
 	 }
 }
 function modifyItem(id,formIndex){
@@ -217,6 +220,9 @@ function modifyItem(id,formIndex){
 			});
 			 $.Hidemsg();
 		   },"是否确认修改投资明细");
+	 }else{
+		 thisForm.resetForm();
+		 thisForm.check();
 	 }
 }
 
@@ -261,6 +267,7 @@ function loadValidform(){
 	 demo=$(".modifyItem_class").Validform({
 		   ajaxPost:true,
 			tiptype:3,
+			showAllError:false,
 			datatype:{
 				"amount":function(gets,obj,curform,regxp){
 					if(gets==""){
@@ -285,8 +292,8 @@ function loadValidform(){
 							return "金额必须为零";
 						}
 					}else if(state==2){
-						if(!reg.test(gets)){
-							return false;
+						if(gets!=""&&gets!="0.00"){
+							return "金额必须为零";
 						}
 					}else{
 						return true;
