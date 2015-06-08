@@ -225,6 +225,7 @@ function changeSelect(sel){
               <td>${model.addTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                <@shiro.hasRole name="10"> 
 	              <td class="edit">
+	              <#if model.uid!="E00001"||loginUid=="E00001">
 	              <#if model.freezeStatus==0>
 					<span onclick="freeze('${model.uid}',1)"><a href="javascript:void(0);" class="unfr">解冻</a></span> 
 					<#else>
@@ -232,6 +233,9 @@ function changeSelect(sel){
 					</#if>
 					<span onclick="loadEditPersonnel('${model.uid}')"><a href="javascript:void(0);" class="allot">修改</a></span>
 					<span onclick="initPassword('${model.uid}')"><a href="javascript:void(0);" class="reset btn-password">初始化密码</a></span>
+					<#else>
+					-
+				  </#if>
 				 </td>
 			</@shiro.hasRole>
 			<@shiro.lacksRole name="10">

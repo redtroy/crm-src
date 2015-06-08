@@ -414,11 +414,21 @@ function deleteCustomer(customerId){
             <#else>
             <tr>
             </#if>
-              <td><a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a></td>
+             <td>
+             <@shiro.hasRole name="11"> 
+              <a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
+             </@shiro.hasRole> 
+              <@shiro.lacksRole name="11"><a href="javascript:void(0);">${model.customerId}</a></@shiro.lacksRole>
+               </td>
               <td>
               ${model.name}
               </td>
-              <td>${model.phone}</td>
+              <td>
+              <@shiro.hasRole name="11"> 
+              ${model.phone}
+              </@shiro.hasRole>
+               <@shiro.lacksRole name="11">-</@shiro.lacksRole>
+              </td>
               <td>${model.employeName}</td>
               <td><a href="javascript:queryInvest('${model.customerId}','${model.channelId}')">查询明细</a></td>
               <td>${model.channelId}</td>

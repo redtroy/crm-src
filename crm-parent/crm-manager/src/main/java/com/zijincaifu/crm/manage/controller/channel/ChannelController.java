@@ -218,8 +218,16 @@ public class ChannelController extends BaseController
             query.setName(keyword);
         }
         query.setCompanyStr(getLoginInfo().getCompanyStr());
-        query.setUid(getLoginInfo().getUid());
+        
+        if (SecurityUtils.getSubject() != null
+                && !SecurityUtils.getSubject().hasRole("8"))
+        {
+            PersonnelEntity user = getLoginInfo();
+            query.setUid(user.getUid());
+        }
         query.setDefaultUid("E00001");
+        //query.setUid(getLoginInfo().getUid());
+        //query.setDefaultUid("E00001");
         List<ChannelModel> list = channelService.queryChannels(query);
         List<String> strlist = new ArrayList<String>();
         String sb = "";
