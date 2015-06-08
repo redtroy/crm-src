@@ -64,6 +64,8 @@ public class RecommendEntity extends Pagable implements Serializable
     @Column(name = "UID")
     private String uid;
     
+    private String uid2;
+    
     /**
      * 等级
      */
@@ -125,7 +127,7 @@ public class RecommendEntity extends Pagable implements Serializable
     public Integer getLevel()
     {
         return level;
-    } 
+    }
     
     public void setLevel(Integer level)
     {
@@ -146,6 +148,16 @@ public class RecommendEntity extends Pagable implements Serializable
     public void setUid(String uid)
     {
         this.uid = uid;
+    }
+    
+    public String getUid2()
+    {
+        return uid2;
+    }
+    
+    public void setUid2(String uid2)
+    {
+        this.uid2 = uid2;
     }
     
 }

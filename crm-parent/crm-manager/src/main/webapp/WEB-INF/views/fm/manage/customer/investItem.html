@@ -18,8 +18,8 @@
                     <th>投资时间</th>
                     <th>操作</th>
                   </tr>
-                  <#assign itemIndex=0/>
-                   <tr id="addItem" style="display:none;" class="addItem_class">
+                  <#assign itemIndex=1/>
+                   <tr id="addItem" style="display:none;" class="modifyItem_class">
 	                   <input type="hidden" name="customerId" value="${customerId}"/>
 	                   <input type="hidden" name="channelId" value="${channelId}"/>
 	                    <td>
@@ -161,7 +161,7 @@ function toDecimal2(input) {
 } 
 
 function addItem(){
-	 var thisForm=addDdemo;
+	 var thisForm=demo.eq(0);
 	 var ad=thisForm.check();
 	 if(ad){
 		 dialogBox(function(index){
@@ -221,39 +221,76 @@ function modifyItem(id,formIndex){
 }
 
 function loadValidform(){
-	addDdemo=$(".addItem_class").Validform({
+	/**addDdemo=$(".addItem_class").Validform({
 		   ajaxPost:true,
 			tiptype:3,
 			datatype:{
 				"amount":function(gets,obj,curform,regxp){
+					alert(3333333);
+					if(gets==""){
+						$(obj).val("0.00");
+					}
 					var reg=/^(?!0+(?:\.1+)?$)(?:[0-9]\d*|0)(?:\.\d{1,2})?$/;
 					var state=$(curform).find("#stateSelect").val();
-					if(state==1&&(gets==""||gets=="0.00")){
-						return "请输入投资金额";
+					if(state==1){
+						if(gets==""||gets=="0.00"){
+							return "请输入投资金额";
+						}else{
+							if(!reg.test(gets)){
+								return false;
+							}
+						}
 					}
-					if(!reg.test(gets)){
-						return false;
+					else if(state==0){
+						if(gets!=""&&gets!="0.00"){
+							return "金额必须为零";
+						}
+					}else if(state==2){
+						if(!reg.test(gets)){
+							return false;
+						}
+					}else{
+						return true;
 					}
 					
 				}
 			 },
 			callback:function(data){
 			}
-		});
+		});**/
 	 demo=$(".modifyItem_class").Validform({
 		   ajaxPost:true,
 			tiptype:3,
 			datatype:{
 				"amount":function(gets,obj,curform,regxp){
+					if(gets==""){
+						$(obj).val("0.00");
+					}
+					//alert(gets);
 					var reg=/^(?!0+(?:\.1+)?$)(?:[0-9]\d*|0)(?:\.\d{1,2})?$/;
 					var state=$(curform).find("#stateSelect").val();
-					if(state==1&&(gets==""||gets=="0.00")){
-						return "请输入投资金额";
+					//alert(state);
+					if(state==1){
+						if(gets==""||gets=="0.00"){
+							//alert(2222);
+							return "请输入投资金额";
+						}else{
+							if(!reg.test(gets)){
+								return false;
+							}
+						}
 					}
-					if(!reg.test(gets)){
-						return false;
+					else if(state==0){
+						if(gets!=""&&gets!="0.00"){
+							return "金额必须为零";
+						}
+					}else if(state==2){
+						if(!reg.test(gets)){
+							return false;
+						}
+					}else{
+						return true;
 					}
-					
 				}
 			 },
 			callback:function(data){
@@ -277,8 +314,6 @@ function loadValidform(){
 				}
 			}
 		});
-	 
-	 
 }
 
 $(function(){

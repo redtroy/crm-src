@@ -49,6 +49,7 @@ function query(page){
 				var totalPage=pager.attr("totalPage");
 				var currentPage=pager.attr("currentPage");
 				loadPage(currentPage,totalPage,query);
+				loadValidform();
 				$("#time1").datepicker();
 				$("#time2").datepicker();
 		   }
@@ -196,10 +197,12 @@ function queryInvest(customerId,channelId){
 	var state=$("#investItem_"+customerId).attr("state");
 	   if(state=="0"){
 		 $.get("${basePath}customer/invest/query.htm?customerId="+customerId+"&channelId="+channelId,function(data){
-			    $("#investItem_"+customerId).empty();
+			    //$("#investItem_"+customerId).empty();
+			    $(".investItem_class").empty();
 				$("#investItem_"+customerId).append(data);
 				$("#investItem_"+customerId).show();
 				$("#investItem_"+customerId).attr("state","1");
+				loadValidform();
 		});
 	}else{
 		$("#investItem_"+customerId).empty();
@@ -515,7 +518,7 @@ function deleteCustomer(customerId){
                  <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div>
                  </td> 
               </tr>
-             <tr id="investItem_${model.customerId}" style="display:none;" state="0">
+             <tr class="investItem_class" id="investItem_${model.customerId}" style="display:none;" state="0">
              </tr>
              <tr id="trackRecord_${model.customerId}" style="display:none;" state="0">
              </tr>

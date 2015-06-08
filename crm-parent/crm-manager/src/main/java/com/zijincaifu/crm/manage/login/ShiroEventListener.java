@@ -65,22 +65,15 @@ public class ShiroEventListener implements BeanFactoryPostProcessor
                 {
                     return;
                 }
-                if ("del".equals(type))
+                List<PrincipalCollection> principals = (List<PrincipalCollection>) map.get(userId);
+                Cache<Object, Object> cache = cacheManager.getCache(cacheName);
+                for (PrincipalCollection principal : principals)
                 {
-                    //                    Collection<Session> activeSessions = sessionManager.getSessionDAO()
-                    //                            .getActiveSessions();
-                    //                    Iterator<Session> iterator = activeSessions.iterator();
-                    //                    while (iterator.hasNext())
-                    //                    {
-                    //                        Session next = iterator.next();
-                    //                        System.out.println(next);
-                    //                    }
-                }
-                else if ("update".equals(type))
-                {
-                    List<PrincipalCollection> principals = (List<PrincipalCollection>) map.get(userId);
-                    Cache<Object, Object> cache = cacheManager.getCache(cacheName);
-                    for (PrincipalCollection principal : principals)
+                    if ("del".equals(type))
+                    {
+                        map.remove(principal);
+                    }
+                    else if ("update".equals(type))
                     {
                         SimpleAuthorizationInfo old = (SimpleAuthorizationInfo) cache.get(principal);
                         if (old == null)

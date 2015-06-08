@@ -77,7 +77,7 @@
 		</if>
 		<if
 			test="condition.endDate != null and condition.endDate != ''">
-			<![CDATA[AND c.CREATE_TIME <= #{condition.endDate}]]>
+			<![CDATA[AND c.CREATE_TIME < DATE_ADD(#{condition.endDate},INTERVAL 1 DAY)]]>
 		</if>
 		<![CDATA[ GROUP BY c.CUSTOMER_ID  ORDER BY p.STATE asc,c.CUSTOMER_ID DESC]]>
 	</select>
