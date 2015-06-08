@@ -6,6 +6,7 @@
 	<resultMap type="com.zijincaifu.crm.model.customer.InvestItemModel"
 		id="InvestItemResultMap">
 		<id property="id" column="ID" jdbcType="VARCHAR" />
+		<result property="employeId" column="EMPLOYE_ID" jdbcType="VARCHAR" />
 		<result property="customerId" column="CUSTOMER_ID" jdbcType="VARCHAR" />
 		<result property="channelId" column="CHANNEL_ID" jdbcType="VARCHAR" />
 		<result property="state" column="STATE" jdbcType="INTEGER" />

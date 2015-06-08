@@ -73,6 +73,10 @@
 		var cityname=$("#city_select").text();
 		 $("#cityName").val($("#city_select option:selected").text());
 	}
+	function changeProduct(input){
+		$(input).next().val("");
+	}
+	
  </script>
    <div class="yard-1100 ly-left">
       <div class="rightSide">
@@ -126,7 +130,7 @@
 			   <tr>
               <th>投资产品</th>
               <td>
-              <input id="productName_com" type="text" name="productName" datatype="s1-50" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off" class="input input-addname"/>
+              <input id="productName_com" type="text" name="productName" datatype="s1-50" errormsg="投资产品非法" nullmsg="请选择投资产品"  autocomplete="off" class="input input-addname" onchange="changeProduct(this);"/>
               <input type="hidden" id="productId_hidden" name="productId" value="" datatype="s1-50" errormsg="请选择正确的投资产品" nullmsg="请选择正确的投资产品"/>
               <span class="color-red ml5">*</span></td>
               </tr>         

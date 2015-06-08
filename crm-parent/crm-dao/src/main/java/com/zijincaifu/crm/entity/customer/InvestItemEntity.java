@@ -36,6 +36,12 @@ public class InvestItemEntity extends Pagable implements Serializable
     private String id;
     
     /**
+     * 新建投资明细的员工
+     */
+    @Column(name = "EMPLOYE_ID")
+    private String employeId;
+    
+    /**
      * 客户编号
      */
     @Column(name = "CUSTOMER_ID")
@@ -159,6 +165,16 @@ public class InvestItemEntity extends Pagable implements Serializable
     public void setInvestTime(Date investTime)
     {
         this.investTime = investTime;
+    }
+    
+    public String getEmployeId()
+    {
+        return employeId;
+    }
+    
+    public void setEmployeId(String employeId)
+    {
+        this.employeId = employeId;
     }
     
 }

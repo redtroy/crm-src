@@ -1,3 +1,5 @@
+<!--<#assign staticPath="http://static.zijincaifu.com/" />
+<#assign imagePath="http://static.zijincaifu.com/" />  -->
 <#assign staticPath="http://61.132.53.150:88/crm-manager/" />
 <#assign imagePath="http://61.132.53.150:88/" />
 <script>
@@ -522,13 +524,27 @@ function classLoadUpload(text){
 <#macro leftMenu isLoad>
 <div class="yard-200 ly-left leftMenu fontYH">
       <ul>
-        <li><a href="javascript:clickFunction('${basePath}customer/query.htm');" class="bgMember on">客户管理</a></li>
-        <li><a href="javascript:clickFunction('${basePath}product/productList.htm');" class="bgProduct">产品管理</a></li>
-        <li><a href="javascript:clickFunction('${basePath}channel/channelList.htm');" class="bgChannel">渠道管理</a></li>
-        <li><a href="javascript:clickFunction('${basePath}personnel/personnelList.htm');" class="bgCrm">后台管理</a></li>
+        <li><a url="${basePath}customer/query.htm" href="javascript:clickFunction('${basePath}customer/query.htm');" class="bgMember">客户管理</a></li>
+        <li><a url="${basePath}product/productList.htm" href="javascript:clickFunction('${basePath}product/productList.htm');" class="bgProduct">产品管理</a></li>
+        <li><a url="${basePath}channel/channelList.htm" href="javascript:clickFunction('${basePath}channel/channelList.htm');" class="bgChannel">渠道管理</a></li>
+        <li><a url="${basePath}personnel/personnelList.htm" href="javascript:clickFunction('${basePath}personnel/personnelList.htm');" class="bgCrm">后台管理</a></li>
       </ul>
 </div>
 <script type="text/javascript">
+$(document).ready(function(){
+	$(".leftMenu li").removeClass("on");
+	$(".leftMenu a").each(function(){
+		var href=window.location.href;
+		if(href.indexOf($(this).attr("url"))>0){
+			$(this).parent().addClass("on");
+			return false;
+		}			
+	});
+	menuMessage();
+	window.setInterval(menuMessage, 5000);
+});
+
+
 function clickFunction(url){
 	url=url+"?"+Math.random();
 	window.location.href=url;

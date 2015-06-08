@@ -110,4 +110,14 @@ public class InvestItemModel extends Pagable implements Serializable
         product.setName(name);
     }
     
+    public String getEmployeId()
+    {
+        return investItem.getEmployeId();
+    }
+    
+    public void setEmployeId(String employeId)
+    {
+        investItem.setEmployeId(employeId);
+    }
+    
 }

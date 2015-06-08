@@ -210,7 +210,7 @@ public class CustomerController extends BaseController
             }
             if (StringUtils.isEmpty(productId))
             {
-                throw new WebException("产品不能为空");
+                throw new WebException("产品非法，请重新选择");
             }
             //TODO 设置员工
             customer.setEmployeId(login.getUid());
