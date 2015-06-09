@@ -103,15 +103,15 @@
 		<!-- 登陆成功后跳转的url -->
 		<property name="successUrl" value="/index.htm" />
 		<!-- 没有权限跳转的url -->
-		<property name="unauthorizedUrl" value="/index.htm" />
+		<property name="unauthorizedUrl" value="/to_login.htm" />
 		<!-- 访问地址的过滤规则,从上至下的优先级,如果有匹配的规则,就会返回,不会再进行匹配 -->
 		<property name="filterChainDefinitions">
 			<value>
-				/index.htm=authc
+				/index.htm=authc,frameperms
 				/unauth.htm = anon
-				/customer/**=authc
-				/product/**=authc
-				/channel/**=authc
+				/customer/**=authc,frameperms
+				/product/**=authc,frameperms
+				/channel/**=authc,frameperms
 				/personnel/**=authc,frameperms
 			</value>
 		</property>

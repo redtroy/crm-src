@@ -71,7 +71,8 @@ public class ShiroEventListener implements BeanFactoryPostProcessor
                 {
                     if ("del".equals(type))
                     {
-                        map.remove(principal);
+                        map.remove(userId);
+                        //cache.put(principal, new SimpleAuthorizationInfo());
                     }
                     else if ("update".equals(type))
                     {

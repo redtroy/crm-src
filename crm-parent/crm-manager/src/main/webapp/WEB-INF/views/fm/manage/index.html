@@ -19,7 +19,8 @@ $(function(){
 	 $("#editForm").Validform({
 			tiptype:3,
 			datatype:{
-				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
+				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/,
+				"password":/^[A-Za-z0-9]{6,32}$/
 			 },
 			callback:function(form){
 				subPassword();
@@ -88,16 +89,16 @@ function subPassword(){
     </@shiro.user> 
   </div>
 </div>
-<div id="editPasswordDiv"  class="modal-mask"  style="display:none;dwidth:400px;margin-left:-90px;margin-top:-30px;">
+<div id="editPasswordDiv"  class="modal-mask"  style="display:none;width:480px;margin-left:-90px;margin-top:-30px;">
 <form action="javascript:void(0);" id="editForm">
      <div class="modal-header"><span class="close" onclick="closeDiv()">关闭</span></div>
      <div class="modal-body passdwordBox">
      <div class="form-group">
      <label>新密码</label>
-     <input type="password" name="loginpassword" id="loginpassword" tabindex="1" class="input input-w270h36" placeholder="请输入新密码" datatype="*6-32" errormsg="密码不能少于6位" nullmsg="密码不能为空" value=""/></div>
+     <input type="password" name="loginpassword" id="loginpassword" tabindex="1" class="input input-w270h36" placeholder="请输入6位以上新密码" datatype="password" errormsg="密码由数字字母组成，且不能少于6位" nullmsg="密码不能为空" value=""/></div>
      <div class="form-group">
      <label>确认密码</label>
-     <input type="password" name="newpassword" id="newpassword" tabindex="1" class="input input-w270h36" placeholder="请确认新密码" datatype="*6-32" recheck="loginpassword" errormsg="两次输入的密码不一致" nullmsg="密码不能为空" value=""/>
+     <input type="password" name="newpassword" id="newpassword" tabindex="1" class="input input-w270h36" placeholder="请确认新密码" datatype="password" recheck="loginpassword" errormsg="两次输入的密码不一致" nullmsg="密码不能为空" value=""/>
      </div>
      <div class="form-group">
      <label>&nbsp;</label>
