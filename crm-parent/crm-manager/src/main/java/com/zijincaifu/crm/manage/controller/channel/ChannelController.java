@@ -136,7 +136,7 @@ public class ChannelController extends BaseController
             if (invest.size() != 0)
             {
                 map.put("isOK", false);
-                map.put("error", "该产品已进行关联,不能删除");
+                map.put("error", "该渠道已进行关联,不能修改");
             }
             else
             {
