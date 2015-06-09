@@ -23,7 +23,6 @@ import com.zijincaifu.crm.dao.personnel.IPersonnelDao;
 import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
 import com.zijincaifu.crm.entity.customer.RecommendEntity;
-import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.enu.customer.CustomerLevelEnum;
 import com.zijincaifu.crm.enu.customer.InvestItemStateEnum;
 import com.zijincaifu.model.customer.CustomerQuery;
@@ -125,14 +124,14 @@ public class CustomerServiceImpl implements ICustomerService
             }
             
             InvestItemEntity item = new InvestItemEntity();
-            customer.setEmployeId(model.getEmployeeId());
+            item.setEmployeId(model.getEmployeeId());
             item.setCustomerId(customer.getCustomerId());
             item.setProductId(model.getProductId());
             item.setChannelId(model.getChannelId());
             item.setState(InvestItemStateEnum.REGIST);
             itemService.add(item);
             
-            PersonnelEntity employe = personnelDao.getPersonnel(customer.getEmployeId());
+            //PersonnelEntity employe = personnelDao.getPersonnel(model.getEmployeeId());
             List<RecommendEntity> recommen = model.getRecommen();
             int sub = 1;
             for (Iterator<RecommendEntity> iterator = recommen.iterator(); iterator.hasNext();)
@@ -181,6 +180,7 @@ public class CustomerServiceImpl implements ICustomerService
             }
             else
             {
+                String employeId = customer.getEmployeId();
                 CustomerQuery query = new CustomerQuery();
                 query.setPhone(customer.getPhone());
                 List<CustomerEntity> list = queryCustomer(query);
@@ -204,8 +204,9 @@ public class CustomerServiceImpl implements ICustomerService
                 }
                 InvestItemEntity item = new InvestItemEntity();
                 item.setCustomerId(customer.getCustomerId());
+                item.setEmployeId(employeId);
                 item.setProductId(productId);
-                item.setChannelId(customer.getChannelId());
+                item.setChannelId("AAA001");
                 item.setState(InvestItemStateEnum.REGIST);
                 itemService.add(item);
                 

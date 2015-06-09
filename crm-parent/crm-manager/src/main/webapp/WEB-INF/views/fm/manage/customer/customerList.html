@@ -127,8 +127,12 @@ function subModify(formIndex){
 			callback:function(data){
 				if(data.isOK==true){
 					succInfo(function(){
-						var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
-						$("#birthday_modify_"+data.customer.customerId).text(birthday);
+						if(data.customer.cardNo!=null&&data.customer.cardNo!=""){
+							var birthday = new Date(data.customer.birthday).format("yyyy-MM-dd");
+							$("#birthday_modify_"+data.customer.customerId).text(birthday);
+						}else{
+							$("#birthday_modify_"+data.customer.customerId).text("-");
+						}
 						$("#address_modify_"+data.customer.customerId).val(data.customer.address);
 						$("#cardNo_modify_"+data.customer.customerId).val(data.customer.cardNo);
 						$("#name_modify_"+data.customer.customerId).val(data.customer.name);
@@ -414,11 +418,21 @@ function deleteCustomer(customerId){
             <#else>
             <tr>
             </#if>
-              <td><a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a></td>
+             <td>
+             <@shiro.hasRole name="11"> 
+              <a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
+             </@shiro.hasRole> 
+              <@shiro.lacksRole name="11"><a href="javascript:void(0);">${model.customerId}</a></@shiro.lacksRole>
+               </td>
               <td>
               ${model.name}
               </td>
-              <td>${model.phone}</td>
+              <td>
+              <@shiro.hasRole name="11"> 
+              ${model.phone}
+              </@shiro.hasRole>
+               <@shiro.lacksRole name="11">-</@shiro.lacksRole>
+              </td>
               <td>${model.employeName}</td>
               <td><a href="javascript:queryInvest('${model.customerId}','${model.channelId}')">查询明细</a></td>
               <td>${model.channelId}</td>
@@ -504,11 +518,16 @@ function deleteCustomer(customerId){
                       </select></td>
                     <td><input id="cardNo_modify_${model.customerId}" type="text" class="input" name="cardNo" value="${model.cardNo}" datatype="idcard" errormsg="身份证号码格式不正确" ignore="ignore"/></td>
                     <td id="birthday_modify_${model.customerId}" >
+                    <#if model.cardNo??&&model.cardNo!="">
                     <#if model.birthday??>
                       ${model.birthday?string("yyyy-MM-dd")}
                       <#else>
                       -
                     </#if>
+                     <#else>
+                    -
+                    </#if>
+                  
                     </td>
                     <td><input id="address_modify_${model.customerId}"  type="text" class="input inputAdd" name="address" value="${model.address}"/></td>
                   </tr>

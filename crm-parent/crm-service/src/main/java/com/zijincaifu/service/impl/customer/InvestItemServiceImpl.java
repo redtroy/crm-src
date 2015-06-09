@@ -14,7 +14,6 @@ import com.sxj.util.logger.SxjLogger;
 import com.sxj.util.persistent.QueryCondition;
 import com.zijincaifu.crm.dao.customer.ICustomerDao;
 import com.zijincaifu.crm.dao.customer.IInvestItemDao;
-import com.zijincaifu.crm.entity.customer.CustomerEntity;
 import com.zijincaifu.crm.entity.customer.InvestItemEntity;
 import com.zijincaifu.crm.entity.customer.RecommendEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
@@ -101,15 +100,13 @@ public class InvestItemServiceImpl implements IInvestItemService
             itemDao.addItem(item);
             
             //添加推荐明细
-            CustomerEntity customer = customerDao.getCustomer(item.getCustomerId());
-            
-            PersonnelEntity employe = personService.getPersonnel(customer.getEmployeId());
+            PersonnelEntity employe = personService.getPersonnel(item.getEmployeId());
             RecommendEntity recommendEntity = new RecommendEntity();
             recommendEntity.setInvestId(item.getId());
             recommendEntity.setLevel(1);
             recommendEntity.setParentId("0");
             recommendEntity.setName(employe.getName());
-            recommendEntity.setUid(customer.getEmployeId());
+            recommendEntity.setUid(item.getEmployeId());
             recommendEntity.setUnionId(employe.getUnionId());
             List<RecommendEntity> recommendList = new ArrayList<>();
             recommendList.add(recommendEntity);
