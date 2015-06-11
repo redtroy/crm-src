@@ -36,7 +36,7 @@
 		</if>
 		<!--推广起始时间 -->
 		<if test="condition.startTime != null and condition.startTime != ''">
-			<![CDATA[ AND C.STARTTIME >#{condition.startTime}]]>
+			<![CDATA[ AND C.STARTTIME >=#{condition.startTime}]]>
 		</if>
 		<!--推广起始时间 -->
 		<if test="condition.endTime != null and condition.endTime != ''">

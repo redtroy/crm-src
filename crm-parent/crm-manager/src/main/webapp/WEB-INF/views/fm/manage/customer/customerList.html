@@ -95,7 +95,7 @@ function customerInfo(uid){
 }
 
 function changeCity(customerId){
-	 $("#city_"+customerId).append("<option value='Value'>Text</option>")
+	 //$("#city_"+customerId).append("<option value='Value'>Text</option>")
 	 $("#cityName_hidden_"+customerId).val($("#city_"+customerId).find("option:selected").text());
 	 $("#provinceName_hidden_"+customerId).val($("#province_"+customerId).find("option:selected").text());
 	
@@ -122,7 +122,7 @@ function subModify(formIndex){
 			ajaxPost:true,
 			tiptype:3,
 			datatype:{
-				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9])[0-9]{8}?$/
+				"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9]|17[0-9])[0-9]{8}?$/
 			 },
 			callback:function(data){
 				if(data.isOK==true){
@@ -171,7 +171,10 @@ function subModify(formIndex){
 	        // 保存原始文字颜色
 	        var color = self.css('color');
 	        // value 填充为 placeholder 值
-	        self.val(self.attr("placeholder")).bind({
+	        if(self.val()==""){
+	        	self.val(self.attr("placeholder"));
+	        }
+	        self.bind({
 	            // 成为焦点的时候将内容置空，颜色变为真是颜色
 	            focus: function () {
 	                if (self.val() === self.attr("placeholder")) {
@@ -413,25 +416,33 @@ function deleteCustomer(customerId){
             </tr>
             <#assign index=0/>
             <#list list as model>
-            <#if model.itemState==0>
+            <#if model.itemState &gt; 0>
              <tr class="bColor-red" title="有报名未处理的客户记录">
             <#else>
             <tr>
             </#if>
              <td>
-             <@shiro.hasRole name="11"> 
-              <a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
-             </@shiro.hasRole> 
-              <@shiro.lacksRole name="11"><a href="javascript:void(0);">${model.customerId}</a></@shiro.lacksRole>
+             <#if loginUid==model.employeId>
+              		<a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
+              <#else>
+              		 <@shiro.hasRole name="11"> 
+              			<a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
+             		</@shiro.hasRole> 
+              		<@shiro.lacksRole name="11"><a href="javascript:void(0);">${model.customerId}</a></@shiro.lacksRole>
+             </#if>
                </td>
               <td>
               ${model.name}
               </td>
               <td>
-              <@shiro.hasRole name="11"> 
+              <#if loginUid==model.employeId>
               ${model.phone}
+              <#else>
+               <@shiro.hasRole name="11"> 
+              		${model.phone}
               </@shiro.hasRole>
-               <@shiro.lacksRole name="11">-</@shiro.lacksRole>
+              <@shiro.lacksRole name="11">-</@shiro.lacksRole>
+              </#if>
               </td>
               <td>${model.employeName}</td>
               <td><a href="javascript:queryInvest('${model.customerId}','${model.channelId}')">查询明细</a></td>

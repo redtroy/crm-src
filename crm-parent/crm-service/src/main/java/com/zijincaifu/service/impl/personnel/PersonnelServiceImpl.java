@@ -50,6 +50,7 @@ public class PersonnelServiceImpl implements IPersonnelService
             condition.addCondition("name", query.getName());
             condition.addCondition("company", query.getCompany());
             condition.addCondition("companyStr", query.getCompanyStr());
+            condition.addCondition("unionId", query.getUnionId());
             condition.setPage(query);
             List<PersonnelEntity> list = personnelDao.queryPersonnel(condition);
             query.setPage(condition);
@@ -184,7 +185,7 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("查询用戶信息错误", e);
         }
     }
-
+    
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public List<OrganizationEntity> queryOrg(String parentId)
@@ -199,7 +200,7 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("查询层级信息错误", e);
         }
     }
-
+    
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public OrganizationEntity getOrg(String orgId)
@@ -213,7 +214,7 @@ public class PersonnelServiceImpl implements IPersonnelService
             throw new ServiceException("查询层级信息错误", e);
         }
     }
-
+    
     @Override
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
     public PersonnelEntity getPersonnelByPhone(String phone)

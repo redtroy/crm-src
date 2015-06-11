@@ -39,6 +39,9 @@
 		<if test="condition.companyStr != null  and condition.companyStr !='' ">
 			<![CDATA[  AND PER.COMPANYSTR  LIKE CONCAT(#{condition.companyStr},'%')]]>
 		</if>
+		<if test="condition.unionId != null  and condition.unionId !='' ">
+			<![CDATA[  AND PER.UNIONID =#{condition.unionId}]]>
+		</if>
 		<!-- 员工ID,一般权限员工将传递此参数,只搜索自己的信息 -->
 		<if test="condition.id != null and condition.id != ''">
 			<![CDATA[  AND PER.ID =#{condition.id}]]>

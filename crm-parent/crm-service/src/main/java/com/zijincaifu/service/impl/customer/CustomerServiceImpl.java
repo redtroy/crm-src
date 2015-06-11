@@ -278,15 +278,15 @@ public class CustomerServiceImpl implements ICustomerService
         try
         {
             CustomerEntity oldCustomer = this.getCustomer(customer.getCustomerId());
-            if (uId.equals("") || oldCustomer.getEmployeId().equals("")
-                    || oldCustomer.getEmployeId().equals(uId))
-            {
-                customerDao.updateCustomer(customer);
-            }
-            else
-            {
-                throw new ServiceException("该客户不属于当前员工");
-            }
+            //            if (uId.equals("") || oldCustomer.getEmployeId().equals("")
+            //                    || oldCustomer.getEmployeId().equals(uId))
+            //            {
+            customerDao.updateCustomer(customer);
+            //            }
+            //            else
+            //            {
+            //                throw new ServiceException("该客户不属于当前员工");
+            //            }
         }
         catch (Exception e)
         {

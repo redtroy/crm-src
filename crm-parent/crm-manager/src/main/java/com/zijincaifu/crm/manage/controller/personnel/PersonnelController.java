@@ -96,7 +96,8 @@ public class PersonnelController extends BaseController
                     }
                 }
             }
-            List<OrganizationEntity> orgList=personneService.queryOrg(getLoginInfo().getCompany()+"");
+            List<OrganizationEntity> orgList = personneService.queryOrg(getLoginInfo().getCompany()
+                    + "");
             map.put("company", query.getCompany());
             map.put("org", orgList);
             map.put("list", list);
@@ -112,6 +113,29 @@ public class PersonnelController extends BaseController
             throw new WebException("", e);
         }
         
+    }
+    
+    @RequestMapping("checkUnionId")
+    public @ResponseBody Map<String, Object> checkUnionId(String unionId)
+            throws WebException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("isCheck", false);
+        try
+        {
+            PersonnelQuery query = new PersonnelQuery();
+            query.setUnionId(unionId);
+            List<PersonnelEntity> list = personneService.queryPersonnels(query);
+            if (list != null && list.size() > 0)
+            {
+                map.put("isCheck", true);
+            }
+        }
+        catch (Exception e)
+        {
+            map.put("isCheck", false);
+        }
+        return map;
     }
     
     @RequestMapping("loadAddPersonnel")
@@ -268,6 +292,7 @@ public class PersonnelController extends BaseController
             List<FunctionModel> allFunction = functionService.queryTreeFunctions();
             map.put("allFunction", allFunction);
             map.put("roleList", roleList);
+            map.put("loginUid", getLoginInfo().getUid());
             return "manage/personnel/personnelEdit";
         }
         catch (Exception e)
@@ -312,21 +337,28 @@ public class PersonnelController extends BaseController
             String[] temCom = personnel.getCompanyStr().split(",");
             OrganizationEntity org = personneService.getOrg(temCom[temCom.length - 1]);
             
-            PersonnelEntity temPer=personneService.getPersonnel(personnel.getUid());
-            if(StringUtil.isBlank(temPer.getPhoneStr())){
+            PersonnelEntity temPer = personneService.getPersonnel(personnel.getUid());
+            if (StringUtil.isBlank(temPer.getPhoneStr()))
+            {
                 personnel.setPhoneStr(personnel.getPhone());
-            }else{
-                personnel.setPhoneStr(temPer.getPhoneStr()+","+personnel.getPhone());
+            }
+            else
+            {
+                personnel.setPhoneStr(temPer.getPhoneStr() + ","
+                        + personnel.getPhone());
             }
             personnel.setCompany(Integer.parseInt(org.getId()));
             personnel.setCompanyName(org.getName());
             personneService.editPersonnel(personnel, ids);
-            PublishMessage message = new PublishMessage();
-            message.setType("update");
-            message.setUserId(personnel.getUid());
-            message.setRoles(roles);
-            topics.getTopic(Constraints.MANAGER_CHANNEL_NAME).publish(message);
-            
+            if (roles.size() > 0)
+            {
+                PublishMessage message = new PublishMessage();
+                message.setType("update");
+                message.setUserId(personnel.getUid());
+                message.setRoles(roles);
+                topics.getTopic(Constraints.MANAGER_CHANNEL_NAME)
+                        .publish(message);
+            }
             map.put("isOK", true);
         }
         catch (Exception e)

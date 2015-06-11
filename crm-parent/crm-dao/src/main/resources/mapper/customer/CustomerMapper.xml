@@ -38,7 +38,7 @@
 	<!-- 查看渠道 -->
 	<select id="queryCustomerList" resultMap="CustomerResultMap"
 		parameterType="com.sxj.util.persistent.QueryCondition">
-		<![CDATA[SELECT DISTINCT c.*,e.NAME as EMPLOYE_NAME,p.STATE as ITEM_STATE FROM CRM_CUSTOMER c left join CRM_INVEST_ITEM p on c.CUSTOMER_ID=p.CUSTOMER_ID LEFT JOIN CRM_PERSONNEL e ON e.UID=c.EMPLOYE_ID WHERE 1=1 ]]>
+		<![CDATA[SELECT DISTINCT c.*, e.NAME AS EMPLOYE_NAME,(select count(*) from CRM_INVEST_ITEM p WHERE p.CUSTOMER_ID=c.CUSTOMER_ID AND p.STATE=0) as ITEM_STATE FROM CRM_CUSTOMER c LEFT JOIN CRM_INVEST_ITEM p ON c.CUSTOMER_ID = p.CUSTOMER_ID LEFT JOIN CRM_PERSONNEL e ON e.UID = c.EMPLOYE_ID WHERE 1 = 1]]>
 		<!-- 渠道编号 -->
 		<if test="condition.customerId != null and condition.customerId != ''">
 			<![CDATA[ AND c.CUSTOMER_ID =#{condition.customerId}]]>
@@ -79,6 +79,6 @@
 			test="condition.endDate != null and condition.endDate != ''">
 			<![CDATA[AND c.CREATE_TIME < DATE_ADD(#{condition.endDate},INTERVAL 1 DAY)]]>
 		</if>
-		<![CDATA[ GROUP BY c.CUSTOMER_ID  ORDER BY p.STATE asc,c.CUSTOMER_ID DESC]]>
+		<![CDATA[ GROUP BY c.CUSTOMER_ID  ORDER BY ITEM_STATE DESC,c.CUSTOMER_ID DESC]]>
 	</select>
 </mapper>

@@ -62,8 +62,8 @@ public class SupervisorShiroRedisCache<K, V> extends ShiroRedisCache<K, V>
     {
         // TODO Auto-generated method stub
         super.clear();
-        RMap<Object, Object> map = collections.getMap(Constraints.SHIRO_MAP_KEY);
-        map.clear();
+        //        RMap<Object, Object> map = collections.getMap(Constraints.SHIRO_MAP_KEY);
+        //        map.clear();
     }
     
 }

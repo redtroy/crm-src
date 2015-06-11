@@ -41,7 +41,7 @@ function sub(){
  $("#edit_form").Validform({
 		tiptype:3,
 		datatype:{
-			"phone":/^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/,
+			"phone":/^0{0,1}(13[0-9]|15[0-9]|18[0-9]|17[0-9])[0-9]{8}?$/,
 			"password":/^[A-Za-z0-9]{6,32}$/,
 			"company":/^[1-99999999999]$/
 		 },
@@ -158,10 +158,10 @@ function changeSelectEdit(sel){
               <th>联系手机</th>
               <td><input type="text" name="phone" class="input input-phone" title="填写员工手机号码"  datatype="m" errormsg="请输入正确的手机号码格式" nullmsg="联系手机不能为空" value="${personnel.phone}"/></td>
             </tr>
-			<tr>
+			<!-- <tr>
               <th>登录密码</th>
-              <td><input type="text" name="password" class="input input-addname" title="填写登录密码"  datatype="password" errormsg="密码只能由数字字母组成,且不能少于6位" nullmsg="密码不能为空" value="${personnel.password}"/></td>
-            </tr>
+              <td><input type="text" name="password" class="input input-addname" title="填写登录密码"  datatype="password" errormsg="密码只能由数字字母组成,且不能少于6位" nullmsg="密码不能为空" value=""/></td>
+            </tr> -->
 			<tr>
               <th>所属公司</th>
               <td id="select_td">
@@ -192,7 +192,7 @@ function changeSelectEdit(sel){
 			<tr>
               <th>UnionID</th>
               <td><input type="text" name="unionId" class="input input-addname" title="填写UnionId" datatype="*1-256"  nullmsg="UnionId不能为空" value="${personnel.unionId}"/>
-              &nbsp;&nbsp;<span style="color: red;font-size: 12px;">请关注资金财富公众号,点底部菜单的"获取UnionId"</span></td>
+              &nbsp;&nbsp;<span style="color: red;font-size: 12px;">请关注紫金财富公众号,点底部菜单的"获取UnionId"</span></td>
 			</tr>   
           </table>
           </form>
@@ -203,6 +203,10 @@ function changeSelectEdit(sel){
        <div id="editrole_div" class="modal-wrap popDemo dropList" style="display: none;dwidth:590px;margin-left:-188px;margin-top:-4px;">
 		     <div class="modal-header"><span class="close" onclick="closeDiv();">关闭</span></div>
 		     <div class="modal-body dropBox">
+		     <#assign isDisable="false" />
+		      <#if loginUid!="E00001" && personnel.uid==loginUid>
+		         <#assign isDisable="disabled='disabled'" />
+		      </#if>
 		     <#list allFunction as function>
 		     	<div class="item">
 		     	<#assign isCheck=false>
@@ -216,9 +220,9 @@ function changeSelectEdit(sel){
 			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}" checked="checked" disabled="disabled">${function.function.title}
 			     	<#else>
 			     	<#if isCheck=true>
-			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}" checked="checked">${function.function.title}
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}" checked="checked" ${isDisable}>${function.function.title}
 			     	<#else>
-			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}">${function.function.title}
+			     	<input id="${function.function.id}" type="checkbox" name="functionId" value="${function.function.id}"  ${isDisable}>${function.function.title}
 			     	</#if>
 			       </#if>
 			     </span>
@@ -234,9 +238,9 @@ function changeSelectEdit(sel){
 			     	<li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}" checked="checked" disabled="disabled">${children.title}</li>
 			       <#else>
 			       <#if childIsCheck=true>
-			        <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}" checked="checked">${children.title}</li>
+			        <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}" checked="checked"  ${isDisable}>${children.title}</li>
 			       <#else>
-			        <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}">${children.title}</li>
+			        <li><input id="${children.id}" parentId="${children.parentId}" type="checkbox" name="functionId" value="${children.id}"  ${isDisable}>${children.title}</li>
 			       </#if>
 			        </#if>
 			      </#list>
