@@ -59,7 +59,7 @@ function query(page){
 					   var html="";
 					    for (var j = 0; j < data.list.length; j++) {
 					    	if(j==0){
-					    		html+="<select  class='companySelSearch'  id='companySel"+data.list[j].level+"' onchange='changeSelectEdit(this)' >";
+					    		html+="<select  class='companySelSearch'  id='companySel"+data.list[j].level+"' onchange='changeSelect(this)' >";
 					    		html+="<option value=''>--请选择--</option>";
 					    	}
 					    	if(company[i]==data.list[j].id){
