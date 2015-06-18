@@ -73,16 +73,18 @@ function to_add(){
 		});
 }
 
-function customerInfo(uid,city){
+function customerInfo(uid){
 	//demo.resetForm();
 	$.get("${basePath}customer/changeNew.htm?customerId="+uid,function(data){
 		if(data.isNew=="0"){
 			$("#customer_isNew_span_"+uid).removeClass("iconNew");
 		}
 	});
+	
 	//$(".Validform_checktip").hide();
 	var nowState=$("#info_"+uid).attr("state");
 	if(nowState==0){
+		var city=$("#city_"+uid).val();
 		var sel=$("#province_"+uid);
 		var parentId=$(sel).val();
 		if(parentId!=''){
@@ -103,7 +105,7 @@ function customerInfo(uid,city){
 			    $(sel).nextAll().remove();
 			    $("#select_td_"+uid).append(html);
 			});
-		}		
+		}
 		
 		$(".div_state").hide();
 		$(".div_state").attr("state","0");
@@ -113,7 +115,6 @@ function customerInfo(uid,city){
 		$(".div_state").hide();
 		$(".div_state").attr("state","0");
 	}
-
 }
 
 function changeProvince(sel,uid){
@@ -480,10 +481,10 @@ function deleteCustomer(customerId){
             </#if>
              <td>
              <#if loginUid==model.employeId>
-              		<a href="javascript:customerInfo('${model.customerId}','${model.city}');">${model.customerId}</a>
+              		<a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
               <#else>
               		 <@shiro.hasRole name="11"> 
-              			<a href="javascript:customerInfo('${model.customerId}','${model.city}');">${model.customerId}</a>
+              			<a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
              		</@shiro.hasRole> 
               		<@shiro.lacksRole name="11"><a href="javascript:void(0);">${model.customerId}</a></@shiro.lacksRole>
              </#if>
@@ -602,7 +603,7 @@ function deleteCustomer(customerId){
                 </tbody>
                 </table>
                 </form>
-                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}','${model.city}')" class="button button-gray btn-hide">收起</a> </div>
+                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div>
                  </td> 
               </tr>
              <tr class="investItem_class" id="investItem_${model.customerId}" style="display:none;" state="0">
