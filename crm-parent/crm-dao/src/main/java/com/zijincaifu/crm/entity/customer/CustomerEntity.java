@@ -109,6 +109,11 @@ public class CustomerEntity extends Pagable implements Serializable
     private String city;
     
     /**
+     * 区
+     */
+    @Column(name="REGION")
+    private String region;
+    /**
      * 省份
      */
     @Column(name = "PROVINCE_NAME")
@@ -120,6 +125,32 @@ public class CustomerEntity extends Pagable implements Serializable
     @Column(name = "CITY_NAME")
     private String cityName;
     
+    /**
+     * 区
+     */
+    @Column(name="REGION_NAME")
+    private String regionName;
+    
+    public String getRegion()
+    {
+        return region;
+    }
+
+    public void setRegion(String region)
+    {
+        this.region = region;
+    }
+
+    public String getRegionName()
+    {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName)
+    {
+        this.regionName = regionName;
+    }
+
     /**
      * 卡号
      */

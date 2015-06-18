@@ -19,9 +19,11 @@
 		<result property="sex" column="SEX" jdbcType="INTEGER" />
 		<result property="province" column="PROVINCE" jdbcType="VARCHAR" />
 		<result property="city" column="CITY" jdbcType="VARCHAR" />
+		<result property="region" column="REGION" jdbcType="VARCHAR" />
 		<result property="provinceName" column="PROVINCE_NAME"
 			jdbcType="VARCHAR" />
 		<result property="cityName" column="CITY_NAME" jdbcType="VARCHAR" />
+		<result property="regionName" column="REGION_NAME" jdbcType="VARCHAR" />
 		<result property="cardNo" column="CARD_NO" jdbcType="VARCHAR" />
 		<result property="birthday" column="BIRTH_DAY" jdbcType="DATE" />
 		<result property="address" column="ADDRESS" jdbcType="VARCHAR" />

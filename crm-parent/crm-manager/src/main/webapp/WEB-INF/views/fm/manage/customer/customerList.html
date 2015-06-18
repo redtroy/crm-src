@@ -73,7 +73,7 @@ function to_add(){
 		});
 }
 
-function customerInfo(uid){
+function customerInfo(uid,city){
 	//demo.resetForm();
 	$.get("${basePath}customer/changeNew.htm?customerId="+uid,function(data){
 		if(data.isNew=="0"){
@@ -83,6 +83,28 @@ function customerInfo(uid){
 	//$(".Validform_checktip").hide();
 	var nowState=$("#info_"+uid).attr("state");
 	if(nowState==0){
+		var sel=$("#province_"+uid);
+		var parentId=$(sel).val();
+		if(parentId!=''){
+			$.post("${basePath}customer/queryArea.htm?parentId="+parentId,function(data){
+				var html="";
+			    for (var i = 0; i < data.areaList.length; i++) {
+			    	if(i==0){
+			    		html+="<select id='city_"+uid+"' name='city' onchange='changeCity(\""+uid+"\");' >";
+			    		html+="<option value=''>--请选择--</option>";
+			    	}
+			    	if(city==data.areaList[i].id){
+			    		html+="<option value='"+data.areaList[i].id+"' selected='selected'>"+data.areaList[i].name+"</option>";
+			    	}else{
+			    		html+="<option value='"+data.areaList[i].id+"'>"+data.areaList[i].name+"</option>";
+			    	}
+				}
+			    html+="</select>";
+			    $(sel).nextAll().remove();
+			    $("#select_td_"+uid).append(html);
+			});
+		}		
+		
 		$(".div_state").hide();
 		$(".div_state").attr("state","0");
 		$("#info_"+uid).show();
@@ -93,6 +115,31 @@ function customerInfo(uid){
 	}
 
 }
+
+function changeProvince(sel,uid){
+	var parentId=$(sel).val();
+	if(parentId==''){
+		$(sel).nextAll().remove();
+		$("#provinceName_hidden_"+uid).val("");
+		return false;
+	}
+	$("#provinceName_hidden_"+uid).val($("#province_"+uid).find("option:selected").text());
+	$("#cityName_hidden_"+uid).val('');
+	$.post("${basePath}customer/queryArea.htm?parentId="+parentId,function(data){
+		var html="";
+	    for (var i = 0; i < data.areaList.length; i++) {
+	    	if(i==0){
+
+	    		html+="<select id='city_"+uid+"' name='city' onchange='changeCity(\""+uid+"\");' >";
+	    		html+="<option value=''>--请选择--</option>";
+	    	}
+	    	html+="<option value='"+data.areaList[i].id+"'>"+data.areaList[i].name+"</option>";
+		}
+	    html+="</select>";
+	    $(sel).nextAll().remove();
+	    $("#select_td_"+uid).append(html);
+	});
+};
 
 function changeCity(customerId){
 	 //$("#city_"+customerId).append("<option value='Value'>Text</option>")
@@ -433,10 +480,10 @@ function deleteCustomer(customerId){
             </#if>
              <td>
              <#if loginUid==model.employeId>
-              		<a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
+              		<a href="javascript:customerInfo('${model.customerId}','${model.city}');">${model.customerId}</a>
               <#else>
               		 <@shiro.hasRole name="11"> 
-              			<a href="javascript:customerInfo('${model.customerId}');">${model.customerId}</a>
+              			<a href="javascript:customerInfo('${model.customerId}','${model.city}');">${model.customerId}</a>
              		</@shiro.hasRole> 
               		<@shiro.lacksRole name="11"><a href="javascript:void(0);">${model.customerId}</a></@shiro.lacksRole>
              </#if>
@@ -501,7 +548,7 @@ function deleteCustomer(customerId){
                      <input type="hidden" name="customerId" value="${model.customerId}"/> 
                     <td><input id="name_modify_${model.customerId}" type="text" class="input" name="name" value="${model.name}" datatype="s2-20" errormsg="客户姓名至少2个字符,最多20个字符！" nullmsg="请输入客户姓名" /></td>
                     <td><select name="sex" id="sex_${model.customerId}">
-					    <option value="">请选择</option>
+					    <option value="">--请选择--</option>
 					    <#if model.sex==1>
 					     <option value="1" selected="selected">男</option>
 					     <#else>
@@ -516,8 +563,8 @@ function deleteCustomer(customerId){
                     <td><input id="phone_modify_${model.customerId}" type="text" class="input" name="phone" value="${model.phone}" datatype="phone" errormsg="手机号码格式不正确" nullmsg="请输入手机号码" /></td>
                     <input id="provinceName_hidden_${model.customerId}" type="hidden" name="provinceName" value="${model.provinceName}"/>
                     <input id="cityName_hidden_${model.customerId}" type="hidden" name="cityName" value="${model.cityName}"/>
-                    <td><select name="province" id="province_${model.customerId}">
-                        <option value="">请选择</option>
+                    <td id="select_td_${model.customerId}"><select name="province" id="province_${model.customerId}" style="width: 80px" onchange="changeProvince(this,'${model.customerId}');">
+                        <option value="">--请选择--</option>
                        <#list provinceList as province>
                         <#if model.province==province.id>
                    			<option value="${province.id}" selected="selected">${province.name}</option>
@@ -528,7 +575,7 @@ function deleteCustomer(customerId){
                       </select>
                       &nbsp;
                       <select id="city_${model.customerId}" name="city"  onchange="changeCity('${model.customerId}');">
-                       <option value="">请选择</option>
+                       <option value="">--请选择--</option>
                       <#list cityList as city>
                       <#if model.city==city.id>
                         <option value="${city.id}" selected="selected">${city.name}</option>
@@ -555,7 +602,7 @@ function deleteCustomer(customerId){
                 </tbody>
                 </table>
                 </form>
-                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}')" class="button button-gray btn-hide">收起</a> </div>
+                 <div class="buttonBox mt15 mb10 tc"><a href="javascript:subModify('${index}');" class="button button-green mr15">修改</a><a href="javascript:customerInfo('${model.customerId}','${model.city}')" class="button button-gray btn-hide">收起</a> </div>
                  </td> 
               </tr>
              <tr class="investItem_class" id="investItem_${model.customerId}" style="display:none;" state="0">

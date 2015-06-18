@@ -86,13 +86,46 @@
 	function changeProduct(input){
 		$(input).next().val("");
 	}
+	function changeProvince(sel){
+		var parentId=$(sel).val();
+		if(parentId==''){
+			$(sel).nextAll().remove();
+			$("#provinceName").val("");
+			return false;
+		}
+		$("#provinceName").val($("#province_sel option:selected").text());
+		$.post("${basePath}customer/queryArea.htm?parentId="+parentId,function(data){
+			var html="";
+		    for (var i = 0; i < data.areaList.length; i++) {
+		    	if(i==0){
+
+		    		html+="<select  class='AreaSel'  id='city_sel' name='city' onchange='changeCity(this)' >";
+		    		html+="<option value=''>--请选择--</option>";
+		    	}
+		    	html+="<option value='"+data.areaList[i].id+"'>"+data.areaList[i].name+"</option>";
+			}
+		    html+="</select>";
+		    $(sel).nextAll().remove();
+		    $("#select_td").append(html);
+		});
+	};
 	
+	function changeCity(sel){
+		var parentId=$(sel).val();
+		if(parentId==''){
+			$("#cityName").val("");
+			return false;
+		}
+		$("#cityName").val($("#city_sel option:selected").text());
+	};
  </script>
    <div class="yard-1100 ly-left">
       <div class="rightSide">
         <div class="heading fontYH f20">新增客户</div>
         <div class="mainBox newMem">
         <form action="javascript:void(0);" id="addForm">
+        <input id="provinceName" type="hidden" name="provinceName" value=""/>
+        <input id="cityName" type="hidden" name="cityName" value=""/>
           <table border="0" cellspacing="0" cellpadding="0" class="tabList tabNews">
             <col width="15%" />
             <col width="85%" />
@@ -119,8 +152,14 @@
             </tr>
             <tr>
               <th>地区</th>
-              <td>
-              <select name="province" id="province_select" onchange="selectArea();">
+              <td id="select_td">
+              <select id="province_sel" name="province"  class="AreaSel"  onchange="changeProvince(this);" >
+               <option value="" selected="selected">--请选择--</option>
+              	<#list provinceList as area>
+				<option value="${area.id}">${area.name}</option>
+				</#list>
+              </select>
+              <!-- <select name="province" id="province_select" onchange="selectArea();">
                   <option value="">请选择</option>
                   <#list provinceList as province>
                    <option value="${province.id}">${province.name}</option>
@@ -128,9 +167,8 @@
                </select>&nbsp;
 			   <select id="city_select" name="city" id="select2" style="display: none;" onchange="selectCity();">
 	   				<option value="">请选择</option>
-                </select>
-                <input id="provinceName" type="hidden" name="provinceName" value=""/>
-                <input id="cityName" type="hidden" name="cityName" value=""/>
+                </select> -->
+                
                 </td>
               </tr>
               <tr>
