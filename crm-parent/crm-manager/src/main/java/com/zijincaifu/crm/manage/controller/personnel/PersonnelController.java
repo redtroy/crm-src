@@ -345,7 +345,7 @@ public class PersonnelController extends BaseController
             else
             {
                 personnel.setPhoneStr(temPer.getPhoneStr() + ","
-                        + personnel.getPhone());
+                        + temPer.getPhone());
             }
             personnel.setCompany(Integer.parseInt(org.getId()));
             personnel.setCompanyName(org.getName());

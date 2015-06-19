@@ -29,6 +29,7 @@
 		<result property="address" column="ADDRESS" jdbcType="VARCHAR" />
 		<result property="employeIdHistory" column="EMPLOYE_ID_HISTORY" jdbcType="VARCHAR"/>
 		<result property="itemState" column="ITEM_STATE" jdbcType="VARCHAR"/>
+		<result property="phoneStr" column="PHONESTR" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 获取渠道信息 -->
