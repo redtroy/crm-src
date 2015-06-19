@@ -470,20 +470,93 @@ public class PersonnelController extends BaseController
         Map<String, Object> map = new HashMap<>();
         List<OrganizationEntity> list = personneService.queryOrg(parentId);
         map.put("list", list);
-        //        List<String> strlist = new ArrayList<String>();
-        //        String sb = "";
-        //        for (OrganizationEntity org : list)
-        //        {
-        //            sb = "{\"name\":\"" + org.getName() + "\",\"id\":\""
-        //                    + org.getId() + "\",\"level\":\""+org.getLevel()+"\"}";
-        //            strlist.add(sb);
-        //        }
-        //  String json = "{\"data\":" + strlist.toString() + ",\"length\":"+list.size()+"}";
-        // response.setCharacterEncoding("UTF-8");
-        // PrintWriter out = response.getWriter();
-        //out.print(json);
-        //out.flush();
-        // out.close();
         return map;
     }
+    
+    //    @RequestMapping("downloadPfx")
+    //    public void createPfx(HttpServletResponse response)
+    //            throws KeyPairException, StorageException, CertificateException
+    //    {
+    //        try
+    //        {
+    //            String uid = getLoginInfo().getUid();
+    //            String name = getLoginInfo().getName();
+    //            ServletOutputStream output = response.getOutputStream();
+    //            response.addHeader("Content-Disposition", "attachment;filename="
+    //                    + name + "_employee.pfx");
+    //            response.setContentType("application/pfx");
+    //            
+    //            CAManager ca = new CAManager();
+    //            PEMFileStore<X509Certificate> certstore = new PEMFileStore<X509Certificate>(
+    //                    "D:\\certs\\ca.crt");
+    //            PEMFileStore<X509Certificate> clientcertstore = new PEMFileStore<X509Certificate>(
+    //                    "D:\\certs\\client.crt");
+    //            PEMFileStore<KeyPair> clientkeystore = new PEMFileStore<KeyPair>(
+    //                    "D:\\certs\\client.key");
+    //            PEMFileStore<PublicKey> publicstore = new PEMFileStore<PublicKey>(
+    //                    "D:\\certs\\" + name + "_employee.pub");
+    //            PEMFileStore<KeyPair> employeekeystore = new PEMFileStore<KeyPair>(
+    //                    "D:\\certs\\" + name + "_employee.key");
+    //            PEMFileStore<PKCS10CertificationRequest> employeerequeststore = new PEMFileStore<PKCS10CertificationRequest>(
+    //                    "D:\\certs\\" + name + "_employee.req");
+    //            PEMFileStore<X509Certificate> employeecertstore = new PEMFileStore<X509Certificate>(
+    //                    "D:\\certs\\" + name + "_employee.crt");
+    //            
+    //            KeyPair keypair = KeyPairManager.generateRSAKeyPair();
+    //            PublicKey public1 = keypair.getPublic();
+    //            publicstore.save(public1, null);
+    //            
+    //            employeekeystore.save(keypair, null);
+    //            X509Attrs principals = new X509Attrs();
+    //            principals.setCommonName(name);
+    //            principals.setCountryCode("AU");
+    //            principals.setGiveName(uid);
+    //            PKCS10CertificationRequest csr = CSRManager.generateCSR(keypair,
+    //                    principals);
+    //            
+    //            employeerequeststore.save(csr, null);
+    //            
+    //            PKCS10CertificationRequest request = employeerequeststore.read();
+    //            X509Certificate parentcert = clientcertstore.read();
+    //            KeyPair parentkey = clientkeystore.read();
+    //            X509Certificate certificate = ca.issueCertificate(request,
+    //                    365,
+    //                    parentcert,
+    //                    parentkey,
+    //                    false);
+    //            employeecertstore.save(certificate, null);
+    //            
+    //            PEMFileStore<X509Certificate> intercertstore = new PEMFileStore<X509Certificate>(
+    //                    "D:\\certs\\inter.crt");
+    //            PEMFileStore<X509Certificate> servercertstore = new PEMFileStore<X509Certificate>(
+    //                    "D:\\certs\\server.crt");
+    //            X509Certificate cacert = certstore.read();
+    //            X509Certificate intercert = intercertstore.read();
+    //            X509Certificate servercert = servercertstore.read();
+    //            X509Certificate clientcert = clientcertstore.read();
+    //            X509Certificate employeecert = employeecertstore.read();
+    //            X509Certificate[] chain = new X509Certificate[5];
+    //            chain[0] = (employeecert);
+    //            chain[1] = (clientcert);
+    //            chain[2] = (servercert);
+    //            chain[3] = (intercert);
+    //            chain[4] = (cacert);
+    //            KeyPair employeekey = new PEMFileStore<KeyPair>("D:\\certs\\"
+    //                    + name + "_employee.key").read();
+    //            KeyStore pkcs12 = ca.generatePKCS12(chain, employeekey);
+    //            PfxStore pdxStore = new PfxStore("D://certs//" + name
+    //                    + "_employee.pfx");
+    //            pdxStore.save(pkcs12, "123456");
+    //            byte[] bytes = FileUtil.readBytes("D://certs//" + name
+    //                    + "_employee.pfx");
+    //            output.write(bytes);
+    //            output.flush();
+    //            output.close();
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            e.printStackTrace();
+    //        }
+    //        
+    //    }
 }

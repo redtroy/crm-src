@@ -171,7 +171,14 @@ function subModify(formIndex){
 		$.Tipmsg.r=" ";
 		demo=$(".modify_class").Validform({
 			ajaxPost:true,
-			tiptype:3,
+			tiptype:function(msg,o,cssctl){
+				if(o.type==2){
+					o.obj.next(".Validform_checktip").remove();
+				}else{
+					o.obj.parent().append("<span class='Validform_checktip Validform_wrong'></span>");
+					o.obj.next(".Validform_checktip").text(msg);
+				}
+			},
 			datatype:{
 				"phone":function(gets,obj,curform,regxp){
 					var phoneReg=/^0{0,1}(13[0-9]|15[0-9]|18[0-9]|17[0-9])[0-9]{8}?$/;

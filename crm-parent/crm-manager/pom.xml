@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.zijincaifu</groupId>
-    <artifactId>crm-parent</artifactId>
-    <version>1.0</version>
-  </parent>
-  <artifactId>crm-manager</artifactId>
-  <packaging>war</packaging>
-  <name>crm-manager Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-  		<dependency>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zijincaifu</groupId>
+		<artifactId>crm-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>crm-manager</artifactId>
+	<packaging>war</packaging>
+	<name>crm-manager Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -86,6 +87,12 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.java</groupId>
+			<artifactId>rt</artifactId>
+			<version>1.7</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- 数据库连接 -->
 		<dependency>
@@ -164,7 +171,17 @@
 			<artifactId>shiro-freemarker-tags</artifactId>
 			<version>1.0</version>
 		</dependency>
-  </dependencies>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.45</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sxj</groupId>
+			<artifactId>ca-tool</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<finalName>crm-manager</finalName>

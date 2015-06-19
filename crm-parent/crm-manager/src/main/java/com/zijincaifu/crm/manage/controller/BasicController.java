@@ -1,5 +1,8 @@
 package com.zijincaifu.crm.manage.controller;
 
+import java.io.StringReader;
+import java.security.Principal;
+import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +15,17 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.bouncycastle.openssl.PEMReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sun.security.x509.X500Name;
+
+import com.sxj.util.common.StringUtils;
+import com.sxj.util.exception.WebException;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
 import com.zijincaifu.crm.manage.login.SupervisorShiroRedisCache;
@@ -100,9 +108,39 @@ public class BasicController extends BaseController
     }
     
     @RequestMapping("to_login")
-    public String ToLogin()
+    public String ToLogin(HttpServletRequest request, ModelMap map)
+            throws WebException
     {
-        return LOGIN;
+        try
+        {
+            //X509Certificate[] clientCertChain = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
+            String certString = request.getHeader("client-cert");
+            if (StringUtils.isEmpty(certString))
+            {
+                return LOGIN;
+            }
+            certString = certString.replaceAll("\t", "\n");
+            X509Certificate clientCertChain = (X509Certificate) new PEMReader(
+                    new StringReader(certString), null, "SUN").readObject();
+            if (clientCertChain == null)
+            {
+                return LOGIN;
+            }
+            else
+            {
+                Principal dn = clientCertChain.getSubjectDN();
+                X500Name x509Principal = (X500Name) dn;
+                String uid = x509Principal.getGivenName();
+                map.put("account", uid);
+            }
+            
+            return LOGIN;
+        }
+        catch (Exception e)
+        {
+            throw new WebException("系统错误", e);
+        }
+        
     }
     
     @RequestMapping("login")
