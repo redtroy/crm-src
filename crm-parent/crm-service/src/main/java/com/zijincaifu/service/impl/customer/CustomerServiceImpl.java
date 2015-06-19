@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -252,6 +253,16 @@ public class CustomerServiceImpl implements ICustomerService
                     Date birthdate = null;
                     birthdate = new SimpleDateFormat("yyyyMMdd").parse(birthday);
                     customer.setBirthday(birthdate);
+                }
+                CustomerEntity temCust=getCustomer(customer.getCustomerId());
+                if (StringUtil.isBlank(temCust.getPhoneStr()))
+                {
+                    customer.setPhoneStr(temCust.getPhone());
+                }
+                else
+                {
+                    customer.setPhoneStr(temCust.getPhoneStr() + ","
+                            + temCust.getPhone());
                 }
                 updateCustomer(customer, uId);
             }

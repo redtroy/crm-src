@@ -175,6 +175,22 @@ public class CustomerEntity extends Pagable implements Serializable
     @Column(name = "EMPLOYE_ID_HISTORY")
     private String employeIdHistory;
     
+    /**
+     * 电话号码历史
+     */
+    @Column(name="PHONESTR")
+    private String phoneStr;
+    
+    public String getPhoneStr()
+    {
+        return phoneStr;
+    }
+
+    public void setPhoneStr(String phoneStr)
+    {
+        this.phoneStr = phoneStr;
+    }
+
     private String isNew;
     
     private Integer itemState;
