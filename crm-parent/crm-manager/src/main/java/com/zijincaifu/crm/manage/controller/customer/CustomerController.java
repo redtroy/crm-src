@@ -78,6 +78,18 @@ public class CustomerController extends BaseController
                 isAdmin = false;
             }
             query.setCompanyStr(getLoginInfo().getCompanyStr());
+            if(!StringUtils.isBlank(query.getName())){
+                query.setName(query.getName().trim());
+            }
+            if(!StringUtils.isBlank(query.getEmployeId())){
+                query.setEmployeId(query.getEmployeId().trim());
+            }
+            if(!StringUtils.isBlank(query.getCustomerId())){
+                query.setCustomerId(query.getCustomerId().trim());
+            }
+            if(!StringUtils.isBlank(query.getPhone())){
+                query.setPhone(query.getPhone().trim());
+            }
             List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
             List<AreaEntity> cityList = areaService.getChildrenAreas("32");
             map.put("provinceList", provinceList);
