@@ -78,6 +78,9 @@ public class CustomerController extends BaseController
                 isAdmin = false;
             }
             query.setCompanyStr(getLoginInfo().getCompanyStr());
+            if(!StringUtils.isBlank(query.getName())){
+                query.setName(query.getName().trim());
+            }
             List<AreaEntity> provinceList = areaService.getChildrenAreas("0");
             List<AreaEntity> cityList = areaService.getChildrenAreas("32");
             map.put("provinceList", provinceList);

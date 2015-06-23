@@ -54,7 +54,35 @@ function query(page){
 				$("#time2").datepicker();
 		   }
 	});
+	 
 	 $("input[placeholder]").each(function () {
+	        var self = $(this);
+	        // 保存原始文字颜色
+	        var color = self.css('color');
+	        // value 填充为 placeholder 值
+	        if(self.val()==""){
+	        	self.val(self.attr("placeholder"));
+	        }
+	        self.bind({
+	            // 成为焦点的时候将内容置空，颜色变为真是颜色
+	            focus: function () {
+	                if (self.val() === self.attr("placeholder")) {
+	                    self.val("");
+	                }
+	                self.css('color', color);
+	            },
+	            // 失去焦点的时候，如果内容为空，修改为 placeholder 值，并修改颜色
+	            blur: function () {
+	                if (self.attr("placeholder") && self.val() === "") {
+	                    self.val(self.attr("placeholder"));
+	                    self.css('color', '#BBB');
+	                }
+	            }
+	        });
+	        // 修改颜色
+	        self.css('color', '#BBB');
+	    });
+	 /* $("input[placeholder]").each(function () {
 	        var self = $(this);
 	        // 失去焦点的时候，如果内容为空，修改为 placeholder 值，并修改颜色
 	            if (self.val() === "") {
@@ -63,7 +91,7 @@ function query(page){
 	          }
 	        // 修改颜色
 	        self.css('color', '#BBB');
-	    });
+	    }); */
 }
 
 function to_add(){
