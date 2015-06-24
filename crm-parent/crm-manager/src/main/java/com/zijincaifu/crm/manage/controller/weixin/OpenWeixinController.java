@@ -23,10 +23,12 @@ import com.sxj.util.common.StringUtils;
 import com.sxj.util.logger.SxjLogger;
 import com.zijincaifu.crm.entity.channel.CreateCodeEntity;
 import com.zijincaifu.crm.entity.personnel.PersonnelEntity;
+import com.zijincaifu.crm.entity.product.ProductEntity;
 import com.zijincaifu.crm.manage.controller.BaseController;
 import com.zijincaifu.model.customer.OpenCustomerModel;
 import com.zijincaifu.service.customer.ICustomerService;
 import com.zijincaifu.service.personnel.IPersonnelService;
+import com.zijincaifu.service.product.IProductService;
 
 @Controller
 @RequestMapping("/open")
@@ -40,6 +42,9 @@ public class OpenWeixinController extends BaseController
     
     @Autowired
     private ISxjHttpClient httpClient;
+    
+    @Autowired
+    private IProductService productService;
     
     @RequestMapping(value = "/addCustomer", method = RequestMethod.POST, consumes = MediaTypes.JSON)
     @ResponseBody
@@ -169,6 +174,24 @@ public class OpenWeixinController extends BaseController
         {
             out.flush();
             out.close();
+        }
+        
+    }
+    
+    @RequestMapping(value = "/getProductName", method = RequestMethod.GET)
+    @ResponseBody
+    public String getProductName(String productId,
+            HttpServletResponse response) throws IOException
+    {
+        try
+        {
+            ProductEntity product=productService.getProduct(productId);
+            return product.getName();
+        }
+        catch (Exception e)
+        {
+            SxjLogger.error(e.getMessage(), e, this.getClass());
+            return null;
         }
         
     }
